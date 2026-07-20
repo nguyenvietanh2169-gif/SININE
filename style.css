@@ -1,0 +1,541 @@
+/* -------------------------------------------------------------
+ * Custom Design System & Animations for Sinine Welcome Page
+ * ------------------------------------------------------------- */
+
+/* Reset & Base Setup */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #000000;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --text-tertiary: rgba(255, 255, 255, 0.35);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --glow-color: rgba(255, 255, 255, 0.25);
+    --transition-speed: 2.2s; /* Slower, more elegant cinematic transition */
+    --transition-curve: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* ==========================================
+   Welcome Screen (Intro)
+   ========================================== */
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity var(--transition-speed) var(--transition-curve), 
+                visibility var(--transition-speed) var(--transition-curve);
+}
+
+.scene-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-bottom: 8vh; /* Shift the vertical centering upwards on desktop to leave room at the bottom */
+    margin-bottom: 20px;
+}
+
+/* Maintain exact 940:788 aspect ratio matching the mockup assets */
+.scene {
+    position: relative;
+    aspect-ratio: 940 / 788;
+    width: min(90vw, 64vh * 940 / 788); /* Scales to fill 64% of viewport height for a larger, fuller screen */
+    max-width: 940px; /* Matches the exact native resolution of the assets for 1:1 pixel crispness */
+    height: auto;
+}
+
+/* Base style for elements inside the scene */
+.scene-element-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    transition: transform var(--transition-speed) var(--transition-curve), 
+                opacity var(--transition-speed) ease-out;
+}
+
+.scene-element {
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    pointer-events: none;
+    object-fit: contain;
+    
+    /* High Definition Rendering & Hardware Acceleration Optimizations */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* Individual Asset Layers, Positioning and Scaling */
+.hand-wrapper {
+    /* Enlarge the hand further and lower it to sit beautifully as the hero element */
+    transform: scale(1.42) translateY(3%);
+    z-index: 10;
+}
+.scene-element.hand {
+    animation: float-hand 6s infinite ease-in-out;
+}
+
+.logo-wrapper {
+    /* Push the logo wrapper down by 55% to move its bottom padding off-screen */
+    transform: scale(0.95) translateY(55%);
+    z-index: 20;
+}
+.scene-element.logo {
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.5));
+    animation: float-logo 5.5s infinite ease-in-out;
+}
+
+.star-big-wrapper {
+    /* Positioned on the right-middle, closer to hand */
+    transform: scale(0.95) translate(42%, 7%);
+    z-index: 5;
+}
+.scene-element.star-big {
+    animation: float-star-big 7s infinite ease-in-out;
+}
+
+.star-mini-wrapper {
+    /* Positioned on the top-left, pushed extremely high and given z-index 12 to overlay on top of the hand */
+    transform: scale(0.65) translate(-42%, -92%);
+    z-index: 12;
+}
+.scene-element.star-mini {
+    animation: float-star-mini 5s infinite ease-in-out;
+}
+
+.airplane-wrapper {
+    /* Positioned on the bottom-left, closer to hand, and set z-index to 15 to sit on top of the hand */
+    transform: scale(1.15) translate(-37%, -1%);
+    z-index: 15;
+}
+.scene-element.airplane {
+    animation: float-airplane 8s infinite ease-in-out;
+}
+
+.bird-wrapper {
+    /* Enlarge bird significantly and bring it leftwards closer to the hand */
+    transform: scale(1.35) translate(28%, -26%);
+    z-index: 5;
+}
+.scene-element.bird {
+    animation: float-bird 7.5s infinite ease-in-out;
+}
+
+/* ==========================================
+   Minimalist Enter Button
+   ========================================== */
+.enter-btn {
+    position: absolute;
+    bottom: 5.5vh; /* Raised higher on desktop to balance the raised artwork */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 110;
+}
+
+.enter-btn::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.btn-arrow-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-arrow {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 0;
+    transition: all 0.5s ease;
+}
+
+/* Hover effects */
+.enter-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+.enter-btn:hover::before {
+    opacity: 1;
+}
+
+.enter-btn:hover .btn-arrow-wrapper {
+    transform: translateX(4px);
+}
+
+.enter-btn:active {
+    transform: translateX(-50%) scale(0.93);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================
+   Continuous Idle Floating Animations
+   ========================================== */
+@keyframes float-hand {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(0.8deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes float-logo {
+    0% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-5px) scale(1.015); }
+    100% { transform: translateY(0px) scale(1); }
+}
+
+@keyframes float-star-big {
+    0% { transform: translateY(0px) rotate(0deg) scale(1); }
+    50% { transform: translateY(-6px) rotate(15deg) scale(1.08); }
+    100% { transform: translateY(0px) rotate(0deg) scale(1); }
+}
+
+@keyframes float-star-mini {
+    0% { transform: translateY(0px) rotate(0deg) scale(0.9); opacity: 0.7; }
+    50% { transform: translateY(5px) rotate(-25deg) scale(1.15); opacity: 1; }
+    100% { transform: translateY(0px) rotate(0deg) scale(0.9); opacity: 0.7; }
+}
+
+@keyframes float-airplane {
+    0% { transform: translate(0px, 0px) rotate(0deg); }
+    50% { transform: translate(8px, -10px) rotate(-3deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+@keyframes float-bird {
+    0% { transform: translate(0px, 0px) rotate(0deg); }
+    50% { transform: translate(-8px, -6px) rotate(4deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+/* ==========================================
+   Leaving State Animations (Transition Out)
+   ========================================== */
+.welcome-screen.leaving {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.welcome-screen.leaving .hand-wrapper {
+    transform: scale(1.3) translateY(80vh);
+    opacity: 0;
+    transition: transform var(--transition-speed) var(--transition-curve),
+                opacity var(--transition-speed) ease-out;
+}
+
+.welcome-screen.leaving .logo-wrapper {
+    transform: scale(0.85) translateY(80vh);
+    opacity: 0;
+    transition: transform var(--transition-speed) var(--transition-curve) 0.1s,
+                opacity var(--transition-speed) ease-out 0.1s;
+}
+
+.welcome-screen.leaving .airplane-wrapper {
+    /* Zooms forward past the camera to the top-right - slowed down to enjoy the swoop */
+    transform: scale(3.5) translate(80%, -80%) rotate(25deg);
+    opacity: 0;
+    transition: transform 2.8s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 2.2s ease-out;
+}
+
+.welcome-screen.leaving .bird-wrapper {
+    /* Zooms forward past the camera to the bottom-left (flying from high to low) */
+    transform: scale(3.5) translate(-80%, 80%) rotate(-35deg);
+    opacity: 0;
+    transition: transform 3.0s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 2.4s ease-out;
+}
+
+.welcome-screen.leaving .star-big-wrapper {
+    /* Explodes forward and dissolves - slowed down */
+    transform: scale(2.2) translate(42%, 7%) rotate(45deg);
+    opacity: 0;
+    transition: transform 2.2s var(--transition-curve),
+                opacity 1.8s ease-out;
+}
+
+.welcome-screen.leaving .star-mini-wrapper {
+    /* Explodes forward and dissolves - slowed down */
+    transform: scale(1.8) translate(-42%, -92%) rotate(-60deg);
+    opacity: 0;
+    transition: transform 2.2s var(--transition-curve),
+                opacity 1.8s ease-out;
+}
+
+.welcome-screen.leaving .enter-btn {
+    transform: translate(-50%, 40px) scale(0);
+    opacity: 0;
+    transition: transform 1.0s var(--transition-curve),
+                opacity 1.0s ease-out;
+}
+
+
+/* ==========================================
+   Homepage (Main Site Framework)
+   ========================================== */
+.home-screen {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: scale(1.04);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--transition-speed) var(--transition-curve),
+                transform var(--transition-speed) var(--transition-curve),
+                visibility var(--transition-speed) var(--transition-curve);
+    z-index: 10;
+}
+
+.home-screen.visible {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Header style */
+.home-header {
+    width: 100%;
+    padding: 30px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 20;
+}
+
+.header-logo {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.home-nav {
+    display: flex;
+    gap: 36px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    font-weight: 400;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--text-primary);
+}
+
+.back-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: var(--text-primary);
+    transform: translateX(-3px);
+}
+
+/* Hero Section */
+.home-hero {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px 100px;
+}
+
+.hero-content {
+    max-width: 900px;
+    text-align: center;
+}
+
+.art-tech-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.art-tech-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+    animation: fadeInText 1.4s ease-out;
+}
+
+.art-tech-logo {
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.15));
+}
+
+.art-tech-title {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: #fff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    animation: fadeInText 1.7s ease-out;
+}
+
+.art-tech-notification {
+    font-size: 1.05rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    animation: fadeInText 2.0s ease-out;
+}
+
+.art-tech-notification span {
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Animations for Home entry elements */
+@keyframes fadeInText {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInGrid {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   Responsive Configurations
+   ========================================== */
+@media (max-width: 900px) {
+    .home-header {
+        padding: 25px 30px;
+    }
+    
+    .hero-title {
+        font-size: 4.5rem;
+    }
+    
+    .construction-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .grid-card {
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .scene-container {
+        padding-bottom: 20px; /* Reset bottom padding to keep layout centered on mobile */
+    }
+    
+    .scene {
+        width: 92vw;
+    }
+    
+    .home-header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .home-nav {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .hero-title {
+        font-size: 3.2rem;
+        letter-spacing: 0.08em;
+    }
+    
+    .hero-description {
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+    }
+    
+    .enter-btn {
+        bottom: 11vh; /* Raise the button higher on mobile for balanced layout */
+        width: 52px;
+        height: 52px;
+    }
+}

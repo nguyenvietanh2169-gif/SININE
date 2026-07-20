@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinine - Welcome</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <!-- CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Welcome Screen -->
+    <section id="welcome-screen" class="welcome-screen">
+        <div class="scene-container">
+            <div class="scene">
+                <!-- Floating Elements -->
+                <div class="scene-element-wrapper star-big-wrapper">
+                    <img src="assets/star.png" class="scene-element star-big" id="element-star" alt="Star Big">
+                </div>
+                <div class="scene-element-wrapper star-mini-wrapper">
+                    <img src="assets/star_mini.png" class="scene-element star-mini" id="element-star-mini" alt="Star Mini">
+                </div>
+                <div class="scene-element-wrapper airplane-wrapper">
+                    <img src="assets/airplane.png" class="scene-element airplane" id="element-airplane" alt="Paper Airplane">
+                </div>
+                <div class="scene-element-wrapper bird-wrapper">
+                    <img src="assets/bird.png" class="scene-element bird" id="element-bird" alt="Metallic Bird">
+                </div>
+                
+                <!-- Center Hand -->
+                <div class="scene-element-wrapper hand-wrapper">
+                    <img src="assets/hands.png" class="scene-element hand" id="element-hand" alt="Sinine Hand">
+                </div>
+                
+                <!-- Overlapping Logo -->
+                <div class="scene-element-wrapper logo-wrapper">
+                    <img src="assets/logo.png" class="scene-element logo" id="element-logo" alt="Sinine Logo">
+                </div>
+            </div>
+        </div>
+
+        <!-- Minimalist Enter Button -->
+        <button id="enter-btn" class="enter-btn" aria-label="Bắt đầu vào trang web">
+            <span class="btn-arrow-wrapper">
+                <svg class="btn-arrow" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+            </span>
+        </button>
+    </section>
+
+    <!-- Homepage (Blank to build later) -->
+    <main id="home-screen" class="home-screen hidden">
+        <!-- Navigation Header -->
+        <header class="home-header">
+            <div class="header-logo">
+                <span>SININE</span>
+            </div>
+            <nav class="home-nav">
+                <a href="#" class="nav-link active">Trang Chủ</a>
+                <a href="#" class="nav-link">Bộ Sưu Tập</a>
+                <a href="#" class="nav-link">Câu Chuyện</a>
+                <a href="#" class="nav-link">Liên Hệ</a>
+            </nav>
+            <button id="back-to-welcome" class="back-btn" title="Quay lại trang chào mừng">
+                <svg viewBox="0 0 24 24" width="18" height="18">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                <span>Quay lại</span>
+            </button>
+        </header>
+
+        <!-- Main Empty Hero Container -->
+        <section class="home-hero">
+            <div class="hero-content art-tech-hero">
+                <div class="art-tech-logo-container">
+                    <img src="assets/art_tech_logo.svg" class="art-tech-logo" alt="ART&TECH Logo">
+                </div>
+                <p class="art-tech-notification">Website đang được xây dựng bởi <span>ART & TECH</span></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript File -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>
