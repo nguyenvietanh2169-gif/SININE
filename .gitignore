@@ -4,3 +4,10 @@ dist/
 .system_generated/
 *.log
 .vercel
+.vercel_backup/
+crop_image
+crop_tool
+generate_crops
+process_hero_image
+*.swift
+test_*.png

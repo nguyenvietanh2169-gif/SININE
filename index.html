@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sinine - Welcome</title>
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Syne, Unbounded, Space Grotesk, Outfit, Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@200;400;600;800&family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800;900&family=Unbounded:wght@700;900&display=swap" rel="stylesheet">
     <!-- CSS File -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -53,36 +53,442 @@
         </button>
     </section>
 
-    <!-- Homepage (Blank to build later) -->
+    <!-- Main Site Application Container -->
     <main id="home-screen" class="home-screen hidden">
+        <!-- Fullscreen Background Layer (nen.png) -->
+        <div class="home-fullscreen-bg">
+            <img src="assets/nen.png" class="home-bg-img" alt="Sinine Background">
+            <div class="home-bg-overlay"></div>
+        </div>
+
         <!-- Navigation Header -->
         <header class="home-header">
-            <div class="header-logo">
+            <div class="header-logo" data-page="home">
                 <span>SININE</span>
             </div>
             <nav class="home-nav">
-                <a href="#" class="nav-link active">Trang Chủ</a>
-                <a href="#" class="nav-link">Bộ Sưu Tập</a>
-                <a href="#" class="nav-link">Câu Chuyện</a>
-                <a href="#" class="nav-link">Liên Hệ</a>
+                <a href="#home" class="nav-link active" data-target="home">HOME</a>
+                <a href="#artist" class="nav-link" data-target="artist">ARTIST INFO</a>
+                <a href="#collection" class="nav-link" data-target="collection">COLLECTION</a>
+                <a href="#runway" class="nav-link" data-target="runway">360° RUNWAY</a>
+                <a href="#contact" class="nav-link" data-target="contact">CONTACT</a>
             </nav>
-            <button id="back-to-welcome" class="back-btn" title="Quay lại trang chào mừng">
+            <button id="back-to-welcome" class="back-btn" title="Back to welcome screen">
                 <svg viewBox="0 0 24 24" width="18" height="18">
                     <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                 </svg>
-                <span>Quay lại</span>
+                <span>BACK</span>
             </button>
         </header>
 
-        <!-- Main Empty Hero Container -->
-        <section class="home-hero">
-            <div class="hero-content art-tech-hero">
-                <div class="art-tech-logo-container">
-                    <img src="assets/art_tech_logo.svg" class="art-tech-logo" alt="ART&TECH Logo">
+        <!-- Pages Container -->
+        <div class="pages-wrapper">
+            <!-- PAGE 1: Main Hero Section with Floating Typographic Decor -->
+            <section id="page-home" class="site-page page-home active">
+                <div class="home-hero">
+                    <!-- Left Side Decor Column (Left Aligned) -->
+                    <div class="decor-column decor-left">
+                        <div class="decor-line" data-line="0">
+                            <span class="decor-tag">// 01. AUDIO FREQ</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="SONIC PULSE 99.8"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                        <div class="decor-line" data-line="1">
+                            <span class="decor-tag">// 02. HAUTE CYBER</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="FUTURISTIC ATTIRE"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                        <div class="decor-line" data-line="2">
+                            <span class="decor-tag">// 03. IDENTITY</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="AVANT-GARDE SPIRIT"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                        <div class="decor-line" data-line="3">
+                            <span class="decor-tag">// 04. VITALITY</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="RAW KINETIC ENERGY"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <!-- Center Stage: Character (nguoi.png) -->
+                    <div class="home-stage-container">
+                        <div class="home-stage">
+                            <div class="home-stage-layer layer-character">
+                                <img src="assets/nguoi.png" class="stage-element element-model" alt="Sinine Model">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side Decor Column (Right Aligned) -->
+                    <div class="decor-column decor-right">
+                        <div class="decor-line" data-line="0">
+                            <span class="decor-tag">ELECTRO WAVE //</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="SYNTHETIC RESONANCE"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                        <div class="decor-line" data-line="1">
+                            <span class="decor-tag">NEO STREETWEAR //</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="CYBER COUTURE"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                        <div class="decor-line" data-line="2">
+                            <span class="decor-tag">TIMELESS VISION //</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="UNCOMPROMISED SOUL"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                        <div class="decor-line" data-line="3">
+                            <span class="decor-tag">ENDLESS POWER //</span>
+                            <h3 class="decor-heading">
+                                <span class="decor-text" data-text="LIMITLESS MOMENTUM"></span>
+                                <span class="type-cursor"></span>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <!-- Giant Bottom Brand Wordmark (SININE) - Final Scroll-Driven Reveal -->
+                    <div class="brand-footer-wordmark" id="brand-footer-wordmark">
+                        <span class="brand-big-text" data-text="SININE"></span>
+                        <span class="brand-type-cursor"></span>
+                    </div>
+
+                    <!-- Scroll Indicator / Quick Jump to Artist -->
+                    <button class="home-scroll-hint" id="jump-to-artist" aria-label="Explore Artist Info">
+                        <div class="scroll-hint-mouse">
+                            <div class="scroll-hint-wheel"></div>
+                        </div>
+                        <span class="hint-text">SCROLL TO REVEAL</span>
+                    </button>
                 </div>
-                <p class="art-tech-notification">Website đang được xây dựng bởi <span>ART&TECH</span></p>
-            </div>
-        </section>
+            </section>
+
+            <!-- PAGE 2: Artist Info Page (Infor Nghệ Sĩ) -->
+            <section id="page-artist" class="site-page page-artist">
+                <div class="artist-container">
+                    <!-- Left: Artist Portrait Card -->
+                    <div class="artist-portrait-card">
+                        <div class="portrait-frame">
+                            <div class="portrait-glow-fx"></div>
+                            <img src="assets/artist.png" class="artist-img" alt="Sinine Artist Portrait">
+                            <div class="portrait-corner top-left"></div>
+                            <div class="portrait-corner top-right"></div>
+                            <div class="portrait-corner bottom-left"></div>
+                            <div class="portrait-corner bottom-right"></div>
+                            <div class="portrait-overlay-badge">
+                                <span class="pulse-dot"></span>
+                                <span>LIVE // ARTIST PROFILE</span>
+                            </div>
+                        </div>
+                        <div class="artist-id-bar">
+                            <div class="id-name">SININE</div>
+                            <div class="id-role">CREATIVE DIRECTOR & LEAD ARTIST</div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Artist Manifesto, HUD Data & Highlights -->
+                    <div class="artist-details">
+                        <!-- Header & Title -->
+                        <div class="artist-header-block">
+                            <div class="cyber-badge">// ARCHIVE NO. 09 // IDENTITY DOSSIER</div>
+                            <h2 class="artist-title">
+                                <span class="artist-title-highlight">NEO-CYBER</span> VISUAL & SONIC ARCHITECT
+                            </h2>
+                            <p class="artist-quote">
+                                "Transcending conventional aesthetics through raw kinetic voltage, electric high-frequencies, and avant-garde cyber couture."
+                            </p>
+                        </div>
+
+                        <!-- HUD Specs Grid -->
+                        <div class="artist-hud-grid">
+                            <div class="hud-card">
+                                <span class="hud-label">ESTABLISHED</span>
+                                <span class="hud-value">2026 // METROPOLIS</span>
+                            </div>
+                            <div class="hud-card">
+                                <span class="hud-label">FREQUENCY</span>
+                                <span class="hud-value">99.8 MHz SONIC</span>
+                            </div>
+                            <div class="hud-card">
+                                <span class="hud-label">DISCIPLINE</span>
+                                <span class="hud-value">CYBER ATTIRE & AUDIO</span>
+                            </div>
+                            <div class="hud-card">
+                                <span class="hud-label">CURRENT WAVE</span>
+                                <span class="hud-value">AVANT-GARDE 2.0</span>
+                            </div>
+                        </div>
+
+                        <!-- Bio / Manifesto Text -->
+                        <div class="artist-bio-block">
+                            <h4 class="bio-subtitle">// ARTISTIC MANIFESTO</h4>
+                            <p class="bio-paragraph">
+                                <strong>SININE</strong> đại diện cho tinh thần tiên phong của thế hệ mới — nơi giao thoa giữa thời trang đường phố tương lai, công nghệ vi mạch và năng lượng âm thanh thô mộc. Mỗi tác phẩm và bộ sưu tập là một tuyên ngôn thị giác phá vỡ mọi khuôn mẫu quy ước.
+                            </p>
+                        </div>
+
+                        <!-- Featured Themes / Works -->
+                        <div class="artist-works-block">
+                            <h4 class="bio-subtitle">// SIGNATURE ELEMENTS & WORKS</h4>
+                            <div class="works-tags">
+                                <span class="work-tag"><span>01</span> SONIC PULSE 99.8</span>
+                                <span class="work-tag"><span>02</span> HAUTE CYBER COUTURE</span>
+                                <span class="work-tag"><span>03</span> SYNTHETIC RESONANCE</span>
+                                <span class="work-tag"><span>04</span> RAW KINETIC ENERGY</span>
+                            </div>
+                        </div>
+
+                        <!-- Social & Navigation Actions -->
+                        <div class="artist-actions-bar">
+                            <div class="artist-socials">
+                                <a href="https://instagram.com" target="_blank" rel="noopener" class="social-btn">
+                                    <span>INSTAGRAM</span>
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                                </a>
+                                <a href="https://spotify.com" target="_blank" rel="noopener" class="social-btn">
+                                    <span>SOUND ARCHIVE</span>
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                                </a>
+                                <button class="social-btn highlight" id="btn-jump-to-collection">
+                                    <span>COLLECTION LOOKBOOK ↓</span>
+                                </button>
+                            </div>
+
+                            <button class="nav-prev-btn" id="btn-back-to-hero">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                <span>BACK TO HERO</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 3: Collection / Lookbook Page (Trang Thứ 3 - Minimalist White Editorial) -->
+            <section id="page-collection" class="site-page page-collection">
+                <!-- Background Running Kinetic Typography -->
+                <div class="marquee-bg-container" aria-hidden="true">
+                    <div class="marquee-track track-top">
+                        <div class="marquee-content">
+                            <span>SININE COUTURE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>FALL '26 COLLECTION</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>BIONIC FAUNA SPECIMEN</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>AVANT-GARDE ARCHIVE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>DECONSTRUCTED HIGH-STREET</span>
+                            <span class="marquee-bullet">//</span>
+                        </div>
+                        <div class="marquee-content" aria-hidden="true">
+                            <span>SININE COUTURE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>FALL '26 COLLECTION</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>BIONIC FAUNA SPECIMEN</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>AVANT-GARDE ARCHIVE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>DECONSTRUCTED HIGH-STREET</span>
+                            <span class="marquee-bullet">//</span>
+                        </div>
+                    </div>
+
+                    <div class="marquee-track track-mid">
+                        <div class="marquee-content reverse">
+                            <span>ANTI-FASHION</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>MONOCHROMATIC MINIMALISM</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>CYBERNETIC RESONANCE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>RAW KINETIC ENERGY</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>UNCOMPROMISED VISION</span>
+                            <span class="marquee-bullet">//</span>
+                        </div>
+                        <div class="marquee-content reverse" aria-hidden="true">
+                            <span>ANTI-FASHION</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>MONOCHROMATIC MINIMALISM</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>CYBERNETIC RESONANCE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>RAW KINETIC ENERGY</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>UNCOMPROMISED VISION</span>
+                            <span class="marquee-bullet">//</span>
+                        </div>
+                    </div>
+
+                    <div class="marquee-track track-bottom">
+                        <div class="marquee-content">
+                            <span>A MESSAGE FROM THE PAST ABOUT WHAT COULD HAVE BEEN AND NEVER WAS</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>VOLTAGE 99.8 MHz</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>LIMITED ARCHIVE LOOK 01</span>
+                            <span class="marquee-bullet">—</span>
+                        </div>
+                        <div class="marquee-content" aria-hidden="true">
+                            <span>A MESSAGE FROM THE PAST ABOUT WHAT COULD HAVE BEEN AND NEVER WAS</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>VOLTAGE 99.8 MHz</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>LIMITED ARCHIVE LOOK 01</span>
+                            <span class="marquee-bullet">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center: Clean Minimalist Poster Showcase -->
+                <div class="collection-minimal-showcase">
+                    <!-- Subtle Editorial Header Tag -->
+                    <div class="collection-editorial-tag">
+                        <span class="tag-number">03 / 04</span>
+                        <span class="tag-title">LOOKBOOK ARCHIVE // SPECIMEN 01</span>
+                        <span class="tag-status">RUNWAY 2026</span>
+                    </div>
+
+                    <!-- Main Poster Image Frame -->
+                    <div class="collection-hero-frame" id="collection-poster-frame">
+                        <img src="assets/collection_lookbook.png" class="collection-hero-img" alt="Sinine Lookbook Campaign">
+                    </div>
+
+                    <!-- Bottom Controls & Quick Navigation -->
+                    <div class="collection-bottom-bar">
+                        <button class="editorial-nav-btn" id="btn-back-to-artist">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            <span>PREV: ARTIST INFO</span>
+                        </button>
+                        <span class="editorial-caption">DECONSTRUCTION & BIONIC COMPANION</span>
+                        <button class="editorial-nav-btn highlight" id="btn-jump-to-runway">
+                            <span>TIẾP THEO: 360° RUNWAY →</span>
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 4: 3D Cyber Cylinder Runway (Trang Thứ 4 Tiếp Theo - Bánh đà 3D vô cực) -->
+            <section id="page-runway" class="site-page page-runway">
+                <!-- Ambient Dynamic Glow Backdrop (Color shifts dynamically with active look) -->
+                <div class="cylinder-ambient-glow" id="cylinder-ambient-glow"></div>
+
+                <!-- Background Kinetic Running Typography for Page 4 -->
+                <div class="marquee-bg-container" aria-hidden="true">
+                    <div class="marquee-track track-top">
+                        <div class="marquee-content">
+                            <span>SININE 360° RUNWAY</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>CYBER CYLINDER SPECIMEN</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>AVANT-GARDE ARCHIVE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>DIMENSIONAL SHIFT</span>
+                            <span class="marquee-bullet">//</span>
+                        </div>
+                        <div class="marquee-content" aria-hidden="true">
+                            <span>SININE 360° RUNWAY</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>CYBER CYLINDER SPECIMEN</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>AVANT-GARDE ARCHIVE</span>
+                            <span class="marquee-bullet">//</span>
+                            <span>DIMENSIONAL SHIFT</span>
+                            <span class="marquee-bullet">//</span>
+                        </div>
+                    </div>
+                    <div class="marquee-track track-bottom">
+                        <div class="marquee-content">
+                            <span>INFINITE SPHERICAL LOOKBOOK</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>TOUCH TO ROTATE</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>99.8 MHz RESONANCE</span>
+                            <span class="marquee-bullet">—</span>
+                        </div>
+                        <div class="marquee-content" aria-hidden="true">
+                            <span>INFINITE SPHERICAL LOOKBOOK</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>TOUCH TO ROTATE</span>
+                            <span class="marquee-bullet">—</span>
+                            <span>99.8 MHz RESONANCE</span>
+                            <span class="marquee-bullet">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Cylinder Experience Wrapper -->
+                <div class="collection-cylinder-wrapper">
+                    <!-- Top HUD Meta Header -->
+                    <div class="cylinder-hud-header">
+                        <div class="hud-top-meta">
+                            <span class="hud-archive-badge">// ARCHIVE NO. 26 // VIRTUAL RUNWAY</span>
+                            <span class="hud-counter" id="cylinder-counter">01 / 06</span>
+                        </div>
+                        <div class="hud-look-details">
+                            <h2 class="hud-look-title" id="hud-look-title">CHROME GRAVITY</h2>
+                            <div class="hud-look-tags" id="hud-look-tags">
+                                <span class="tag-pill">// SPECIMEN 01</span>
+                                <span class="tag-pill">TORUS FLUID</span>
+                                <span class="tag-pill">AVANT-GARDE STREET</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: 3D Stage with Cylinder Ring -->
+                    <div class="cylinder-stage-container" id="cylinder-stage-container">
+                        <!-- Navigation Buttons -->
+                        <button class="cylinder-nav-btn prev-btn" id="cylinder-prev" aria-label="Xem Look trước">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <button class="cylinder-nav-btn next-btn" id="cylinder-next" aria-label="Xem Look kế tiếp">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+
+                        <!-- 3D Perspective Viewport -->
+                        <div class="cylinder-viewport" id="cylinder-viewport">
+                            <div class="cylinder-ring" id="cylinder-ring">
+                                <!-- Cards injected and managed via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom HUD Controls & Pagination -->
+                    <div class="cylinder-hud-footer">
+                        <!-- Touch Gestures Hint for Mobile & Desktop -->
+                        <div class="cylinder-swipe-hint">
+                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 16l-4-4 4-4M17 8l4 4-4 4M3 12h18"/>
+                            </svg>
+                            <span>VUỐT HOẶC KÉO ĐỂ XOAY 360°</span>
+                        </div>
+
+                        <!-- Pagination Indicators -->
+                        <div class="cylinder-pagination" id="cylinder-pagination">
+                            <!-- 6 pills generated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <!-- JavaScript File -->
