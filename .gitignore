@@ -11,3 +11,6 @@ generate_crops
 process_hero_image
 *.swift
 test_*.png
+optimized_videos/
+scratch_match/
+assets/stage/

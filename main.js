@@ -5,11 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById('back-to-welcome');
     const scene = document.querySelector('.scene');
 
-    // Page Switching Management (Page 1: Home, Page 2: Artist, Page 3: Collection, Page 4: 360° Runway)
+    // Page Switching Management (Page 1: Home, Page 2: Artist, Page 3: Collection, Page 4: 360° Runway, Page 5: Video Recap, Page 6: Live Stage)
     const pageHome = document.getElementById('page-home');
     const pageArtist = document.getElementById('page-artist');
     const pageCollection = document.getElementById('page-collection');
     const pageRunway = document.getElementById('page-runway');
+    const pageRecap = document.getElementById('page-recap');
+    const pageStage = document.getElementById('page-stage');
     const navLinks = document.querySelectorAll('.nav-link');
     const headerLogo = document.querySelector('.header-logo');
     const jumpToArtistBtn = document.getElementById('jump-to-artist');
@@ -19,8 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToArtistBtn = document.getElementById('btn-back-to-artist');
     const jumpToRunwayBtn = document.getElementById('btn-jump-to-runway');
     const backToCollectionBtn = document.getElementById('btn-back-to-collection');
+    const jumpToRecapBtn = document.getElementById('btn-jump-to-recap');
+    const recapToRunwayBtn = document.getElementById('btn-recap-to-runway');
+    const recapToStageBtn = document.getElementById('btn-recap-to-stage');
+    const backToRecapBtn = document.getElementById('btn-back-to-recap');
+    const stageToHomeBtn = document.getElementById('btn-stage-to-home');
     const backToHomeBtn = document.getElementById('btn-back-to-home');
     const collectionPosterFrame = document.getElementById('collection-poster-frame');
+    const recapMainVideo = document.getElementById('recap-main-video');
     
     let currentPage = 'home';
     let isTransitioning = false;
@@ -32,11 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
         isTransitioning = true;
         currentPage = pageId;
 
+        // If navigating away from recap page, pause main video
+        if (pageId !== 'recap' && recapMainVideo && !recapMainVideo.paused) {
+            recapMainVideo.pause();
+        }
+
         // Reset classes on all pages
         if (pageHome) pageHome.classList.remove('page-prev', 'active');
         if (pageArtist) pageArtist.classList.remove('page-prev', 'active');
         if (pageCollection) pageCollection.classList.remove('page-prev', 'active');
         if (pageRunway) pageRunway.classList.remove('page-prev', 'active');
+        if (pageRecap) pageRecap.classList.remove('page-prev', 'active');
+        if (pageStage) pageStage.classList.remove('page-prev', 'active');
 
         if (pageId === 'home') {
             if (pageHome) pageHome.classList.add('active');
@@ -61,6 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 pageRunway.classList.add('active');
                 pageRunway.scrollTop = 0;
             }
+        } else if (pageId === 'recap') {
+            if (pageHome) pageHome.classList.add('page-prev');
+            if (pageArtist) pageArtist.classList.add('page-prev');
+            if (pageCollection) pageCollection.classList.add('page-prev');
+            if (pageRunway) pageRunway.classList.add('page-prev');
+            if (pageRecap) {
+                pageRecap.classList.add('active');
+                pageRecap.scrollTop = 0;
+            }
+        } else if (pageId === 'stage') {
+            if (pageHome) pageHome.classList.add('page-prev');
+            if (pageArtist) pageArtist.classList.add('page-prev');
+            if (pageCollection) pageCollection.classList.add('page-prev');
+            if (pageRunway) pageRunway.classList.add('page-prev');
+            if (pageRecap) pageRecap.classList.add('page-prev');
+            if (pageStage) {
+                pageStage.classList.add('active');
+                pageStage.scrollTop = 0;
+            }
         }
 
         // Update Nav Links
@@ -81,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const target = link.getAttribute('data-target');
-            if (target === 'home' || target === 'artist' || target === 'collection' || target === 'runway') {
+            if (target === 'home' || target === 'artist' || target === 'collection' || target === 'runway' || target === 'recap' || target === 'stage') {
                 e.preventDefault();
                 switchPage(target);
             }
@@ -117,6 +151,26 @@ document.addEventListener('DOMContentLoaded', () => {
         backToCollectionBtn.addEventListener('click', () => switchPage('collection'));
     }
 
+    if (jumpToRecapBtn) {
+        jumpToRecapBtn.addEventListener('click', () => switchPage('recap'));
+    }
+
+    if (recapToRunwayBtn) {
+        recapToRunwayBtn.addEventListener('click', () => switchPage('runway'));
+    }
+
+    if (recapToStageBtn) {
+        recapToStageBtn.addEventListener('click', () => switchPage('stage'));
+    }
+
+    if (backToRecapBtn) {
+        backToRecapBtn.addEventListener('click', () => switchPage('recap'));
+    }
+
+    if (stageToHomeBtn) {
+        stageToHomeBtn.addEventListener('click', () => switchPage('home'));
+    }
+
     if (backToHomeBtn) {
         backToHomeBtn.addEventListener('click', () => switchPage('home'));
     }
@@ -137,6 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageArtist) pageArtist.classList.remove('active', 'page-prev');
             if (pageCollection) pageCollection.classList.remove('active', 'page-prev');
             if (pageRunway) pageRunway.classList.remove('active', 'page-prev');
+            if (pageRecap) pageRecap.classList.remove('active', 'page-prev');
+            if (pageStage) pageStage.classList.remove('active', 'page-prev');
         }, 800);
     }
 
@@ -258,6 +314,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     overscrollAccumulator = 0;
                     switchPage('collection');
                 }
+            } else if (e.deltaY > 0) {
+                // Scrolling down -> advance to Video Recap (Page 5)
+                overscrollAccumulator += e.deltaY;
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('recap');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'recap') {
+            // In Video Recap Page (Page 5):
+            if (e.deltaY < 0 && isScrolledToTop(pageRecap)) {
+                // Scrolling up at top -> return to Runway (Page 4)
+                overscrollAccumulator += Math.abs(e.deltaY);
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('runway');
+                }
+            } else if (e.deltaY > 0 && isScrolledToBottom(pageRecap)) {
+                // Scrolling down at bottom -> advance to Live Stage (Page 6)
+                overscrollAccumulator += e.deltaY;
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('stage');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'stage') {
+            // In Live Stage Page (Page 6):
+            if (e.deltaY < 0 && isScrolledToTop(pageStage)) {
+                // Scrolling up at top -> return to Video Recap (Page 5)
+                overscrollAccumulator += Math.abs(e.deltaY);
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('recap');
+                }
             } else {
                 overscrollAccumulator = 0;
             }
@@ -354,6 +448,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (overscrollAccumulator > 40) {
                     overscrollAccumulator = 0;
                     switchPage('collection');
+                }
+            } else if (delta > 0) {
+                // Swiping up at bottom of runway -> advance to Recap (Page 5)
+                overscrollAccumulator += delta;
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('recap');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'recap') {
+            if (delta < 0 && isScrolledToTop(pageRecap)) {
+                // Swiping down at top -> return to Runway (Page 4)
+                overscrollAccumulator += Math.abs(delta);
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('runway');
+                }
+            } else if (delta > 0 && isScrolledToBottom(pageRecap)) {
+                // Swiping up at bottom -> advance to Live Stage (Page 6)
+                overscrollAccumulator += delta;
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('stage');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'stage') {
+            if (delta < 0 && isScrolledToTop(pageStage)) {
+                // Swiping down at top -> return to Recap (Page 5)
+                overscrollAccumulator += Math.abs(delta);
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('recap');
                 }
             } else {
                 overscrollAccumulator = 0;
@@ -956,4 +1086,625 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // -------------------------------------------------------------
+    // 6. PAGE 5: LIVE STAGE & MC SININE ARCHIVE LOGIC
+    // -------------------------------------------------------------
+    function initStageGallery() {
+        const stageGrid = document.getElementById('stage-bento-grid');
+        const filterBar = document.getElementById('stage-filter-bar');
+        const filterBtns = filterBar ? filterBar.querySelectorAll('.stage-filter-btn') : [];
+        const ambientGlow = document.getElementById('stage-ambient-glow');
+        const counterPill = document.getElementById('stage-counter-pill');
+
+        // Lightbox Elements
+        const lightbox = document.getElementById('stage-lightbox');
+        const lightboxBackdrop = document.getElementById('lightbox-backdrop');
+        const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+        const lightboxPrevBtn = document.getElementById('lightbox-prev');
+        const lightboxNextBtn = document.getElementById('lightbox-next');
+        const lightboxImg = document.getElementById('lightbox-main-img');
+        const lightboxBadge = document.getElementById('lightbox-badge');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        const lightboxCaption = document.getElementById('lightbox-caption-text');
+        const lightboxSpecsRow = document.getElementById('lightbox-specs-row');
+        const lightboxFilmstrip = document.getElementById('lightbox-filmstrip');
+        const lightboxViewport = document.getElementById('lightbox-viewport');
+
+        if (!stageGrid) return;
+
+        const STAGE_PHOTOS = [
+            {
+                id: 'stage-1',
+                index: '01',
+                thumbPath: 'assets/stage/thumbs/stage_13.jpg',
+                fullPath: 'assets/stage/full/stage_13.jpg',
+                width: 1279,
+                height: 1920,
+                isVertical: true,
+                title: 'KINETIC PULSE // MC SININE',
+                subtitle: 'Cận cảnh thần thái MC SININE trong trang phục dạ kẻ Avant-Garde và kính vàng độc bản làm chủ nhịp điệu sân khấu.',
+                category: 'portrait',
+                accentColor: '#ffaa25',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1279 x 1920 HD' }
+            },
+            {
+                id: 'stage-2',
+                index: '02',
+                thumbPath: 'assets/stage/thumbs/stage_21.jpg',
+                fullPath: 'assets/stage/full/stage_21.jpg',
+                width: 1920,
+                height: 1280,
+                isVertical: false,
+                title: 'INFINITY STAGE // ILLUMINATION',
+                subtitle: 'Khoảnh khắc bùng nổ năng lượng trên bục DJ trung tâm, khuấy động hàng ngàn khán giả trong đại sảnh Metropolis.',
+                category: 'highlight',
+                accentColor: '#38bdf8',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+            },
+            {
+                id: 'stage-3',
+                index: '03',
+                thumbPath: 'assets/stage/thumbs/stage_24.jpg',
+                fullPath: 'assets/stage/full/stage_24.jpg',
+                width: 1277,
+                height: 1920,
+                isVertical: true,
+                title: 'THE FINALE ECHO // MONOCHROME',
+                subtitle: 'Bức chân dung đen trắng kinh điển bắt trọn cử chỉ tay micro uy lực và phong thái tiên phong của MC SININE.',
+                category: 'portrait',
+                accentColor: '#ffffff',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1277 x 1920 HD' }
+            },
+            {
+                id: 'stage-4',
+                index: '04',
+                thumbPath: 'assets/stage/thumbs/stage_07.jpg',
+                fullPath: 'assets/stage/full/stage_07.jpg',
+                width: 1920,
+                height: 1279,
+                isVertical: false,
+                title: 'NEO-TOKYO VIBE // LIVE SET',
+                subtitle: 'Đội hình trình diễn vũ đạo và âm nhạc đương đại rực sáng dưới luồng laser xanh neon sắc sảo.',
+                category: 'wide',
+                accentColor: '#a3e635',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+            },
+            {
+                id: 'stage-5',
+                index: '05',
+                thumbPath: 'assets/stage/thumbs/stage_11.jpg',
+                fullPath: 'assets/stage/full/stage_11.jpg',
+                width: 1920,
+                height: 1279,
+                isVertical: false,
+                title: 'STAGE ASCENSION // CLIMAX 18:13',
+                subtitle: 'Thời khắc đếm ngược đỉnh cao khi toàn bộ nghệ sĩ cùng giơ tay hòa chung nhịp đập với biển khán giả cuồng nhiệt.',
+                category: 'highlight',
+                accentColor: '#f43f5e',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+            },
+            {
+                id: 'stage-6',
+                index: '06',
+                thumbPath: 'assets/stage/thumbs/stage_01.jpg',
+                fullPath: 'assets/stage/full/stage_01.jpg',
+                width: 1920,
+                height: 1280,
+                isVertical: false,
+                title: 'SONIC APEX // VOLTAGE PULSE',
+                subtitle: 'Khởi đầu màn trình diễn bùng nổ với luồng năng lượng âm thanh 99.8 MHz và hiệu ứng ánh sáng đại cảnh.',
+                category: 'highlight',
+                accentColor: '#f97316',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+            },
+            {
+                id: 'stage-7',
+                index: '07',
+                thumbPath: 'assets/stage/thumbs/stage_02.jpg',
+                fullPath: 'assets/stage/full/stage_02.jpg',
+                width: 1279,
+                height: 1920,
+                isVertical: true,
+                title: 'CYBER RHAPSODY // SPOTLIGHT',
+                subtitle: 'Cận cảnh thần thái MC Sinine dưới ánh đèn spotlight định hướng và trang phục tương lai.',
+                category: 'portrait',
+                accentColor: '#38bdf8',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1279 x 1920 HD' }
+            },
+            {
+                id: 'stage-8',
+                index: '08',
+                thumbPath: 'assets/stage/thumbs/stage_03.jpg',
+                fullPath: 'assets/stage/full/stage_03.jpg',
+                width: 1920,
+                height: 1279,
+                isVertical: false,
+                title: 'KINETIC CROWD // RESONANCE',
+                subtitle: 'Đại cảnh khán giả hòa cùng nhịp đập âm thanh thô mộc đầy nhiệt huyết.',
+                category: 'wide',
+                accentColor: '#a3e635',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+            },
+            {
+                id: 'stage-9',
+                index: '09',
+                thumbPath: 'assets/stage/thumbs/stage_04.jpg',
+                fullPath: 'assets/stage/full/stage_04.jpg',
+                width: 1279,
+                height: 1920,
+                isVertical: true,
+                title: 'THE ELECTRIC GAZE',
+                subtitle: 'Ánh nhìn bản lĩnh của người làm chủ sân khấu trước hàng ngàn khán giả cuồng nhiệt.',
+                category: 'portrait',
+                accentColor: '#e11d48',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1279 x 1920 HD' }
+            },
+            {
+                id: 'stage-10',
+                index: '10',
+                thumbPath: 'assets/stage/thumbs/stage_05.jpg',
+                fullPath: 'assets/stage/full/stage_05.jpg',
+                width: 1920,
+                height: 1277,
+                isVertical: false,
+                title: 'LASER CANOPY // SOUNDWAVE',
+                subtitle: 'Chùm tia laser màu xanh neon quét qua không gian tạo nên bầu không khí sci-fi huyền ảo.',
+                category: 'highlight',
+                accentColor: '#a855f7',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1277 HD' }
+            },
+            {
+                id: 'stage-11',
+                index: '11',
+                thumbPath: 'assets/stage/thumbs/stage_06.jpg',
+                fullPath: 'assets/stage/full/stage_06.jpg',
+                width: 1920,
+                height: 1277,
+                isVertical: false,
+                title: 'HIGH FREQUENCY COMMAND',
+                subtitle: 'Giọng rap và lời dẫn dắt nhịp độ trận đấu/sự kiện với độ chuẩn xác tuyệt đối.',
+                category: 'wide',
+                accentColor: '#06b6d4',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1277 HD' }
+            },
+            {
+                id: 'stage-12',
+                index: '12',
+                thumbPath: 'assets/stage/thumbs/stage_08.jpg',
+                fullPath: 'assets/stage/full/stage_08.jpg',
+                width: 1920,
+                height: 1279,
+                isVertical: false,
+                title: 'MIC FLUIDITY // FLOW MATRIX',
+                subtitle: 'Từng động tác tay micro nhịp nhàng và dứt khoát theo từng cú kick bass.',
+                category: 'wide',
+                accentColor: '#eab308',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+            },
+            {
+                id: 'stage-13',
+                index: '13',
+                thumbPath: 'assets/stage/thumbs/stage_09.jpg',
+                fullPath: 'assets/stage/full/stage_09.jpg',
+                width: 1920,
+                height: 1279,
+                isVertical: false,
+                title: 'AMPLIFIED VISION',
+                subtitle: 'Góc nhìn toàn cảnh trung tâm sân khấu với hệ thống ánh sáng chuyên nghiệp hàng đầu.',
+                category: 'wide',
+                accentColor: '#f97316',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+            },
+            {
+                id: 'stage-14',
+                index: '14',
+                thumbPath: 'assets/stage/thumbs/stage_10.jpg',
+                fullPath: 'assets/stage/full/stage_10.jpg',
+                width: 1920,
+                height: 1279,
+                isVertical: false,
+                title: 'BASS OVERDRIVE // IMPACT',
+                subtitle: 'Độ nảy âm thanh khuấy động cảm xúc của toàn bộ khán đài.',
+                category: 'wide',
+                accentColor: '#38bdf8',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+            },
+            {
+                id: 'stage-15',
+                index: '15',
+                thumbPath: 'assets/stage/thumbs/stage_12.jpg',
+                fullPath: 'assets/stage/full/stage_12.jpg',
+                width: 1920,
+                height: 1279,
+                isVertical: false,
+                title: 'CHROMATIC FLARE',
+                subtitle: 'Ánh đèn phản chiếu tạo vệt flare nghệ thuật sắc sảo.',
+                category: 'wide',
+                accentColor: '#e11d48',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+            },
+            {
+                id: 'stage-16',
+                index: '16',
+                thumbPath: 'assets/stage/thumbs/stage_14.jpg',
+                fullPath: 'assets/stage/full/stage_14.jpg',
+                width: 1920,
+                height: 1280,
+                isVertical: false,
+                title: 'NIGHT CYBERNETICS',
+                subtitle: 'Không gian đêm hội tụ âm nhạc, công nghệ trình chiếu và phong cách nghệ sĩ.',
+                category: 'wide',
+                accentColor: '#06b6d4',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+            },
+            {
+                id: 'stage-17',
+                index: '17',
+                thumbPath: 'assets/stage/thumbs/stage_15.jpg',
+                fullPath: 'assets/stage/full/stage_15.jpg',
+                width: 1280,
+                height: 1920,
+                isVertical: true,
+                title: 'ULTRAVIOLET ECHO',
+                subtitle: 'Sắc tím huyền bí tôn lên thần thái và phụ kiện metallic của MC SININE.',
+                category: 'highlight',
+                accentColor: '#ec4899',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1280 x 1920 HD' }
+            },
+            {
+                id: 'stage-18',
+                index: '18',
+                thumbPath: 'assets/stage/thumbs/stage_16.jpg',
+                fullPath: 'assets/stage/full/stage_16.jpg',
+                width: 1280,
+                height: 1920,
+                isVertical: true,
+                title: 'MONOCHROME VOLT',
+                subtitle: 'Dáng vóc ấn tượng nổi bật tương phản trên phông nền ánh sáng khổng lồ.',
+                category: 'portrait',
+                accentColor: '#eab308',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1280 x 1920 HD' }
+            },
+            {
+                id: 'stage-19',
+                index: '19',
+                thumbPath: 'assets/stage/thumbs/stage_17.jpg',
+                fullPath: 'assets/stage/full/stage_17.jpg',
+                width: 1920,
+                height: 1280,
+                isVertical: false,
+                title: 'RAW ENERGY // UNLEASHED',
+                subtitle: 'Năng lượng bùng nổ đỉnh cao khi MC SININE dẫn dắt cao trào của đêm diễn.',
+                category: 'highlight',
+                accentColor: '#f97316',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+            },
+            {
+                id: 'stage-20',
+                index: '20',
+                thumbPath: 'assets/stage/thumbs/stage_18.jpg',
+                fullPath: 'assets/stage/full/stage_18.jpg',
+                width: 1920,
+                height: 1280,
+                isVertical: false,
+                title: 'DIGITAL REVOLUTION',
+                subtitle: 'Mô hình sân khấu đa chiều kết hợp công nghệ âm thanh và visual thị giác.',
+                category: 'wide',
+                accentColor: '#38bdf8',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+            },
+            {
+                id: 'stage-21',
+                index: '21',
+                thumbPath: 'assets/stage/thumbs/stage_19.jpg',
+                fullPath: 'assets/stage/full/stage_19.jpg',
+                width: 1920,
+                height: 1081,
+                isVertical: false,
+                title: 'TRANSCENDENT MOMENT',
+                subtitle: 'Khoảnh khắc thăng hoa khi hàng nghìn cánh tay giơ cao theo nhịp điệu.',
+                category: 'wide',
+                accentColor: '#a3e635',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1081 HD' }
+            },
+            {
+                id: 'stage-22',
+                index: '22',
+                thumbPath: 'assets/stage/thumbs/stage_20.jpg',
+                fullPath: 'assets/stage/full/stage_20.jpg',
+                width: 1920,
+                height: 1277,
+                isVertical: false,
+                title: 'METROPOLIS BEAT',
+                subtitle: 'Âm hưởng hiện đại lan tỏa khắp không gian đô thị năng động.',
+                category: 'wide',
+                accentColor: '#e11d48',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1277 HD' }
+            },
+            {
+                id: 'stage-23',
+                index: '23',
+                thumbPath: 'assets/stage/thumbs/stage_22.jpg',
+                fullPath: 'assets/stage/full/stage_22.jpg',
+                width: 1280,
+                height: 1920,
+                isVertical: true,
+                title: 'CYBER HYPERDRIVE',
+                subtitle: 'Tốc độ, biểu cảm và cử chỉ quyết đoán làm nên dấu ấn riêng biệt của SININE.',
+                category: 'portrait',
+                accentColor: '#06b6d4',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1280 x 1920 HD' }
+            },
+            {
+                id: 'stage-24',
+                index: '24',
+                thumbPath: 'assets/stage/thumbs/stage_23.jpg',
+                fullPath: 'assets/stage/full/stage_23.jpg',
+                width: 1920,
+                height: 1280,
+                isVertical: false,
+                title: 'ATMOSPHERIC CLIMAX',
+                subtitle: 'Khói khổng lồ và pháo hoa rực sáng khép lại những khoảnh khắc đáng nhớ.',
+                category: 'highlight',
+                accentColor: '#ec4899',
+                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+            }
+        ];
+
+        let currentLightboxIndex = 0;
+        let cardElements = [];
+
+        // Generate Bento Cards
+        stageGrid.innerHTML = '';
+        STAGE_PHOTOS.forEach((photo, idx) => {
+            const card = document.createElement('div');
+            
+            let orientationClass = photo.isVertical ? 'is-portrait' : 'is-landscape';
+            if (photo.category === 'highlight') {
+                orientationClass += ' is-highlight';
+            }
+
+            card.className = `stage-card ${orientationClass}`;
+            card.setAttribute('data-id', photo.id);
+            card.setAttribute('data-index', idx);
+            card.setAttribute('data-category', photo.category);
+            card.setAttribute('data-vertical', photo.isVertical ? 'true' : 'false');
+            card.style.setProperty('--card-accent', photo.accentColor);
+            card.style.setProperty('--card-glow', `${photo.accentColor}55`);
+
+            card.innerHTML = `
+                <div class="stage-card-media">
+                    <img class="stage-card-img" src="${photo.thumbPath}" alt="${photo.title}" loading="lazy" />
+                    <div class="stage-card-vignette"></div>
+                </div>
+
+                <div class="card-corner top-left"></div>
+                <div class="card-corner top-right"></div>
+                <div class="card-corner bottom-left"></div>
+                <div class="card-corner bottom-right"></div>
+
+                <div class="stage-card-info">
+                    <h3 class="stage-card-title">${photo.title}</h3>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                openLightbox(idx);
+            });
+
+            stageGrid.appendChild(card);
+            cardElements.push(card);
+        });
+
+        // Generate Filmstrip Thumbs
+        if (lightboxFilmstrip) {
+            lightboxFilmstrip.innerHTML = '';
+            STAGE_PHOTOS.forEach((photo, idx) => {
+                const thumbBtn = document.createElement('button');
+                thumbBtn.className = `lightbox-film-thumb ${idx === 0 ? 'is-active' : ''}`;
+                thumbBtn.setAttribute('aria-label', `Xem ảnh ${photo.index}`);
+                thumbBtn.innerHTML = `<img src="${photo.thumbPath}" alt="${photo.title}" loading="lazy" />`;
+                thumbBtn.addEventListener('click', () => openLightbox(idx));
+                lightboxFilmstrip.appendChild(thumbBtn);
+            });
+        }
+
+        const filmThumbs = lightboxFilmstrip ? lightboxFilmstrip.querySelectorAll('.lightbox-film-thumb') : [];
+
+        // Filter Functionality
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                let visibleCount = 0;
+                cardElements.forEach((card, i) => {
+                    const photo = STAGE_PHOTOS[i];
+                    let match = false;
+                    if (filter === 'all') match = true;
+                    else if (filter === 'portrait' && photo.isVertical) match = true;
+                    else if (filter === 'wide' && !photo.isVertical) match = true;
+                    else if (filter === 'highlight' && photo.category === 'highlight') match = true;
+
+                    if (match) {
+                        card.classList.remove('is-hidden-filter');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('is-hidden-filter');
+                    }
+                });
+
+                if (counterPill) {
+                    counterPill.textContent = `${visibleCount} KHOẢNH KHẮC SÂN KHẤU`;
+                }
+            });
+        });
+
+        // Lightbox Open / Close / Update
+        function openLightbox(index) {
+            if (index < 0) index = STAGE_PHOTOS.length - 1;
+            if (index >= STAGE_PHOTOS.length) index = 0;
+            currentLightboxIndex = index;
+
+            const photo = STAGE_PHOTOS[index];
+            if (!photo || !lightbox) return;
+
+            if (lightboxImg) {
+                lightboxImg.style.opacity = '0.3';
+                lightboxImg.style.transform = 'scale(0.97)';
+                lightboxImg.src = photo.fullPath;
+                lightboxImg.onload = () => {
+                    lightboxImg.style.opacity = '1';
+                    lightboxImg.style.transform = 'scale(1)';
+                };
+            }
+
+            if (lightboxBadge) {
+                lightboxBadge.textContent = `// SPECIMEN #${photo.index} // ${photo.isVertical ? 'PORTRAIT' : 'WIDE'}`;
+                lightboxBadge.style.color = photo.accentColor;
+                lightboxBadge.style.borderColor = `${photo.accentColor}66`;
+            }
+
+            if (lightboxTitle) {
+                lightboxTitle.textContent = photo.title;
+            }
+
+            if (lightboxCounter) {
+                lightboxCounter.textContent = `${photo.index} / ${STAGE_PHOTOS.length}`;
+            }
+
+            if (lightboxCaption) {
+                lightboxCaption.textContent = photo.subtitle;
+            }
+
+            if (lightboxSpecsRow) {
+                lightboxSpecsRow.innerHTML = `
+                    <span>VENUE: ${photo.specs.venue}</span>
+                    <span>•</span>
+                    <span>FREQ: ${photo.specs.freq}</span>
+                    <span>•</span>
+                    <span>RES: ${photo.specs.resolution}</span>
+                `;
+            }
+
+            // Update Filmstrip
+            filmThumbs.forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.add('is-active');
+                    thumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                } else {
+                    thumb.classList.remove('is-active');
+                }
+            });
+
+            lightbox.classList.add('active');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            if (!lightbox) return;
+            lightbox.classList.remove('active');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function nextPhoto() {
+            openLightbox(currentLightboxIndex + 1);
+        }
+
+        function prevPhoto() {
+            openLightbox(currentLightboxIndex - 1);
+        }
+
+        if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
+        if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
+        if (lightboxNextBtn) lightboxNextBtn.addEventListener('click', nextPhoto);
+        if (lightboxPrevBtn) lightboxPrevBtn.addEventListener('click', prevPhoto);
+
+        // Keyboard Navigation for Lightbox
+        window.addEventListener('keydown', (e) => {
+            if (!lightbox || !lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextPhoto();
+            if (e.key === 'ArrowLeft') prevPhoto();
+        });
+
+        // Touch Swipe Gestures in Lightbox (Mobile Friendly)
+        let lbTouchStartX = 0;
+        let lbTouchStartY = 0;
+
+        if (lightboxViewport) {
+            lightboxViewport.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 0) {
+                    lbTouchStartX = e.touches[0].clientX;
+                    lbTouchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            lightboxViewport.addEventListener('touchend', (e) => {
+                if (e.changedTouches.length > 0) {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    const deltaX = touchEndX - lbTouchStartX;
+                    const deltaY = touchEndY - lbTouchStartY;
+
+                    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+                        if (deltaX < 0) {
+                            nextPhoto(); // Swipe left
+                        } else {
+                            prevPhoto(); // Swipe right
+                        }
+                    }
+                }
+            }, { passive: true });
+        }
+    }
+
+    // -------------------------------------------------------------
+    // RECAP VIDEO SHOWCASE CONTROLLER
+    // -------------------------------------------------------------
+    function initRecapShowcase() {
+        const recapPlayer = document.getElementById('recap-main-video');
+        const playerBadge = document.getElementById('recap-player-badge');
+        const playerTitle = document.getElementById('recap-player-title');
+        const playerDesc = document.getElementById('recap-player-desc');
+        const playlistCards = document.querySelectorAll('.recap-item-card');
+
+        if (!recapPlayer || playlistCards.length === 0) return;
+
+        playlistCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const videoSrc = card.getAttribute('data-video-src');
+                const badge = card.getAttribute('data-badge');
+                const title = card.getAttribute('data-title');
+                const desc = card.getAttribute('data-desc');
+
+                // Update active playlist card state
+                playlistCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+
+                // Update Player Details
+                if (playerBadge && badge) playerBadge.textContent = badge;
+                if (playerTitle && title) playerTitle.textContent = title;
+                if (playerDesc && desc) playerDesc.textContent = desc;
+
+                // Update Video Source & Play
+                if (videoSrc) {
+                    recapPlayer.src = videoSrc;
+                    recapPlayer.load();
+                    recapPlayer.play().catch(err => {
+                        console.log('Autoplay policy caught, user can tap play button:', err);
+                    });
+                }
+            });
+        });
+    }
+
+    // Initialize all components
+    initRecapShowcase();
+    initStageGallery();
 });

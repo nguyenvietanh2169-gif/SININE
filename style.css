@@ -2342,3 +2342,1282 @@ html, body {
         justify-content: center;
     }
 }
+
+/* ==========================================
+   PAGE 5: VIDEO RECAP ARCHIVE (SÂN KHẤU RECAP)
+   ========================================== */
+.page-recap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 34;
+    background-color: #06070a;
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(255, 170, 37, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 80% 40%, rgba(244, 63, 94, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 15% 70%, rgba(56, 189, 248, 0.06) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                visibility 1.6s;
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.page-recap.active {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.page-recap.page-prev {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Recap Main Container */
+.recap-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 100px 32px 80px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+/* Recap Header Block */
+.recap-header-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.recap-top-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.recap-counter-pill {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #ffaa25;
+    background: rgba(255, 170, 37, 0.1);
+    border: 1px solid rgba(255, 170, 37, 0.3);
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+.recap-main-title {
+    font-family: 'Syne', 'Unbounded', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.recap-main-title .text-gradient {
+    background: linear-gradient(135deg, #ffaa25 0%, #ff5500 50%, #f43f5e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Recap Showcase Layout */
+.recap-showcase-layout {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 28px;
+    align-items: start;
+    width: 100%;
+}
+
+/* Main Player Card */
+.recap-player-card {
+    position: relative;
+    background: #0d0e14;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.recap-player-card .card-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(255, 170, 37, 0.5);
+    pointer-events: none;
+    z-index: 4;
+}
+
+.recap-player-card .corner-tl { top: 12px; left: 12px; border-top: 2px solid; border-left: 2px solid; }
+.recap-player-card .corner-tr { top: 12px; right: 12px; border-top: 2px solid; border-right: 2px solid; }
+.recap-player-card .corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid; border-left: 2px solid; }
+.recap-player-card .corner-br { bottom: 12px; right: 12px; border-bottom: 2px solid; border-right: 2px solid; }
+
+.recap-video-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000000;
+    overflow: hidden;
+}
+
+#recap-main-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: #000000;
+}
+
+.recap-player-info {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(13, 14, 20, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.recap-player-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.recap-badge-active {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: #ffaa25;
+}
+
+.recap-player-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+
+.recap-player-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.recap-player-tags {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.recap-tag {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Video Playlist Grid */
+.recap-playlist-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.recap-item-card {
+    position: relative;
+    background: #0d0e14;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+}
+
+.recap-item-card .card-corner {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    transition: border-color 0.3s ease;
+}
+
+.recap-item-card .corner-tl { top: 8px; left: 8px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.recap-item-card .corner-tr { top: 8px; right: 8px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.recap-item-card .corner-bl { bottom: 8px; left: 8px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.recap-item-card .corner-br { bottom: 8px; right: 8px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+.recap-item-card:hover {
+    background: #141620;
+    border-color: rgba(255, 170, 37, 0.35);
+    transform: translateY(-2px);
+}
+
+.recap-item-card:hover .card-corner {
+    border-color: #ffaa25;
+}
+
+.recap-item-card.active {
+    background: #151824;
+    border-color: #ffaa25;
+    box-shadow: 0 8px 24px rgba(255, 170, 37, 0.15);
+}
+
+.recap-item-card.active .card-corner {
+    border-color: #ffaa25;
+}
+
+.recap-item-preview {
+    position: relative;
+    width: 130px;
+    height: 84px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000000;
+    flex-shrink: 0;
+}
+
+.recap-item-preview video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.85);
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.recap-item-card:hover .recap-item-preview video,
+.recap-item-card.active .recap-item-preview video {
+    transform: scale(1.05);
+    filter: brightness(1);
+}
+
+.recap-play-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.recap-item-card:hover .recap-play-badge,
+.recap-item-card.active .recap-play-badge {
+    background: #ffaa25;
+    color: #000000;
+    border-color: #ffaa25;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.recap-item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.recap-item-num {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #ffaa25;
+}
+
+.recap-item-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recap-item-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.55);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Recap Actions Bar */
+.recap-actions-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
+}
+
+.recap-bottom-caption {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
+
+/* ==========================================
+   PAGE 6: LIVE STAGE PERFORMANCE ARCHIVE (ẢNH)
+   ========================================== */
+.page-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 38;
+    background-color: #06070a;
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 40%, rgba(249, 115, 22, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 15% 75%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                visibility 1.6s;
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.page-stage.active {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.page-stage.page-prev {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Page 5 Kinetic Typography Background */
+.page-stage .track-top .marquee-content {
+    font-family: 'Unbounded', 'Syne', sans-serif;
+    font-size: clamp(3.2rem, 7vw, 6.6rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.018);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.06);
+    paint-order: stroke fill;
+    letter-spacing: 0.06em;
+    line-height: 1;
+}
+
+.page-stage .track-bottom .marquee-content {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(1.4rem, 3.2vw, 2.8rem);
+    font-weight: 300;
+    letter-spacing: 0.28em;
+    color: rgba(255, 255, 255, 0.025);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+}
+
+/* Stage Main Container */
+.stage-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 100px 32px 80px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+}
+
+/* Stage Header Block */
+.stage-header-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.stage-top-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.stage-counter-pill {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #ffaa25;
+    background: rgba(255, 170, 37, 0.1);
+    border: 1px solid rgba(255, 170, 37, 0.3);
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+.stage-main-title {
+    font-family: 'Syne', 'Unbounded', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.stage-main-title .text-gradient {
+    background: linear-gradient(135deg, #ffaa25 0%, #ff5500 50%, #f43f5e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.stage-main-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.92rem, 1.3vw, 1.08rem);
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 740px;
+}
+
+/* Filter HUD Bar */
+.stage-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 30px;
+    backdrop-filter: blur(12px);
+}
+
+.stage-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-filter-btn .filter-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.stage-filter-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.stage-filter-btn.active {
+    color: #000000;
+    background: #ffaa25;
+    border-color: #ffaa25;
+    box-shadow: 0 0 16px rgba(255, 170, 37, 0.4);
+}
+
+.stage-filter-btn.active .filter-dot {
+    background: #000000;
+    box-shadow: 0 0 6px #000000;
+}
+
+/* ==========================================
+   DYNAMIC STAGE BENTO GRID
+   ========================================== */
+.stage-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-flow: dense;
+    gap: 22px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Card Element Base */
+.stage-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0d0e14;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.45s ease,
+                box-shadow 0.45s ease,
+                opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    will-change: transform, box-shadow;
+}
+
+/* Responsive Grid Spans for Portrait & Landscape */
+/* Portrait cards (Vertical) */
+.stage-card.is-portrait {
+    grid-column: span 3;
+    grid-row: span 2;
+    min-height: 480px;
+}
+
+/* Landscape cards (Horizontal) */
+.stage-card.is-landscape {
+    grid-column: span 4;
+    min-height: 290px;
+}
+
+/* Highlight / Wide Featured cards */
+.stage-card.is-highlight {
+    grid-column: span 6;
+    min-height: 360px;
+}
+
+.stage-card.is-hidden-filter {
+    display: none !important;
+}
+
+/* Card Image Wrapper */
+.stage-card-media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+    background: #08080a;
+}
+
+.stage-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+    display: block;
+    filter: brightness(0.92) contrast(1.04);
+}
+
+/* Cyber Vignette */
+.stage-card-vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.3) 0%,
+        transparent 40%,
+        transparent 65%,
+        rgba(0, 0, 0, 0.75) 100%
+    );
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* Card Corner Brackets */
+.stage-card .card-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 4;
+}
+
+.stage-card .card-corner.top-left {
+    top: 12px;
+    left: 12px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.stage-card .card-corner.top-right {
+    top: 12px;
+    right: 12px;
+    border-top: 2px solid;
+    border-right: 2px solid;
+}
+
+.stage-card .card-corner.bottom-left {
+    bottom: 12px;
+    left: 12px;
+    border-bottom: 2px solid;
+    border-left: 2px solid;
+}
+
+.stage-card .card-corner.bottom-right {
+    bottom: 12px;
+    right: 12px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+}
+
+/* Card Bottom Info HUD */
+.stage-card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 22px 18px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.stage-card-title {
+    font-family: 'Syne', 'Space Grotesk', sans-serif;
+    font-size: clamp(0.84rem, 1.15vw, 1.02rem);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+    line-height: 1.35;
+}
+
+/* Card Hover States - Clean Minimalist Style without Neon Glowing Border */
+.stage-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
+}
+
+.stage-card:hover .stage-card-img {
+    transform: scale(1.03);
+    filter: brightness(1);
+}
+
+.stage-card:hover .stage-card-inspect-hint {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ==========================================
+   STAGE BOTTOM ACTIONS & RUNWAY LINK
+   ========================================== */
+.cylinder-next-action {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.stage-actions-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.stage-bottom-caption {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
+
+/* ==========================================
+   LIGHTBOX CINEMA MODAL
+   ========================================== */
+.stage-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+    user-select: none;
+}
+
+.stage-lightbox.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 5, 8, 0.94);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    z-index: 1;
+}
+
+/* Lightbox Top HUD */
+.lightbox-hud-top {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 36px 16px 36px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    gap: 16px;
+}
+
+.lightbox-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.lightbox-badge {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: #ffaa25;
+    background: rgba(255, 170, 37, 0.12);
+    border: 1px solid rgba(255, 170, 37, 0.35);
+    padding: 4px 12px;
+    border-radius: 16px;
+}
+
+.lightbox-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.lightbox-counter {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 4px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.lightbox-close-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lightbox-close-btn:hover {
+    background: #ffaa25;
+    color: #000000;
+    border-color: #ffaa25;
+    transform: rotate(90deg) scale(1.08);
+    box-shadow: 0 0 20px rgba(255, 170, 37, 0.6);
+}
+
+/* Lightbox Viewport */
+.lightbox-viewport {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    max-height: calc(100vh - 190px);
+    gap: 16px;
+}
+
+.lightbox-stage {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    max-width: calc(100% - 140px);
+}
+
+.lightbox-image-wrapper {
+    position: relative;
+    max-width: 100%;
+    max-height: calc(100vh - 270px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #08080a;
+}
+
+#lightbox-main-img {
+    max-width: 100%;
+    max-height: calc(100vh - 270px);
+    object-fit: contain;
+    display: block;
+    border-radius: 12px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.lightbox-info-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    max-width: 800px;
+}
+
+.lightbox-caption-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.5;
+}
+
+.lightbox-specs-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.12em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.lightbox-nav-btn {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+}
+
+.lightbox-nav-btn:hover {
+    background: #ffaa25;
+    color: #000000;
+    border-color: #ffaa25;
+    box-shadow: 0 0 24px rgba(255, 170, 37, 0.6);
+    transform: scale(1.1);
+}
+
+/* Lightbox Filmstrip Reel */
+.lightbox-filmstrip {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px 20px 24px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 170, 37, 0.4) transparent;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+    justify-content: flex-start;
+}
+
+.lightbox-film-thumb {
+    width: 64px;
+    height: 48px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    opacity: 0.45;
+    transition: all 0.3s ease;
+    background: #08080a;
+}
+
+.lightbox-film-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.lightbox-film-thumb:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.lightbox-film-thumb.is-active {
+    opacity: 1;
+    border-color: #ffaa25;
+    box-shadow: 0 0 12px rgba(255, 170, 37, 0.7);
+    transform: scale(1.1) translateY(-2px);
+}
+
+/* ==========================================
+   RESPONSIVE ADJUSTMENTS FOR PAGE 5 & LIGHTBOX
+   ========================================== */
+@media (max-width: 1200px) {
+    .recap-showcase-layout {
+        grid-template-columns: 1.3fr 1fr;
+        gap: 20px;
+    }
+
+    .stage-bento-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 18px;
+    }
+
+    .stage-card.is-portrait {
+        grid-column: span 3;
+        grid-row: span 2;
+        min-height: 420px;
+    }
+
+    .stage-card.is-landscape {
+        grid-column: span 3;
+        min-height: 260px;
+    }
+
+    .stage-card.is-highlight {
+        grid-column: span 6;
+        min-height: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .recap-container {
+        padding: 85px 16px 50px 16px;
+        gap: 24px;
+    }
+
+    .recap-main-title {
+        font-size: clamp(1.6rem, 7vw, 2.2rem);
+    }
+
+    .recap-showcase-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .recap-player-card {
+        border-radius: 12px;
+    }
+
+    .recap-player-info {
+        padding: 16px 14px;
+        gap: 10px;
+    }
+
+    .recap-player-title {
+        font-size: 1.15rem;
+    }
+
+    .recap-player-desc {
+        font-size: 0.82rem;
+    }
+
+    .recap-playlist-grid {
+        gap: 10px;
+    }
+
+    .recap-item-card {
+        padding: 8px;
+        gap: 12px;
+        border-radius: 10px;
+    }
+
+    .recap-item-preview {
+        width: 105px;
+        height: 70px;
+    }
+
+    .recap-item-name {
+        font-size: 0.88rem;
+    }
+
+    .recap-item-sub {
+        font-size: 0.72rem;
+    }
+
+    .recap-actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .recap-actions-bar .editorial-nav-btn {
+        justify-content: center;
+    }
+
+    .recap-bottom-caption {
+        text-align: center;
+        font-size: 0.65rem;
+    }
+
+    .stage-container {
+        padding: 85px 16px 50px 16px;
+        gap: 24px;
+    }
+
+    .stage-main-title {
+        font-size: clamp(1.6rem, 7vw, 2.2rem);
+    }
+
+    .stage-main-desc {
+        font-size: 0.85rem;
+    }
+
+    .stage-filter-bar {
+        width: 100%;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 4px;
+        border-radius: 16px;
+    }
+
+    .stage-filter-btn {
+        font-size: 0.65rem;
+        padding: 6px 12px;
+        white-space: nowrap;
+    }
+
+    .stage-bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stage-card.is-portrait {
+        grid-column: span 1;
+        grid-row: span 2;
+        min-height: 300px;
+    }
+
+    .stage-card.is-landscape {
+        grid-column: span 2;
+        min-height: 200px;
+    }
+
+    .stage-card.is-highlight {
+        grid-column: span 2;
+        min-height: 240px;
+    }
+
+    .stage-card-title {
+        font-size: 0.76rem;
+    }
+
+    .stage-card-meta-row {
+        font-size: 0.58rem;
+    }
+
+    .stage-actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .stage-actions-bar .editorial-nav-btn {
+        justify-content: center;
+    }
+
+    .stage-bottom-caption {
+        text-align: center;
+        font-size: 0.65rem;
+    }
+
+    /* Lightbox Mobile Adjustments */
+    .lightbox-hud-top {
+        padding: 16px 16px 10px 16px;
+    }
+
+    .lightbox-title {
+        font-size: 0.95rem;
+    }
+
+    .lightbox-badge {
+        font-size: 0.6rem;
+        padding: 2px 8px;
+    }
+
+    .lightbox-counter {
+        font-size: 0.7rem;
+        padding: 2px 10px;
+    }
+
+    .lightbox-close-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .lightbox-viewport {
+        padding: 6px;
+        max-height: calc(100vh - 160px);
+    }
+
+    .lightbox-nav-btn {
+        display: none; /* Swipe on mobile */
+    }
+
+    .lightbox-stage {
+        max-width: 100%;
+    }
+
+    .lightbox-image-wrapper {
+        max-height: calc(100vh - 230px);
+    }
+
+    #lightbox-main-img {
+        max-height: calc(100vh - 230px);
+    }
+
+    .lightbox-caption-text {
+        font-size: 0.76rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .lightbox-specs-row {
+        font-size: 0.6rem;
+        gap: 8px;
+    }
+
+    .lightbox-filmstrip {
+        padding: 8px 12px 14px 12px;
+        gap: 8px;
+    }
+
+    .lightbox-film-thumb {
+        width: 52px;
+        height: 38px;
+    }
+}
+

@@ -1,0 +1,482 @@
+[
+  {
+    "id": "stage-1",
+    "index": "01",
+    "filename": "stage_13.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_13.jpg",
+    "fullPath": "assets/stage/full/stage_13.jpg",
+    "width": 1279,
+    "height": 1920,
+    "isVertical": true,
+    "aspectRatio": 0.666,
+    "title": "KINETIC PULSE // MC SININE",
+    "subtitle": "Cận cảnh thần thái MC SININE trong trang phục dạ kẻ Avant-Garde và kính vàng độc bản làm chủ nhịp điệu sân khấu.",
+    "category": "portrait",
+    "accentColor": "#ffaa25",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1279 x 1920 HD"
+    }
+  },
+  {
+    "id": "stage-2",
+    "index": "02",
+    "filename": "stage_21.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_21.jpg",
+    "fullPath": "assets/stage/full/stage_21.jpg",
+    "width": 1920,
+    "height": 1280,
+    "isVertical": false,
+    "aspectRatio": 1.5,
+    "title": "INFINITY STAGE // ILLUMINATION",
+    "subtitle": "Khoảnh khắc bùng nổ năng lượng trên bục DJ trung tâm, khuấy động hàng ngàn khán giả trong đại sảnh Metropolis.",
+    "category": "highlight",
+    "accentColor": "#38bdf8",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1280 HD"
+    }
+  },
+  {
+    "id": "stage-3",
+    "index": "03",
+    "filename": "stage_24.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_24.jpg",
+    "fullPath": "assets/stage/full/stage_24.jpg",
+    "width": 1277,
+    "height": 1920,
+    "isVertical": true,
+    "aspectRatio": 0.665,
+    "title": "THE FINALE ECHO // MONOCHROME",
+    "subtitle": "Bức chân dung đen trắng kinh điển bắt trọn cử chỉ tay micro uy lực và phong thái tiên phong của MC SININE.",
+    "category": "portrait",
+    "accentColor": "#ffffff",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1277 x 1920 HD"
+    }
+  },
+  {
+    "id": "stage-4",
+    "index": "04",
+    "filename": "stage_07.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_07.jpg",
+    "fullPath": "assets/stage/full/stage_07.jpg",
+    "width": 1920,
+    "height": 1279,
+    "isVertical": false,
+    "aspectRatio": 1.501,
+    "title": "NEO-TOKYO VIBE // LIVE SET",
+    "subtitle": "Đội hình trình diễn vũ đạo và âm nhạc đương đại rực sáng dưới luồng laser xanh neon sắc sảo.",
+    "category": "wide",
+    "accentColor": "#a3e635",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1279 HD"
+    }
+  },
+  {
+    "id": "stage-5",
+    "index": "05",
+    "filename": "stage_11.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_11.jpg",
+    "fullPath": "assets/stage/full/stage_11.jpg",
+    "width": 1920,
+    "height": 1279,
+    "isVertical": false,
+    "aspectRatio": 1.501,
+    "title": "STAGE ASCENSION // CLIMAX 18:13",
+    "subtitle": "Thời khắc đếm ngược đỉnh cao khi toàn bộ nghệ sĩ cùng giơ tay hòa chung nhịp đập với biển khán giả cuồng nhiệt.",
+    "category": "highlight",
+    "accentColor": "#f43f5e",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1279 HD"
+    }
+  },
+  {
+    "id": "stage-6",
+    "index": "06",
+    "filename": "stage_01.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_01.jpg",
+    "fullPath": "assets/stage/full/stage_01.jpg",
+    "width": 1920,
+    "height": 1280,
+    "isVertical": false,
+    "aspectRatio": 1.5,
+    "title": "SONIC APEX // VOLTAGE PULSE",
+    "subtitle": "Live performance spotlight with sonic aura & dynamic laser grid",
+    "category": "highlight",
+    "accentColor": "#f97316",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1280 HD"
+    }
+  },
+  {
+    "id": "stage-7",
+    "index": "07",
+    "filename": "stage_02.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_02.jpg",
+    "fullPath": "assets/stage/full/stage_02.jpg",
+    "width": 1279,
+    "height": 1920,
+    "isVertical": true,
+    "aspectRatio": 0.666,
+    "title": "CYBER RHAPSODY // SPOTLIGHT",
+    "subtitle": "Intimate stage portrait capturing the electric avant-garde energy",
+    "category": "portrait",
+    "accentColor": "#38bdf8",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1279 x 1920 HD"
+    }
+  },
+  {
+    "id": "stage-8",
+    "index": "08",
+    "filename": "stage_03.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_03.jpg",
+    "fullPath": "assets/stage/full/stage_03.jpg",
+    "width": 1920,
+    "height": 1279,
+    "isVertical": false,
+    "aspectRatio": 1.501,
+    "title": "KINETIC CROWD // RESONANCE",
+    "subtitle": "Panoramic crowd wave synchronizing with 99.8 MHz sub-bass pulse",
+    "category": "wide",
+    "accentColor": "#a3e635",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1279 HD"
+    }
+  },
+  {
+    "id": "stage-9",
+    "index": "09",
+    "filename": "stage_04.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_04.jpg",
+    "fullPath": "assets/stage/full/stage_04.jpg",
+    "width": 1279,
+    "height": 1920,
+    "isVertical": true,
+    "aspectRatio": 0.666,
+    "title": "THE ELECTRIC GAZE",
+    "subtitle": "Striking MC Sinine presence under directional strobe illumination",
+    "category": "portrait",
+    "accentColor": "#e11d48",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1279 x 1920 HD"
+    }
+  },
+  {
+    "id": "stage-10",
+    "index": "10",
+    "filename": "stage_05.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_05.jpg",
+    "fullPath": "assets/stage/full/stage_05.jpg",
+    "width": 1920,
+    "height": 1277,
+    "isVertical": false,
+    "aspectRatio": 1.504,
+    "title": "LASER CANOPY // SOUNDWAVE",
+    "subtitle": "Grand arena laser beams cutting through synthetic fog",
+    "category": "highlight",
+    "accentColor": "#a855f7",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1277 HD"
+    }
+  },
+  {
+    "id": "stage-11",
+    "index": "11",
+    "filename": "stage_06.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_06.jpg",
+    "fullPath": "assets/stage/full/stage_06.jpg",
+    "width": 1920,
+    "height": 1277,
+    "isVertical": false,
+    "aspectRatio": 1.504,
+    "title": "HIGH FREQUENCY COMMAND",
+    "subtitle": "Vocal command driving thousands in rhythmic unison",
+    "category": "wide",
+    "accentColor": "#06b6d4",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1277 HD"
+    }
+  },
+  {
+    "id": "stage-12",
+    "index": "12",
+    "filename": "stage_08.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_08.jpg",
+    "fullPath": "assets/stage/full/stage_08.jpg",
+    "width": 1920,
+    "height": 1279,
+    "isVertical": false,
+    "aspectRatio": 1.501,
+    "title": "MIC FLUIDITY // FLOW MATRIX",
+    "subtitle": "Sculptural posture and flawless microphone handling",
+    "category": "wide",
+    "accentColor": "#eab308",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1279 HD"
+    }
+  },
+  {
+    "id": "stage-13",
+    "index": "13",
+    "filename": "stage_09.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_09.jpg",
+    "fullPath": "assets/stage/full/stage_09.jpg",
+    "width": 1920,
+    "height": 1279,
+    "isVertical": false,
+    "aspectRatio": 1.501,
+    "title": "AMPLIFIED VISION",
+    "subtitle": "Wide-angle perspective of the cybernetic stage setup",
+    "category": "wide",
+    "accentColor": "#f97316",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1279 HD"
+    }
+  },
+  {
+    "id": "stage-14",
+    "index": "14",
+    "filename": "stage_10.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_10.jpg",
+    "fullPath": "assets/stage/full/stage_10.jpg",
+    "width": 1920,
+    "height": 1279,
+    "isVertical": false,
+    "aspectRatio": 1.501,
+    "title": "BASS OVERDRIVE // IMPACT",
+    "subtitle": "Bass reverberation vibrating across the main arena floor",
+    "category": "wide",
+    "accentColor": "#38bdf8",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1279 HD"
+    }
+  },
+  {
+    "id": "stage-15",
+    "index": "15",
+    "filename": "stage_12.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_12.jpg",
+    "fullPath": "assets/stage/full/stage_12.jpg",
+    "width": 1920,
+    "height": 1279,
+    "isVertical": false,
+    "aspectRatio": 1.501,
+    "title": "CHROMATIC FLARE",
+    "subtitle": "Prismatic lens flare refracting stage beam arrays",
+    "category": "wide",
+    "accentColor": "#e11d48",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1279 HD"
+    }
+  },
+  {
+    "id": "stage-16",
+    "index": "16",
+    "filename": "stage_14.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_14.jpg",
+    "fullPath": "assets/stage/full/stage_14.jpg",
+    "width": 1920,
+    "height": 1280,
+    "isVertical": false,
+    "aspectRatio": 1.5,
+    "title": "NIGHT CYBERNETICS",
+    "subtitle": "Midnight frequency broadcast through heavy cyber synth",
+    "category": "wide",
+    "accentColor": "#06b6d4",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1280 HD"
+    }
+  },
+  {
+    "id": "stage-17",
+    "index": "17",
+    "filename": "stage_15.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_15.jpg",
+    "fullPath": "assets/stage/full/stage_15.jpg",
+    "width": 1280,
+    "height": 1920,
+    "isVertical": true,
+    "aspectRatio": 0.667,
+    "title": "ULTRAVIOLET ECHO",
+    "subtitle": "Ultraviolet wash highlighting cyber metallic accessories",
+    "category": "highlight",
+    "accentColor": "#ec4899",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1280 x 1920 HD"
+    }
+  },
+  {
+    "id": "stage-18",
+    "index": "18",
+    "filename": "stage_16.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_16.jpg",
+    "fullPath": "assets/stage/full/stage_16.jpg",
+    "width": 1280,
+    "height": 1920,
+    "isVertical": true,
+    "aspectRatio": 0.667,
+    "title": "MONOCHROME VOLT",
+    "subtitle": "High contrast silhouette framed by massive LED graphics",
+    "category": "portrait",
+    "accentColor": "#eab308",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1280 x 1920 HD"
+    }
+  },
+  {
+    "id": "stage-19",
+    "index": "19",
+    "filename": "stage_17.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_17.jpg",
+    "fullPath": "assets/stage/full/stage_17.jpg",
+    "width": 1920,
+    "height": 1280,
+    "isVertical": false,
+    "aspectRatio": 1.5,
+    "title": "RAW ENERGY // UNLEASHED",
+    "subtitle": "Raw uncompromised vocal delivery at peak crescendo",
+    "category": "highlight",
+    "accentColor": "#f97316",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1280 HD"
+    }
+  },
+  {
+    "id": "stage-20",
+    "index": "20",
+    "filename": "stage_18.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_18.jpg",
+    "fullPath": "assets/stage/full/stage_18.jpg",
+    "width": 1920,
+    "height": 1280,
+    "isVertical": false,
+    "aspectRatio": 1.5,
+    "title": "DIGITAL REVOLUTION",
+    "subtitle": "Future-forward live entertainment architecture in action",
+    "category": "wide",
+    "accentColor": "#38bdf8",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1280 HD"
+    }
+  },
+  {
+    "id": "stage-21",
+    "index": "21",
+    "filename": "stage_19.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_19.jpg",
+    "fullPath": "assets/stage/full/stage_19.jpg",
+    "width": 1920,
+    "height": 1080,
+    "isVertical": false,
+    "aspectRatio": 1.778,
+    "title": "TRANSCENDENT MOMENT",
+    "subtitle": "Emotional peak as thousands illuminate the stadium",
+    "category": "wide",
+    "accentColor": "#a3e635",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1080 HD"
+    }
+  },
+  {
+    "id": "stage-22",
+    "index": "22",
+    "filename": "stage_20.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_20.jpg",
+    "fullPath": "assets/stage/full/stage_20.jpg",
+    "width": 1920,
+    "height": 1277,
+    "isVertical": false,
+    "aspectRatio": 1.504,
+    "title": "METROPOLIS BEAT",
+    "subtitle": "Urban sonic architecture echoing through metropolitan night",
+    "category": "wide",
+    "accentColor": "#e11d48",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1277 HD"
+    }
+  },
+  {
+    "id": "stage-23",
+    "index": "23",
+    "filename": "stage_22.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_22.jpg",
+    "fullPath": "assets/stage/full/stage_22.jpg",
+    "width": 1280,
+    "height": 1920,
+    "isVertical": true,
+    "aspectRatio": 0.667,
+    "title": "CYBER HYPERDRIVE",
+    "subtitle": "Hyper-kinetic velocity captured in a split second",
+    "category": "portrait",
+    "accentColor": "#06b6d4",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1280 x 1920 HD"
+    }
+  },
+  {
+    "id": "stage-24",
+    "index": "24",
+    "filename": "stage_23.jpg",
+    "thumbPath": "assets/stage/thumbs/stage_23.jpg",
+    "fullPath": "assets/stage/full/stage_23.jpg",
+    "width": 1920,
+    "height": 1280,
+    "isVertical": false,
+    "aspectRatio": 1.5,
+    "title": "ATMOSPHERIC CLIMAX",
+    "subtitle": "Atmospheric crescendo with full-spectrum stage lasers",
+    "category": "highlight",
+    "accentColor": "#ec4899",
+    "specs": {
+      "venue": "METROPOLIS ARENA // STAGE 01",
+      "freq": "99.8 MHz VOLTAGE",
+      "resolution": "1920 x 1280 HD"
+    }
+  }
+]
