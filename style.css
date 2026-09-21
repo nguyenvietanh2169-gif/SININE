@@ -3621,3 +3621,976 @@ html, body {
     }
 }
 
+/* ==========================================
+   PAGE 7: MC SININE MOMENTS & SHORT REELS
+   ========================================== */
+.stage-footer-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+    margin-bottom: 24px;
+}
+
+.stage-next-page-btn,
+.moments-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    background: rgba(14, 165, 233, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 999px;
+    color: #e2e8f0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.stage-next-page-btn:hover,
+.moments-nav-btn:hover {
+    background: rgba(56, 189, 248, 0.22);
+    border-color: #38bdf8;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+}
+
+.moments-nav-btn.prev-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.moments-nav-btn.prev-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.page-moments {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 39;
+    background-color: #ea580c;
+    background-image: 
+        radial-gradient(circle at 50% 0%, #fb923c 0%, #ea580c 42%, #c2410c 78%, #9a3412 100%),
+        radial-gradient(circle at 85% 20%, rgba(254, 215, 170, 0.35) 0%, transparent 50%),
+        radial-gradient(circle at 15% 75%, rgba(251, 146, 60, 0.35) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    background-attachment: fixed;
+    transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                visibility 1.6s;
+    will-change: transform, opacity;
+}
+
+.page-moments.active {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.page-moments.page-prev {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.moments-container {
+    max-width: 1480px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 120px 2rem 80px 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.moments-header-block {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.moments-header-badge {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    padding: 7px 18px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.moments-main-title {
+    font-family: 'Unbounded', 'Syne', sans-serif;
+    font-size: clamp(2rem, 4.5vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    color: #ffffff;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
+}
+
+.page-moments .moments-main-title .text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #fff7ed 55%, #fed7aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+}
+
+.moments-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.98rem;
+    color: #ffffff;
+    max-width: 680px;
+    margin: 0 auto 32px auto;
+    line-height: 1.6;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.moments-filter-bar {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 999px;
+    backdrop-filter: blur(24px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+}
+
+.moments-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.moments-filter-btn .filter-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transition: background 0.3s ease;
+}
+
+.moments-filter-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.moments-filter-btn.active {
+    color: #c2410c;
+    background: #ffffff;
+    border-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.moments-filter-btn.active .filter-dot {
+    background: #ea580c;
+    box-shadow: 0 0 8px #ea580c;
+}
+
+/* Moments Grid */
+.moments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 64px;
+}
+
+/* Individual Moment Card */
+.moment-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s ease,
+                box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.moment-card.is-vertical {
+    aspect-ratio: 9 / 16;
+}
+
+.moment-card.is-horizontal {
+    aspect-ratio: 16 / 10;
+}
+
+.moment-card:hover {
+    transform: translateY(-8px);
+    border-color: #ffffff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 35px rgba(255, 255, 255, 0.35);
+}
+
+.moment-video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #1a0802;
+}
+
+.moment-preview-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moment-card:hover .moment-preview-video {
+    transform: scale(1.04);
+}
+
+.moment-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        transparent 35%,
+        transparent 60%,
+        rgba(0, 0, 0, 0.85) 100%
+    );
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+    transition: background 0.3s ease;
+}
+
+.moment-card:hover .moment-card-overlay {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.2) 0%,
+        transparent 35%,
+        transparent 55%,
+        rgba(0, 0, 0, 0.92) 100%
+    );
+}
+
+/* Top metadata row */
+.moment-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.moment-index-badge {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+}
+
+.moment-duration-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    backdrop-filter: blur(8px);
+}
+
+/* Center Play Button */
+.moment-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    opacity: 0.9;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moment-card:hover .moment-play-btn {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: #ffffff;
+    color: #ea580c;
+    opacity: 1;
+    box-shadow: 0 0 28px rgba(255, 255, 255, 0.85);
+}
+
+/* Bottom info */
+.moment-bottom-row {
+    position: relative;
+    z-index: 2;
+}
+
+.moment-title {
+    font-family: 'Unbounded', 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.moment-tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+}
+
+/* Footer Nav */
+.moments-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    padding-top: 32px;
+}
+
+.moments-nav-btn {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+}
+
+.moments-nav-btn:hover {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: #ea580c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================
+   MOMENTS LIGHTBOX CINEMA MODAL
+   ========================================== */
+.moments-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.35s;
+}
+
+.moments-lightbox.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.moments-lightbox .lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 5, 3, 0.94);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    z-index: 1;
+}
+
+.moments-lightbox-hud-top {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 36px 16px 36px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+    gap: 16px;
+}
+
+.moments-lightbox-hud-top .lightbox-badge {
+    color: #fb923c;
+    border: 1px solid rgba(249, 115, 22, 0.45);
+    background: rgba(249, 115, 22, 0.15);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.moments-lightbox-hud-top .lightbox-title {
+    color: #ffffff;
+    font-family: 'Unbounded', 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.moments-lightbox-hud-top .lightbox-counter {
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.moments-lightbox-viewport {
+    position: relative;
+    z-index: 10;
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+    gap: 32px;
+    overflow: hidden;
+}
+
+.moments-lightbox-viewport .lightbox-nav-btn {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.moments-lightbox-viewport .lightbox-nav-btn:hover {
+    background: #ffffff;
+    color: #ea580c;
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+}
+
+.moments-player-box {
+    position: relative;
+    max-height: calc(100vh - 140px);
+    max-width: min(90vw, 1100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000000;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 50px rgba(249, 115, 22, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+#moments-lightbox-video {
+    max-height: calc(100vh - 160px);
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    outline: none;
+    object-fit: contain;
+    background: #000000;
+}
+
+@media (max-width: 768px) {
+    .moments-container {
+        padding: 90px 1rem 60px 1rem;
+    }
+
+    .moments-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 14px;
+    }
+
+    .moment-play-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .moment-title {
+        font-size: 0.8rem;
+    }
+
+    .moments-lightbox-hud-top {
+        padding: 16px 20px;
+    }
+
+    .moments-lightbox-hud-top .lightbox-title {
+        font-size: 0.8rem;
+        max-width: 160px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .moments-lightbox-viewport {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .moments-lightbox-viewport .lightbox-nav-btn {
+        display: none;
+    }
+
+    .moments-player-box {
+        max-height: calc(100vh - 130px);
+    }
+
+    #moments-lightbox-video {
+        max-height: calc(100vh - 140px);
+        max-width: 96vw;
+    }
+
+    .moments-footer-nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .moments-nav-btn {
+        justify-content: center;
+    }
+
+    /* Hide next page buttons on mobile for seamless swipe scroll */
+    .stage-footer-nav,
+    .moments-footer-nav {
+        display: none !important;
+    }
+}
+
+/* =============================================================
+   PAGE 8: BOOKING & COLLABORATION (CLEAN & HIGH LEGIBILITY)
+   ============================================================= */
+.page-booking {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 40;
+    background-color: #0b0908;
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(234, 88, 12, 0.2) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(251, 146, 60, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 15% 45%, rgba(249, 115, 22, 0.08) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    background-attachment: fixed;
+    transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), 
+                visibility 1.6s;
+    will-change: transform, opacity;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.page-booking.active {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.page-booking.page-prev {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.booking-container {
+    max-width: 860px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 110px 24px 80px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Header Block - Centered, Clean & Highly Readable */
+.booking-header-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.booking-badge-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(251, 146, 60, 0.12);
+    border: 1px solid rgba(251, 146, 60, 0.3);
+    border-radius: 20px;
+}
+
+.booking-badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #fb923c;
+    text-transform: uppercase;
+}
+
+.booking-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2rem, 3.8vw, 3rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+}
+
+.booking-title-accent {
+    color: #fb923c;
+    text-shadow: 0 0 24px rgba(251, 146, 60, 0.4);
+}
+
+.booking-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+/* Centered Form Wrapper & Card */
+.booking-form-wrapper {
+    width: 100%;
+}
+
+.booking-form-card {
+    position: relative;
+    background: rgba(22, 19, 17, 0.75);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(251, 146, 60, 0.25);
+    padding: 38px 42px;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(234, 88, 12, 0.06);
+}
+
+.booking-form-card .form-header {
+    margin-bottom: 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 18px;
+}
+
+.booking-form-card .form-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+}
+
+.booking-form-card .form-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+}
+
+/* Form Controls - Standard Modern Web Aesthetics */
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.form-label .req {
+    color: #fb923c;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 10px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #fb923c;
+    background: rgba(251, 146, 60, 0.04);
+    box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.2);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+}
+
+.form-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23fb923c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 42px;
+}
+
+.form-select option {
+    background: #181514;
+    color: #ffffff;
+    padding: 8px 12px;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 110px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+/* Submit Button */
+.booking-submit-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px 32px;
+    background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    overflow: hidden;
+    margin-top: 10px;
+    box-shadow: 0 8px 24px rgba(234, 88, 12, 0.35);
+    transition: all 0.25s ease;
+}
+
+.booking-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(251, 146, 60, 0.5);
+    background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+}
+
+.booking-submit-btn:active {
+    transform: translateY(0);
+}
+
+.booking-submit-btn .btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    animation: btnGlowSweep 3.5s infinite;
+}
+
+/* Form Status Message - Frosted Glass Matching Web Theme */
+.form-status-msg {
+    margin-top: 14px;
+    padding: 18px 22px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    display: none;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.form-status-msg.success {
+    display: block;
+    background: rgba(251, 146, 60, 0.08);
+    border: 1px solid rgba(251, 146, 60, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.form-status-msg.error {
+    display: block;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    color: #fca5a5;
+}
+
+/* Footer Navigation */
+.booking-footer-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+}
+
+.booking-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.booking-nav-btn:hover {
+    background: rgba(251, 146, 60, 0.15);
+    border-color: #fb923c;
+    color: #fb923c;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .booking-container {
+        padding: 85px 16px 50px 16px;
+        gap: 24px;
+    }
+
+    .booking-form-card {
+        padding: 24px 18px;
+        border-radius: 12px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .booking-footer-nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .booking-nav-btn {
+        justify-content: center;
+    }
+}
+
+

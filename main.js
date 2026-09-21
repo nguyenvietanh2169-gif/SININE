@@ -5,13 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById('back-to-welcome');
     const scene = document.querySelector('.scene');
 
-    // Page Switching Management (Page 1: Home, Page 2: Artist, Page 3: Collection, Page 4: 360° Runway, Page 5: Video Recap, Page 6: Live Stage)
+    // Page Switching Management (Page 1: Home, Page 2: Artist, Page 3: Collection, Page 4: 360° Runway, Page 5: Video Recap, Page 6: Live Stage, Page 7: Moments)
     const pageHome = document.getElementById('page-home');
     const pageArtist = document.getElementById('page-artist');
     const pageCollection = document.getElementById('page-collection');
     const pageRunway = document.getElementById('page-runway');
     const pageRecap = document.getElementById('page-recap');
     const pageStage = document.getElementById('page-stage');
+    const pageMoments = document.getElementById('page-moments');
+    const pageBooking = document.getElementById('page-booking');
     const navLinks = document.querySelectorAll('.nav-link');
     const headerLogo = document.querySelector('.header-logo');
     const jumpToArtistBtn = document.getElementById('jump-to-artist');
@@ -26,9 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const recapToStageBtn = document.getElementById('btn-recap-to-stage');
     const backToRecapBtn = document.getElementById('btn-back-to-recap');
     const stageToHomeBtn = document.getElementById('btn-stage-to-home');
+    const stageToMomentsBtn = document.getElementById('btn-stage-to-moments');
+    const momentsToStageBtn = document.getElementById('btn-moments-to-stage');
+    const momentsToHomeBtn = document.getElementById('btn-moments-to-home');
+    const momentsToBookingBtn = document.getElementById('btn-moments-to-booking');
+    const bookingToMomentsBtn = document.getElementById('btn-booking-to-moments');
+    const bookingToHomeBtn = document.getElementById('btn-booking-to-home');
+    const bookingForm = document.getElementById('booking-inquiry-form');
+    const bookingStatusMsg = document.getElementById('booking-status-msg');
     const backToHomeBtn = document.getElementById('btn-back-to-home');
     const collectionPosterFrame = document.getElementById('collection-poster-frame');
     const recapMainVideo = document.getElementById('recap-main-video');
+    const momentsLightbox = document.getElementById('moments-lightbox');
+    const momentsLightboxVideo = document.getElementById('moments-lightbox-video');
     
     let currentPage = 'home';
     let isTransitioning = false;
@@ -37,12 +49,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!pageId || isTransitioning) return;
         if (pageId === currentPage) return;
 
+        const previousPage = currentPage;
         isTransitioning = true;
         currentPage = pageId;
 
         // If navigating away from recap page, pause main video
         if (pageId !== 'recap' && recapMainVideo && !recapMainVideo.paused) {
             recapMainVideo.pause();
+        }
+
+        // If navigating away from moments page, close lightbox and pause video
+        if (pageId !== 'moments') {
+            if (momentsLightboxVideo) {
+                momentsLightboxVideo.pause();
+                momentsLightboxVideo.src = '';
+            }
+            if (momentsLightbox) {
+                momentsLightbox.classList.remove('active');
+            }
+            if (pageMoments) {
+                pageMoments.style.overflow = '';
+            }
         }
 
         // Reset classes on all pages
@@ -52,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pageRunway) pageRunway.classList.remove('page-prev', 'active');
         if (pageRecap) pageRecap.classList.remove('page-prev', 'active');
         if (pageStage) pageStage.classList.remove('page-prev', 'active');
+        if (pageMoments) pageMoments.classList.remove('page-prev', 'active');
+        if (pageBooking) pageBooking.classList.remove('page-prev', 'active');
 
         if (pageId === 'home') {
             if (pageHome) pageHome.classList.add('active');
@@ -83,7 +112,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageRunway) pageRunway.classList.add('page-prev');
             if (pageRecap) {
                 pageRecap.classList.add('active');
-                pageRecap.scrollTop = 0;
+                if (previousPage === 'stage') {
+                    const setBottom = () => {
+                        pageRecap.scrollTop = Math.max(0, pageRecap.scrollHeight - pageRecap.clientHeight - 10);
+                    };
+                    setBottom();
+                    requestAnimationFrame(setBottom);
+                    setTimeout(setBottom, 50);
+                } else {
+                    pageRecap.scrollTop = 0;
+                }
             }
         } else if (pageId === 'stage') {
             if (pageHome) pageHome.classList.add('page-prev');
@@ -93,7 +131,50 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageRecap) pageRecap.classList.add('page-prev');
             if (pageStage) {
                 pageStage.classList.add('active');
-                pageStage.scrollTop = 0;
+                if (previousPage === 'moments') {
+                    // Seamlessly stay at the bottom of the stage photos
+                    const setBottom = () => {
+                        pageStage.scrollTop = Math.max(0, pageStage.scrollHeight - pageStage.clientHeight - 10);
+                    };
+                    setBottom();
+                    requestAnimationFrame(setBottom);
+                    setTimeout(setBottom, 50);
+                } else {
+                    pageStage.scrollTop = 0;
+                }
+            }
+        } else if (pageId === 'moments') {
+            if (pageHome) pageHome.classList.add('page-prev');
+            if (pageArtist) pageArtist.classList.add('page-prev');
+            if (pageCollection) pageCollection.classList.add('page-prev');
+            if (pageRunway) pageRunway.classList.add('page-prev');
+            if (pageRecap) pageRecap.classList.add('page-prev');
+            if (pageStage) pageStage.classList.add('page-prev');
+            if (pageMoments) {
+                pageMoments.classList.add('active');
+                if (previousPage === 'booking') {
+                    // Seamlessly stay at the bottom of moments grid
+                    const setBottom = () => {
+                        pageMoments.scrollTop = Math.max(0, pageMoments.scrollHeight - pageMoments.clientHeight - 10);
+                    };
+                    setBottom();
+                    requestAnimationFrame(setBottom);
+                    setTimeout(setBottom, 50);
+                } else {
+                    pageMoments.scrollTop = 0;
+                }
+            }
+        } else if (pageId === 'booking') {
+            if (pageHome) pageHome.classList.add('page-prev');
+            if (pageArtist) pageArtist.classList.add('page-prev');
+            if (pageCollection) pageCollection.classList.add('page-prev');
+            if (pageRunway) pageRunway.classList.add('page-prev');
+            if (pageRecap) pageRecap.classList.add('page-prev');
+            if (pageStage) pageStage.classList.add('page-prev');
+            if (pageMoments) pageMoments.classList.add('page-prev');
+            if (pageBooking) {
+                pageBooking.classList.add('active');
+                pageBooking.scrollTop = 0;
             }
         }
 
@@ -115,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const target = link.getAttribute('data-target');
-            if (target === 'home' || target === 'artist' || target === 'collection' || target === 'runway' || target === 'recap' || target === 'stage') {
+            if (target === 'home' || target === 'artist' || target === 'collection' || target === 'runway' || target === 'recap' || target === 'stage' || target === 'moments' || target === 'booking') {
                 e.preventDefault();
                 switchPage(target);
             }
@@ -169,6 +250,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (stageToHomeBtn) {
         stageToHomeBtn.addEventListener('click', () => switchPage('home'));
+    }
+
+    if (stageToMomentsBtn) {
+        stageToMomentsBtn.addEventListener('click', () => switchPage('moments'));
+    }
+
+    if (momentsToStageBtn) {
+        momentsToStageBtn.addEventListener('click', () => switchPage('stage'));
+    }
+
+    if (momentsToBookingBtn) {
+        momentsToBookingBtn.addEventListener('click', () => switchPage('booking'));
+    }
+
+    if (momentsToHomeBtn) {
+        momentsToHomeBtn.addEventListener('click', () => switchPage('home'));
+    }
+
+    if (bookingToMomentsBtn) {
+        bookingToMomentsBtn.addEventListener('click', () => switchPage('moments'));
+    }
+
+    if (bookingToHomeBtn) {
+        bookingToHomeBtn.addEventListener('click', () => switchPage('home'));
     }
 
     if (backToHomeBtn) {
@@ -352,6 +457,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     overscrollAccumulator = 0;
                     switchPage('recap');
                 }
+            } else if (e.deltaY > 0 && isScrolledToBottom(pageStage)) {
+                // Scrolling down at bottom -> advance to Moments (Page 7)
+                overscrollAccumulator += e.deltaY;
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('moments');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'moments') {
+            // In Moments Page (Page 7):
+            if (e.deltaY < 0 && isScrolledToTop(pageMoments)) {
+                // Scrolling up at top -> return to Live Stage (Page 6)
+                overscrollAccumulator += Math.abs(e.deltaY);
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('stage');
+                }
+            } else if (e.deltaY > 0 && isScrolledToBottom(pageMoments)) {
+                // Scrolling down at bottom -> advance to Booking (Page 8)
+                overscrollAccumulator += e.deltaY;
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('booking');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'booking') {
+            // In Booking Page (Page 8):
+            if (e.deltaY < 0 && isScrolledToTop(pageBooking)) {
+                // Scrolling up at top -> return to Moments (Page 7)
+                overscrollAccumulator += Math.abs(e.deltaY);
+                if (overscrollAccumulator > 60) {
+                    overscrollAccumulator = 0;
+                    switchPage('moments');
+                }
             } else {
                 overscrollAccumulator = 0;
             }
@@ -484,6 +627,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (overscrollAccumulator > 40) {
                     overscrollAccumulator = 0;
                     switchPage('recap');
+                }
+            } else if (delta > 0 && isScrolledToBottom(pageStage)) {
+                // Swiping up at bottom -> advance to Moments (Page 7)
+                overscrollAccumulator += delta;
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('moments');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'moments') {
+            if (delta < 0 && isScrolledToTop(pageMoments)) {
+                // Swiping down at top -> return to Live Stage (Page 6)
+                overscrollAccumulator += Math.abs(delta);
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('stage');
+                }
+            } else if (delta > 0 && isScrolledToBottom(pageMoments)) {
+                // Swiping up at bottom -> advance to Booking (Page 8)
+                overscrollAccumulator += delta;
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('booking');
+                }
+            } else {
+                overscrollAccumulator = 0;
+            }
+        } else if (currentPage === 'booking') {
+            if (delta < 0 && isScrolledToTop(pageBooking)) {
+                // Swiping down at top -> return to Moments (Page 7)
+                overscrollAccumulator += Math.abs(delta);
+                if (overscrollAccumulator > 40) {
+                    overscrollAccumulator = 0;
+                    switchPage('moments');
                 }
             } else {
                 overscrollAccumulator = 0;
@@ -1116,342 +1295,676 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const STAGE_PHOTOS = [
             {
-                id: 'stage-1',
-                index: '01',
-                thumbPath: 'assets/stage/thumbs/stage_13.jpg',
-                fullPath: 'assets/stage/full/stage_13.jpg',
-                width: 1279,
-                height: 1920,
-                isVertical: true,
-                title: 'KINETIC PULSE // MC SININE',
-                subtitle: 'Cận cảnh thần thái MC SININE trong trang phục dạ kẻ Avant-Garde và kính vàng độc bản làm chủ nhịp điệu sân khấu.',
-                category: 'portrait',
-                accentColor: '#ffaa25',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1279 x 1920 HD' }
+                        "id": "stage-1",
+                        "index": "01",
+                        "filename": "stage_13.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_13.jpg",
+                        "fullPath": "assets/stage/full/stage_13.jpg",
+                        "width": 1279,
+                        "height": 1920,
+                        "isVertical": true,
+                        "aspectRatio": 0.666,
+                        "title": "KINETIC PULSE // MC SININE",
+                        "subtitle": "Cận cảnh thần thái MC SININE trong trang phục dạ kẻ Avant-Garde và kính vàng độc bản làm chủ nhịp điệu sân khấu.",
+                        "category": "portrait",
+                        "accentColor": "#ffaa25",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1279 x 1920 HD"
+                        }
             },
             {
-                id: 'stage-2',
-                index: '02',
-                thumbPath: 'assets/stage/thumbs/stage_21.jpg',
-                fullPath: 'assets/stage/full/stage_21.jpg',
-                width: 1920,
-                height: 1280,
-                isVertical: false,
-                title: 'INFINITY STAGE // ILLUMINATION',
-                subtitle: 'Khoảnh khắc bùng nổ năng lượng trên bục DJ trung tâm, khuấy động hàng ngàn khán giả trong đại sảnh Metropolis.',
-                category: 'highlight',
-                accentColor: '#38bdf8',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+                        "id": "stage-2",
+                        "index": "02",
+                        "filename": "stage_21.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_21.jpg",
+                        "fullPath": "assets/stage/full/stage_21.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "aspectRatio": 1.5,
+                        "title": "INFINITY STAGE // ILLUMINATION",
+                        "subtitle": "Khoảnh khắc bùng nổ năng lượng trên bục DJ trung tâm, khuấy động hàng ngàn khán giả trong đại sảnh Metropolis.",
+                        "category": "highlight",
+                        "accentColor": "#38bdf8",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        }
             },
             {
-                id: 'stage-3',
-                index: '03',
-                thumbPath: 'assets/stage/thumbs/stage_24.jpg',
-                fullPath: 'assets/stage/full/stage_24.jpg',
-                width: 1277,
-                height: 1920,
-                isVertical: true,
-                title: 'THE FINALE ECHO // MONOCHROME',
-                subtitle: 'Bức chân dung đen trắng kinh điển bắt trọn cử chỉ tay micro uy lực và phong thái tiên phong của MC SININE.',
-                category: 'portrait',
-                accentColor: '#ffffff',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1277 x 1920 HD' }
+                        "filename": "stage_25.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "PANORAMIC APEX // STAGE VORTEX",
+                        "subtitle": "Toàn cảnh sân khấu góc rộng bao trọn không gian ánh sáng laser và màn hình LED đại cảnh.",
+                        "category": "wide",
+                        "accentColor": "#ffaa25",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-3",
+                        "index": "03",
+                        "thumbPath": "assets/stage/thumbs/stage_25.jpg",
+                        "fullPath": "assets/stage/full/stage_25.jpg"
             },
             {
-                id: 'stage-4',
-                index: '04',
-                thumbPath: 'assets/stage/thumbs/stage_07.jpg',
-                fullPath: 'assets/stage/full/stage_07.jpg',
-                width: 1920,
-                height: 1279,
-                isVertical: false,
-                title: 'NEO-TOKYO VIBE // LIVE SET',
-                subtitle: 'Đội hình trình diễn vũ đạo và âm nhạc đương đại rực sáng dưới luồng laser xanh neon sắc sảo.',
-                category: 'wide',
-                accentColor: '#a3e635',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+                        "id": "stage-4",
+                        "index": "04",
+                        "filename": "stage_24.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_24.jpg",
+                        "fullPath": "assets/stage/full/stage_24.jpg",
+                        "width": 1277,
+                        "height": 1920,
+                        "isVertical": true,
+                        "aspectRatio": 0.665,
+                        "title": "THE FINALE ECHO // MONOCHROME",
+                        "subtitle": "Bức chân dung đen trắng kinh điển bắt trọn cử chỉ tay micro uy lực và phong thái tiên phong của MC SININE.",
+                        "category": "portrait",
+                        "accentColor": "#ffffff",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1277 x 1920 HD"
+                        }
             },
             {
-                id: 'stage-5',
-                index: '05',
-                thumbPath: 'assets/stage/thumbs/stage_11.jpg',
-                fullPath: 'assets/stage/full/stage_11.jpg',
-                width: 1920,
-                height: 1279,
-                isVertical: false,
-                title: 'STAGE ASCENSION // CLIMAX 18:13',
-                subtitle: 'Thời khắc đếm ngược đỉnh cao khi toàn bộ nghệ sĩ cùng giơ tay hòa chung nhịp đập với biển khán giả cuồng nhiệt.',
-                category: 'highlight',
-                accentColor: '#f43f5e',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+                        "id": "stage-5",
+                        "index": "05",
+                        "filename": "stage_07.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_07.jpg",
+                        "fullPath": "assets/stage/full/stage_07.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "aspectRatio": 1.501,
+                        "title": "NEO-TOKYO VIBE // LIVE SET",
+                        "subtitle": "Đội hình trình diễn vũ đạo và âm nhạc đương đại rực sáng dưới luồng laser xanh neon sắc sảo.",
+                        "category": "wide",
+                        "accentColor": "#a3e635",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        }
             },
             {
-                id: 'stage-6',
-                index: '06',
-                thumbPath: 'assets/stage/thumbs/stage_01.jpg',
-                fullPath: 'assets/stage/full/stage_01.jpg',
-                width: 1920,
-                height: 1280,
-                isVertical: false,
-                title: 'SONIC APEX // VOLTAGE PULSE',
-                subtitle: 'Khởi đầu màn trình diễn bùng nổ với luồng năng lượng âm thanh 99.8 MHz và hiệu ứng ánh sáng đại cảnh.',
-                category: 'highlight',
-                accentColor: '#f97316',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+                        "filename": "stage_26.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "NEO ARENA // SPECTRAL HORIZON",
+                        "subtitle": "Góc nhìn bao quát toàn bộ đại sảnh Metropolis rực sáng trong biển ánh sáng neon đa sắc.",
+                        "category": "wide",
+                        "accentColor": "#38bdf8",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-6",
+                        "index": "06",
+                        "thumbPath": "assets/stage/thumbs/stage_26.jpg",
+                        "fullPath": "assets/stage/full/stage_26.jpg"
             },
             {
-                id: 'stage-7',
-                index: '07',
-                thumbPath: 'assets/stage/thumbs/stage_02.jpg',
-                fullPath: 'assets/stage/full/stage_02.jpg',
-                width: 1279,
-                height: 1920,
-                isVertical: true,
-                title: 'CYBER RHAPSODY // SPOTLIGHT',
-                subtitle: 'Cận cảnh thần thái MC Sinine dưới ánh đèn spotlight định hướng và trang phục tương lai.',
-                category: 'portrait',
-                accentColor: '#38bdf8',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1279 x 1920 HD' }
+                        "id": "stage-7",
+                        "index": "07",
+                        "filename": "stage_11.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_11.jpg",
+                        "fullPath": "assets/stage/full/stage_11.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "aspectRatio": 1.501,
+                        "title": "STAGE ASCENSION // CLIMAX 18:13",
+                        "subtitle": "Thời khắc đếm ngược đỉnh cao khi toàn bộ nghệ sĩ cùng giơ tay hòa chung nhịp đập với biển khán giả cuồng nhiệt.",
+                        "category": "highlight",
+                        "accentColor": "#f43f5e",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        }
             },
             {
-                id: 'stage-8',
-                index: '08',
-                thumbPath: 'assets/stage/thumbs/stage_03.jpg',
-                fullPath: 'assets/stage/full/stage_03.jpg',
-                width: 1920,
-                height: 1279,
-                isVertical: false,
-                title: 'KINETIC CROWD // RESONANCE',
-                subtitle: 'Đại cảnh khán giả hòa cùng nhịp đập âm thanh thô mộc đầy nhiệt huyết.',
-                category: 'wide',
-                accentColor: '#a3e635',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+                        "id": "stage-8",
+                        "index": "08",
+                        "filename": "stage_01.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_01.jpg",
+                        "fullPath": "assets/stage/full/stage_01.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "aspectRatio": 1.5,
+                        "title": "SONIC APEX // VOLTAGE PULSE",
+                        "subtitle": "Live performance spotlight with sonic aura & dynamic laser grid",
+                        "category": "highlight",
+                        "accentColor": "#f97316",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        }
             },
             {
-                id: 'stage-9',
-                index: '09',
-                thumbPath: 'assets/stage/thumbs/stage_04.jpg',
-                fullPath: 'assets/stage/full/stage_04.jpg',
-                width: 1279,
-                height: 1920,
-                isVertical: true,
-                title: 'THE ELECTRIC GAZE',
-                subtitle: 'Ánh nhìn bản lĩnh của người làm chủ sân khấu trước hàng ngàn khán giả cuồng nhiệt.',
-                category: 'portrait',
-                accentColor: '#e11d48',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1279 x 1920 HD' }
+                        "id": "stage-9",
+                        "index": "09",
+                        "filename": "stage_02.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_02.jpg",
+                        "fullPath": "assets/stage/full/stage_02.jpg",
+                        "width": 1279,
+                        "height": 1920,
+                        "isVertical": true,
+                        "aspectRatio": 0.666,
+                        "title": "CYBER RHAPSODY // SPOTLIGHT",
+                        "subtitle": "Intimate stage portrait capturing the electric avant-garde energy",
+                        "category": "portrait",
+                        "accentColor": "#38bdf8",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1279 x 1920 HD"
+                        }
             },
             {
-                id: 'stage-10',
-                index: '10',
-                thumbPath: 'assets/stage/thumbs/stage_05.jpg',
-                fullPath: 'assets/stage/full/stage_05.jpg',
-                width: 1920,
-                height: 1277,
-                isVertical: false,
-                title: 'LASER CANOPY // SOUNDWAVE',
-                subtitle: 'Chùm tia laser màu xanh neon quét qua không gian tạo nên bầu không khí sci-fi huyền ảo.',
-                category: 'highlight',
-                accentColor: '#a855f7',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1277 HD' }
+                        "filename": "stage_27.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "title": "CROWD RESONANCE // SYNTH WAVE",
+                        "subtitle": "Khung cảnh đại khán trường đồng thanh hòa nhịp cùng năng lượng sân khấu đỉnh cao.",
+                        "category": "wide",
+                        "accentColor": "#a3e635",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        },
+                        "id": "stage-10",
+                        "index": "10",
+                        "thumbPath": "assets/stage/thumbs/stage_27.jpg",
+                        "fullPath": "assets/stage/full/stage_27.jpg"
             },
             {
-                id: 'stage-11',
-                index: '11',
-                thumbPath: 'assets/stage/thumbs/stage_06.jpg',
-                fullPath: 'assets/stage/full/stage_06.jpg',
-                width: 1920,
-                height: 1277,
-                isVertical: false,
-                title: 'HIGH FREQUENCY COMMAND',
-                subtitle: 'Giọng rap và lời dẫn dắt nhịp độ trận đấu/sự kiện với độ chuẩn xác tuyệt đối.',
-                category: 'wide',
-                accentColor: '#06b6d4',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1277 HD' }
+                        "id": "stage-11",
+                        "index": "11",
+                        "filename": "stage_03.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_03.jpg",
+                        "fullPath": "assets/stage/full/stage_03.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "aspectRatio": 1.501,
+                        "title": "KINETIC CROWD // RESONANCE",
+                        "subtitle": "Panoramic crowd wave synchronizing with 99.8 MHz sub-bass pulse",
+                        "category": "wide",
+                        "accentColor": "#a3e635",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        }
             },
             {
-                id: 'stage-12',
-                index: '12',
-                thumbPath: 'assets/stage/thumbs/stage_08.jpg',
-                fullPath: 'assets/stage/full/stage_08.jpg',
-                width: 1920,
-                height: 1279,
-                isVertical: false,
-                title: 'MIC FLUIDITY // FLOW MATRIX',
-                subtitle: 'Từng động tác tay micro nhịp nhàng và dứt khoát theo từng cú kick bass.',
-                category: 'wide',
-                accentColor: '#eab308',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+                        "id": "stage-12",
+                        "index": "12",
+                        "filename": "stage_04.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_04.jpg",
+                        "fullPath": "assets/stage/full/stage_04.jpg",
+                        "width": 1279,
+                        "height": 1920,
+                        "isVertical": true,
+                        "aspectRatio": 0.666,
+                        "title": "THE ELECTRIC GAZE",
+                        "subtitle": "Striking MC Sinine presence under directional strobe illumination",
+                        "category": "portrait",
+                        "accentColor": "#e11d48",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1279 x 1920 HD"
+                        }
             },
             {
-                id: 'stage-13',
-                index: '13',
-                thumbPath: 'assets/stage/thumbs/stage_09.jpg',
-                fullPath: 'assets/stage/full/stage_09.jpg',
-                width: 1920,
-                height: 1279,
-                isVertical: false,
-                title: 'AMPLIFIED VISION',
-                subtitle: 'Góc nhìn toàn cảnh trung tâm sân khấu với hệ thống ánh sáng chuyên nghiệp hàng đầu.',
-                category: 'wide',
-                accentColor: '#f97316',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+                        "id": "stage-13",
+                        "index": "13",
+                        "filename": "stage_05.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_05.jpg",
+                        "fullPath": "assets/stage/full/stage_05.jpg",
+                        "width": 1920,
+                        "height": 1277,
+                        "isVertical": false,
+                        "aspectRatio": 1.504,
+                        "title": "LASER CANOPY // SOUNDWAVE",
+                        "subtitle": "Grand arena laser beams cutting through synthetic fog",
+                        "category": "highlight",
+                        "accentColor": "#a855f7",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1277 HD"
+                        }
             },
             {
-                id: 'stage-14',
-                index: '14',
-                thumbPath: 'assets/stage/thumbs/stage_10.jpg',
-                fullPath: 'assets/stage/full/stage_10.jpg',
-                width: 1920,
-                height: 1279,
-                isVertical: false,
-                title: 'BASS OVERDRIVE // IMPACT',
-                subtitle: 'Độ nảy âm thanh khuấy động cảm xúc của toàn bộ khán đài.',
-                category: 'wide',
-                accentColor: '#38bdf8',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+                        "filename": "stage_28.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "CYBER DOMAIN // ILLUMINATED",
+                        "subtitle": "Không gian trình diễn đa chiều với hệ thống ánh sáng chuyển động nhịp nhàng.",
+                        "category": "wide",
+                        "accentColor": "#f97316",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-14",
+                        "index": "14",
+                        "thumbPath": "assets/stage/thumbs/stage_28.jpg",
+                        "fullPath": "assets/stage/full/stage_28.jpg"
             },
             {
-                id: 'stage-15',
-                index: '15',
-                thumbPath: 'assets/stage/thumbs/stage_12.jpg',
-                fullPath: 'assets/stage/full/stage_12.jpg',
-                width: 1920,
-                height: 1279,
-                isVertical: false,
-                title: 'CHROMATIC FLARE',
-                subtitle: 'Ánh đèn phản chiếu tạo vệt flare nghệ thuật sắc sảo.',
-                category: 'wide',
-                accentColor: '#e11d48',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1279 HD' }
+                        "id": "stage-15",
+                        "index": "15",
+                        "filename": "stage_06.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_06.jpg",
+                        "fullPath": "assets/stage/full/stage_06.jpg",
+                        "width": 1920,
+                        "height": 1277,
+                        "isVertical": false,
+                        "aspectRatio": 1.504,
+                        "title": "HIGH FREQUENCY COMMAND",
+                        "subtitle": "Vocal command driving thousands in rhythmic unison",
+                        "category": "wide",
+                        "accentColor": "#06b6d4",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1277 HD"
+                        }
             },
             {
-                id: 'stage-16',
-                index: '16',
-                thumbPath: 'assets/stage/thumbs/stage_14.jpg',
-                fullPath: 'assets/stage/full/stage_14.jpg',
-                width: 1920,
-                height: 1280,
-                isVertical: false,
-                title: 'NIGHT CYBERNETICS',
-                subtitle: 'Không gian đêm hội tụ âm nhạc, công nghệ trình chiếu và phong cách nghệ sĩ.',
-                category: 'wide',
-                accentColor: '#06b6d4',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+                        "id": "stage-16",
+                        "index": "16",
+                        "filename": "stage_08.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_08.jpg",
+                        "fullPath": "assets/stage/full/stage_08.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "aspectRatio": 1.501,
+                        "title": "MIC FLUIDITY // FLOW MATRIX",
+                        "subtitle": "Sculptural posture and flawless microphone handling",
+                        "category": "wide",
+                        "accentColor": "#eab308",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        }
             },
             {
-                id: 'stage-17',
-                index: '17',
-                thumbPath: 'assets/stage/thumbs/stage_15.jpg',
-                fullPath: 'assets/stage/full/stage_15.jpg',
-                width: 1280,
-                height: 1920,
-                isVertical: true,
-                title: 'ULTRAVIOLET ECHO',
-                subtitle: 'Sắc tím huyền bí tôn lên thần thái và phụ kiện metallic của MC SININE.',
-                category: 'highlight',
-                accentColor: '#ec4899',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1280 x 1920 HD' }
+                        "filename": "stage_29.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "METROPOLIS HORIZON // CLIMAX",
+                        "subtitle": "Bức tranh toàn cảnh sân khấu hội tụ hàng ngàn khán giả trong đêm trình diễn đặc biệt.",
+                        "category": "wide",
+                        "accentColor": "#06b6d4",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-17",
+                        "index": "17",
+                        "thumbPath": "assets/stage/thumbs/stage_29.jpg",
+                        "fullPath": "assets/stage/full/stage_29.jpg"
             },
             {
-                id: 'stage-18',
-                index: '18',
-                thumbPath: 'assets/stage/thumbs/stage_16.jpg',
-                fullPath: 'assets/stage/full/stage_16.jpg',
-                width: 1280,
-                height: 1920,
-                isVertical: true,
-                title: 'MONOCHROME VOLT',
-                subtitle: 'Dáng vóc ấn tượng nổi bật tương phản trên phông nền ánh sáng khổng lồ.',
-                category: 'portrait',
-                accentColor: '#eab308',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1280 x 1920 HD' }
+                        "id": "stage-18",
+                        "index": "18",
+                        "filename": "stage_09.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_09.jpg",
+                        "fullPath": "assets/stage/full/stage_09.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "aspectRatio": 1.501,
+                        "title": "AMPLIFIED VISION",
+                        "subtitle": "Wide-angle perspective of the cybernetic stage setup",
+                        "category": "wide",
+                        "accentColor": "#f97316",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        }
             },
             {
-                id: 'stage-19',
-                index: '19',
-                thumbPath: 'assets/stage/thumbs/stage_17.jpg',
-                fullPath: 'assets/stage/full/stage_17.jpg',
-                width: 1920,
-                height: 1280,
-                isVertical: false,
-                title: 'RAW ENERGY // UNLEASHED',
-                subtitle: 'Năng lượng bùng nổ đỉnh cao khi MC SININE dẫn dắt cao trào của đêm diễn.',
-                category: 'highlight',
-                accentColor: '#f97316',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+                        "id": "stage-19",
+                        "index": "19",
+                        "filename": "stage_10.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_10.jpg",
+                        "fullPath": "assets/stage/full/stage_10.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "aspectRatio": 1.501,
+                        "title": "BASS OVERDRIVE // IMPACT",
+                        "subtitle": "Bass reverberation vibrating across the main arena floor",
+                        "category": "wide",
+                        "accentColor": "#38bdf8",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        }
             },
             {
-                id: 'stage-20',
-                index: '20',
-                thumbPath: 'assets/stage/thumbs/stage_18.jpg',
-                fullPath: 'assets/stage/full/stage_18.jpg',
-                width: 1920,
-                height: 1280,
-                isVertical: false,
-                title: 'DIGITAL REVOLUTION',
-                subtitle: 'Mô hình sân khấu đa chiều kết hợp công nghệ âm thanh và visual thị giác.',
-                category: 'wide',
-                accentColor: '#38bdf8',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+                        "id": "stage-20",
+                        "index": "20",
+                        "filename": "stage_12.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_12.jpg",
+                        "fullPath": "assets/stage/full/stage_12.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "aspectRatio": 1.501,
+                        "title": "CHROMATIC FLARE",
+                        "subtitle": "Prismatic lens flare refracting stage beam arrays",
+                        "category": "wide",
+                        "accentColor": "#e11d48",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        }
             },
             {
-                id: 'stage-21',
-                index: '21',
-                thumbPath: 'assets/stage/thumbs/stage_19.jpg',
-                fullPath: 'assets/stage/full/stage_19.jpg',
-                width: 1920,
-                height: 1081,
-                isVertical: false,
-                title: 'TRANSCENDENT MOMENT',
-                subtitle: 'Khoảnh khắc thăng hoa khi hàng nghìn cánh tay giơ cao theo nhịp điệu.',
-                category: 'wide',
-                accentColor: '#a3e635',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1081 HD' }
+                        "filename": "stage_30.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "LASER ARCHITECTURE // VAST VIBE",
+                        "subtitle": "Dải laser quét rộng khắp không gian tạo nên bầu không khí âm nhạc tương lai choáng ngợp.",
+                        "category": "highlight",
+                        "accentColor": "#ec4899",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-21",
+                        "index": "21",
+                        "thumbPath": "assets/stage/thumbs/stage_30.jpg",
+                        "fullPath": "assets/stage/full/stage_30.jpg"
             },
             {
-                id: 'stage-22',
-                index: '22',
-                thumbPath: 'assets/stage/thumbs/stage_20.jpg',
-                fullPath: 'assets/stage/full/stage_20.jpg',
-                width: 1920,
-                height: 1277,
-                isVertical: false,
-                title: 'METROPOLIS BEAT',
-                subtitle: 'Âm hưởng hiện đại lan tỏa khắp không gian đô thị năng động.',
-                category: 'wide',
-                accentColor: '#e11d48',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1277 HD' }
+                        "id": "stage-22",
+                        "index": "22",
+                        "filename": "stage_14.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_14.jpg",
+                        "fullPath": "assets/stage/full/stage_14.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "aspectRatio": 1.5,
+                        "title": "NIGHT CYBERNETICS",
+                        "subtitle": "Midnight frequency broadcast through heavy cyber synth",
+                        "category": "wide",
+                        "accentColor": "#06b6d4",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        }
             },
             {
-                id: 'stage-23',
-                index: '23',
-                thumbPath: 'assets/stage/thumbs/stage_22.jpg',
-                fullPath: 'assets/stage/full/stage_22.jpg',
-                width: 1280,
-                height: 1920,
-                isVertical: true,
-                title: 'CYBER HYPERDRIVE',
-                subtitle: 'Tốc độ, biểu cảm và cử chỉ quyết đoán làm nên dấu ấn riêng biệt của SININE.',
-                category: 'portrait',
-                accentColor: '#06b6d4',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1280 x 1920 HD' }
+                        "id": "stage-23",
+                        "index": "23",
+                        "filename": "stage_15.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_15.jpg",
+                        "fullPath": "assets/stage/full/stage_15.jpg",
+                        "width": 1280,
+                        "height": 1920,
+                        "isVertical": true,
+                        "aspectRatio": 0.667,
+                        "title": "ULTRAVIOLET ECHO",
+                        "subtitle": "Ultraviolet wash highlighting cyber metallic accessories",
+                        "category": "highlight",
+                        "accentColor": "#ec4899",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1280 x 1920 HD"
+                        }
             },
             {
-                id: 'stage-24',
-                index: '24',
-                thumbPath: 'assets/stage/thumbs/stage_23.jpg',
-                fullPath: 'assets/stage/full/stage_23.jpg',
-                width: 1920,
-                height: 1280,
-                isVertical: false,
-                title: 'ATMOSPHERIC CLIMAX',
-                subtitle: 'Khói khổng lồ và pháo hoa rực sáng khép lại những khoảnh khắc đáng nhớ.',
-                category: 'highlight',
-                accentColor: '#ec4899',
-                specs: { venue: 'METROPOLIS ARENA // STAGE 01', freq: '99.8 MHz VOLTAGE', resolution: '1920 x 1280 HD' }
+                        "filename": "stage_31.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "MASS RESONANCE // 99.8 MHz",
+                        "subtitle": "Góc rộng bắt trọn sự cuồng nhiệt và năng lượng bùng nổ từ hàng ghế khán giả tới tâm điểm sân khấu.",
+                        "category": "wide",
+                        "accentColor": "#eab308",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-24",
+                        "index": "24",
+                        "thumbPath": "assets/stage/thumbs/stage_31.jpg",
+                        "fullPath": "assets/stage/full/stage_31.jpg"
+            },
+            {
+                        "id": "stage-25",
+                        "index": "25",
+                        "filename": "stage_16.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_16.jpg",
+                        "fullPath": "assets/stage/full/stage_16.jpg",
+                        "width": 1280,
+                        "height": 1920,
+                        "isVertical": true,
+                        "aspectRatio": 0.667,
+                        "title": "MONOCHROME VOLT",
+                        "subtitle": "High contrast silhouette framed by massive LED graphics",
+                        "category": "portrait",
+                        "accentColor": "#eab308",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1280 x 1920 HD"
+                        }
+            },
+            {
+                        "id": "stage-26",
+                        "index": "26",
+                        "filename": "stage_17.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_17.jpg",
+                        "fullPath": "assets/stage/full/stage_17.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "aspectRatio": 1.5,
+                        "title": "RAW ENERGY // UNLEASHED",
+                        "subtitle": "Raw uncompromised vocal delivery at peak crescendo",
+                        "category": "highlight",
+                        "accentColor": "#f97316",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        }
+            },
+            {
+                        "id": "stage-27",
+                        "index": "27",
+                        "filename": "stage_18.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_18.jpg",
+                        "fullPath": "assets/stage/full/stage_18.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "aspectRatio": 1.5,
+                        "title": "DIGITAL REVOLUTION",
+                        "subtitle": "Future-forward live entertainment architecture in action",
+                        "category": "wide",
+                        "accentColor": "#38bdf8",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        }
+            },
+            {
+                        "filename": "stage_32.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "SONIC GALAXY // PANORAMA",
+                        "subtitle": "Hiệu ứng ánh sáng phối hợp nhịp nhàng biến toàn bộ khán phòng thành một vũ trụ âm thanh rực rỡ.",
+                        "category": "wide",
+                        "accentColor": "#38bdf8",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-28",
+                        "index": "28",
+                        "thumbPath": "assets/stage/thumbs/stage_32.jpg",
+                        "fullPath": "assets/stage/full/stage_32.jpg"
+            },
+            {
+                        "id": "stage-29",
+                        "index": "29",
+                        "filename": "stage_19.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_19.jpg",
+                        "fullPath": "assets/stage/full/stage_19.jpg",
+                        "width": 1920,
+                        "height": 1080,
+                        "isVertical": false,
+                        "aspectRatio": 1.778,
+                        "title": "TRANSCENDENT MOMENT",
+                        "subtitle": "Emotional peak as thousands illuminate the stadium",
+                        "category": "wide",
+                        "accentColor": "#a3e635",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1080 HD"
+                        }
+            },
+            {
+                        "id": "stage-30",
+                        "index": "30",
+                        "filename": "stage_20.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_20.jpg",
+                        "fullPath": "assets/stage/full/stage_20.jpg",
+                        "width": 1920,
+                        "height": 1277,
+                        "isVertical": false,
+                        "aspectRatio": 1.504,
+                        "title": "METROPOLIS BEAT",
+                        "subtitle": "Urban sonic architecture echoing through metropolitan night",
+                        "category": "wide",
+                        "accentColor": "#e11d48",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1277 HD"
+                        }
+            },
+            {
+                        "filename": "stage_33.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "title": "GRAND SPECTACLE // PULSE",
+                        "subtitle": "Toàn cảnh khoảnh khắc thăng hoa cao trào khi toàn bộ hệ thống pháo sáng và visual kích hoạt.",
+                        "category": "highlight",
+                        "accentColor": "#e11d48",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        },
+                        "id": "stage-31",
+                        "index": "31",
+                        "thumbPath": "assets/stage/thumbs/stage_33.jpg",
+                        "fullPath": "assets/stage/full/stage_33.jpg"
+            },
+            {
+                        "id": "stage-32",
+                        "index": "32",
+                        "filename": "stage_22.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_22.jpg",
+                        "fullPath": "assets/stage/full/stage_22.jpg",
+                        "width": 1280,
+                        "height": 1920,
+                        "isVertical": true,
+                        "aspectRatio": 0.667,
+                        "title": "CYBER HYPERDRIVE",
+                        "subtitle": "Hyper-kinetic velocity captured in a split second",
+                        "category": "portrait",
+                        "accentColor": "#06b6d4",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1280 x 1920 HD"
+                        }
+            },
+            {
+                        "id": "stage-33",
+                        "index": "33",
+                        "filename": "stage_23.jpg",
+                        "thumbPath": "assets/stage/thumbs/stage_23.jpg",
+                        "fullPath": "assets/stage/full/stage_23.jpg",
+                        "width": 1920,
+                        "height": 1280,
+                        "isVertical": false,
+                        "aspectRatio": 1.5,
+                        "title": "ATMOSPHERIC CLIMAX",
+                        "subtitle": "Atmospheric crescendo with full-spectrum stage lasers",
+                        "category": "highlight",
+                        "accentColor": "#ec4899",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1280 HD"
+                        }
+            },
+            {
+                        "filename": "stage_34.jpg",
+                        "width": 1920,
+                        "height": 1279,
+                        "isVertical": false,
+                        "title": "INFINITE NIGHT // ENERGY GRID",
+                        "subtitle": "Góc nhìn toàn cảnh ngoạn mục khép lại những phút giây thăng hoa bất tận của đêm diễn.",
+                        "category": "wide",
+                        "accentColor": "#a855f7",
+                        "specs": {
+                                    "venue": "METROPOLIS ARENA // STAGE 01",
+                                    "freq": "99.8 MHz VOLTAGE",
+                                    "resolution": "1920 x 1279 HD"
+                        },
+                        "id": "stage-34",
+                        "index": "34",
+                        "thumbPath": "assets/stage/thumbs/stage_34.jpg",
+                        "fullPath": "assets/stage/full/stage_34.jpg"
             }
-        ];
+];
 
         let currentLightboxIndex = 0;
         let cardElements = [];
@@ -1704,7 +2217,293 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // -------------------------------------------------------------
+    // 7. PAGE 7: MC SININE MOMENTS & SHORT REELS GALLERY LOGIC
+    // -------------------------------------------------------------
+    function initMomentsGallery() {
+        const grid = document.getElementById('moments-grid');
+        const filterBar = document.getElementById('moments-filter-bar');
+        const filterBtns = filterBar ? filterBar.querySelectorAll('.moments-filter-btn') : [];
+
+        // Lightbox elements
+        const lightbox = document.getElementById('moments-lightbox');
+        const backdrop = document.getElementById('moments-lightbox-backdrop');
+        const closeBtn = document.getElementById('moments-lightbox-close-btn');
+        const prevBtn = document.getElementById('moments-lightbox-prev');
+        const nextBtn = document.getElementById('moments-lightbox-next');
+        const lightboxVideo = document.getElementById('moments-lightbox-video');
+        const badgeEl = document.getElementById('moments-lightbox-badge');
+        const titleEl = document.getElementById('moments-lightbox-title');
+        const counterEl = document.getElementById('moments-lightbox-counter');
+
+        if (!grid) return;
+
+        const MOMENTS_DATA = [
+            { id: "m-01", index: "01", filename: "1IV7JRFQH_3SELQ7.mp4", isVertical: true, duration: "00:48", title: "STAGE HYPE // CROWD SHOUT", tag: "CROWD & HYPE", category: "vertical" },
+            { id: "m-02", index: "02", filename: "32d2dcb7efbe47e6ace669fae7737f2c.mp4", isVertical: true, duration: "00:25", title: "DYNAMIC BEAT DROP // MC SININE", tag: "STAGE ENERGY", category: "vertical" },
+            { id: "m-03", index: "03", filename: "6f4b94c8432247f8b53a819d38d64295.mp4", isVertical: true, duration: "01:05", title: "NIGHT ARENA // CROWD ENERGY", tag: "CROWD & HYPE", category: "vertical" },
+            { id: "m-04", index: "04", filename: "IMG_1758.mp4", isVertical: true, duration: "01:17", title: "METROPOLIS PULSE // LIVE VOCAL", tag: "LIVE STAGE", category: "vertical" },
+            { id: "m-05", index: "05", filename: "IMG_1761.mp4", isVertical: true, duration: "00:53", title: "CYBER WAVE // FLOW & RHYTHM", tag: "STAGE FLOW", category: "vertical" },
+            { id: "m-06", index: "06", filename: "IMG_1763.mp4", isVertical: true, duration: "00:57", title: "LASER BEAM MOMENT // MC FOCUS", tag: "VISUAL LIGHT", category: "vertical" },
+            { id: "m-07", index: "07", filename: "IMG_2138.mp4", isVertical: false, duration: "00:52", title: "PANORAMA STAGE // FULL VENUE", tag: "WIDE STAGE", category: "horizontal" },
+            { id: "m-08", index: "08", filename: "IMG_3527.mp4", isVertical: false, duration: "00:21", title: "WIDE ARENA BASS DROP", tag: "WIDE STAGE", category: "horizontal" },
+            { id: "m-09", index: "09", filename: "IMG_3576.mp4", isVertical: true, duration: "00:23", title: "STAGE SPOTLIGHT // CLOSE-UP", tag: "SOLO SHOT", category: "vertical" },
+            { id: "m-10", index: "10", filename: "IMG_3807.mp4", isVertical: false, duration: "01:40", title: "FESTIVAL HIGHLIGHT // WIDE REEL", tag: "WIDE STAGE", category: "horizontal" },
+            { id: "m-11", index: "11", filename: "IMG_3927.mp4", isVertical: true, duration: "01:02", title: "ELECTRIC ATMOSPHERE // MC POWER", tag: "STAGE ENERGY", category: "vertical" },
+            { id: "m-12", index: "12", filename: "IMG_4372.mp4", isVertical: true, duration: "00:53", title: "CROWD CHANT // SOUND MATRIX", tag: "CROWD & HYPE", category: "vertical" },
+            { id: "m-13", index: "13", filename: "IMG_4561.mp4", isVertical: true, duration: "01:09", title: "CLIMAX PERFORMANCE // MC SININE", tag: "LIVE STAGE", category: "vertical" },
+            { id: "m-14", index: "14", filename: "IMG_4618.mp4", isVertical: true, duration: "00:34", title: "NEON GLOW // RHYTHMIC ACCENT", tag: "STAGE ENERGY", category: "vertical" },
+            { id: "m-15", index: "15", filename: "IMG_4620.mp4", isVertical: true, duration: "00:24", title: "BASSLINE VIBRATION // HYPE", tag: "CROWD & HYPE", category: "vertical" },
+            { id: "m-16", index: "16", filename: "IMG_7073.mp4", isVertical: true, duration: "01:21", title: "MIDNIGHT ANTHEM // MAIN STAGE", tag: "LIVE STAGE", category: "vertical" },
+            { id: "m-17", index: "17", filename: "IMG_8255.mp4", isVertical: false, duration: "00:57", title: "HORIZON AUDITORIUM // LIVE", tag: "WIDE STAGE", category: "horizontal" },
+            { id: "m-18", index: "18", filename: "IMG_8255_1.mp4", isVertical: true, duration: "01:27", title: "AVANT-GARDE FLOW // VOCAL SET", tag: "LIVE STAGE", category: "vertical" },
+            { id: "m-19", index: "19", filename: "IMG_8263.mp4", isVertical: true, duration: "00:31", title: "STAGE PYRO & LASER RUN", tag: "VISUAL LIGHT", category: "vertical" },
+            { id: "m-20", index: "20", filename: "IMG_9784.mp4", isVertical: true, duration: "00:13", title: "HYPER QUICK IMPACT", tag: "QUICK CUT", category: "vertical" },
+            { id: "m-21", index: "21", filename: "IMG_9785.mp4", isVertical: true, duration: "00:26", title: "KINETIC MOTION // MC VERSE", tag: "STAGE ENERGY", category: "vertical" },
+            { id: "m-22", index: "22", filename: "IMG_9891.mp4", isVertical: true, duration: "00:35", title: "SOUNDWAVE SURGE // LIVE SHOT", tag: "LIVE STAGE", category: "vertical" },
+            { id: "m-23", index: "23", filename: "IMG_9892.mp4", isVertical: true, duration: "00:24", title: "AUDIENCE CELEBRATION", tag: "CROWD & HYPE", category: "vertical" },
+            { id: "m-24", index: "24", filename: "dji_mimo_20251224_233904_0_1766594721238_video.mp4", isVertical: true, duration: "01:33", title: "CINEMATIC REEL // MC SININE", tag: "CINEMATIC", category: "vertical" },
+            { id: "m-25", index: "25", filename: "f621555d1183408aaf9941348c40f812.mp4", isVertical: true, duration: "00:14", title: "RAPID FIRE // BEAT ACCENT", tag: "STAGE ENERGY", category: "vertical" },
+            { id: "m-26", index: "26", filename: "quality_restoration_20250517164841130.mp4", isVertical: true, duration: "00:38", title: "RESTORED MASTER CUT // FINALE", tag: "SPECIAL CUT", category: "vertical" }
+        ];
+
+        const BASE_R2_URL = "https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/moment/sinine%20moment%201/";
+
+        let filteredItems = [...MOMENTS_DATA];
+        let currentModalIndex = 0;
+
+        function renderCards() {
+            grid.innerHTML = '';
+            filteredItems.forEach((item, fIndex) => {
+                const card = document.createElement('div');
+                card.className = `moment-card ${item.isVertical ? 'is-vertical' : 'is-horizontal'}`;
+                card.setAttribute('data-id', item.id);
+                card.setAttribute('data-category', item.category);
+
+                const videoUrl = `${BASE_R2_URL}${encodeURIComponent(item.filename)}`;
+
+                card.innerHTML = `
+                    <div class="moment-video-container">
+                        <video class="moment-preview-video" preload="metadata" muted playsinline loop src="${videoUrl}#t=1.0"></video>
+                        <div class="moment-card-overlay">
+                            <div class="moment-top-row">
+                                <span class="moment-index-badge">// ${item.index}</span>
+                                <span class="moment-duration-pill">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                                    ${item.duration}
+                                </span>
+                            </div>
+                            <div class="moment-play-btn">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg>
+                            </div>
+                            <div class="moment-bottom-row">
+                                <h4 class="moment-title">${item.title}</h4>
+                                <span class="moment-tag">${item.tag}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const previewVideo = card.querySelector('.moment-preview-video');
+
+                // Hover preview play
+                card.addEventListener('mouseenter', () => {
+                    if (previewVideo && previewVideo.paused) {
+                        previewVideo.play().catch(() => {});
+                    }
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    if (previewVideo && !previewVideo.paused) {
+                        previewVideo.pause();
+                        previewVideo.currentTime = 1.0;
+                    }
+                });
+
+                // Click to open modal
+                card.addEventListener('click', () => {
+                    openModal(fIndex);
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        function openModal(index) {
+            currentModalIndex = index;
+            const item = filteredItems[currentModalIndex];
+            if (!item || !lightbox || !lightboxVideo) return;
+
+            const videoUrl = `${BASE_R2_URL}${encodeURIComponent(item.filename)}`;
+            
+            if (badgeEl) badgeEl.textContent = `// REEL #${item.index}`;
+            if (titleEl) titleEl.textContent = item.title;
+            if (counterEl) counterEl.textContent = `${item.index} / ${MOMENTS_DATA.length}`;
+
+            lightboxVideo.src = videoUrl;
+            lightboxVideo.load();
+            lightbox.classList.add('active');
+            if (pageMoments) pageMoments.style.overflow = 'hidden';
+
+            lightboxVideo.play().catch(e => {
+                console.log('Video play caught:', e);
+            });
+        }
+
+        function closeModal() {
+            if (!lightbox || !lightboxVideo) return;
+            lightbox.classList.remove('active');
+            lightboxVideo.pause();
+            lightboxVideo.src = '';
+            if (pageMoments) pageMoments.style.overflow = '';
+        }
+
+        function nextVideo() {
+            if (filteredItems.length === 0) return;
+            const nextIdx = (currentModalIndex + 1) % filteredItems.length;
+            openModal(nextIdx);
+        }
+
+        function prevVideo() {
+            if (filteredItems.length === 0) return;
+            const prevIdx = (currentModalIndex - 1 + filteredItems.length) % filteredItems.length;
+            openModal(prevIdx);
+        }
+
+        // Modal Controls
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (backdrop) backdrop.addEventListener('click', closeModal);
+        if (nextBtn) nextBtn.addEventListener('click', nextVideo);
+        if (prevBtn) prevBtn.addEventListener('click', prevVideo);
+
+        // Keyboard Navigation
+        window.addEventListener('keydown', (e) => {
+            if (!lightbox || !lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowRight') nextVideo();
+            if (e.key === 'ArrowLeft') prevVideo();
+        });
+
+        // Filter Controls
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (filter === 'all') {
+                    filteredItems = [...MOMENTS_DATA];
+                } else if (filter === 'vertical') {
+                    filteredItems = MOMENTS_DATA.filter(m => m.isVertical);
+                } else if (filter === 'horizontal') {
+                    filteredItems = MOMENTS_DATA.filter(m => !m.isVertical);
+                }
+
+                renderCards();
+            });
+        });
+
+        renderCards();
+    }
+
+    // -------------------------------------------------------------
+    // Page 8: Booking System Initialization
+    // -------------------------------------------------------------
+    function initBookingSystem() {
+        if (!bookingForm) return;
+
+        const GOOGLE_SCRIPT_BOOKING_URL = "https://script.google.com/macros/s/AKfycby6LhJnZFh-cjkEIDlkI8rqrrqb3wbYFILC7GygHDSXduGOCSfr6wi6irP4yZbiEHU9dQ/exec";
+
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('booking-name')?.value.trim();
+            const phone = document.getElementById('booking-phone')?.value.trim();
+            const email = document.getElementById('booking-email')?.value.trim();
+            const eventTypeSelect = document.getElementById('booking-event-type');
+            const eventType = eventTypeSelect?.options[eventTypeSelect.selectedIndex]?.text || '';
+            const date = document.getElementById('booking-date')?.value.trim() || 'Chưa xác định';
+            const venue = document.getElementById('booking-venue')?.value.trim() || 'Chưa cung cấp';
+            const message = document.getElementById('booking-message')?.value.trim() || 'Không có ghi chú thêm';
+
+            if (!name || !phone || !email || !eventTypeSelect?.value) {
+                if (bookingStatusMsg) {
+                    bookingStatusMsg.className = 'form-status-msg error';
+                    bookingStatusMsg.innerHTML = '⚠️ Vui lòng điền đầy đủ các thông tin bắt buộc (*): Họ tên, Số điện thoại, Email và Loại hình sự kiện.';
+                    bookingStatusMsg.style.display = 'block';
+                }
+                return;
+            }
+
+            // Create submit state
+            const submitBtn = document.getElementById('btn-submit-booking');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+                submitBtn.innerHTML = '<span class="btn-text">Đang gửi thông tin...</span>';
+            }
+
+            // Gửi dữ liệu đồng thời vào Google Sheet và bắn Email về Mcsininewst@gmail.com
+            const payload = {
+                name,
+                phone,
+                email,
+                eventType,
+                date,
+                venue,
+                message
+            };
+
+            fetch(GOOGLE_SCRIPT_BOOKING_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+
+                if (bookingStatusMsg) {
+                    bookingStatusMsg.className = 'form-status-msg success';
+                    bookingStatusMsg.innerHTML = `
+                        <div style="font-weight: 700; font-size: 1rem; color: #fb923c; margin-bottom: 8px;">
+                            ✓ Đã gửi yêu cầu đặt lịch thành công!
+                        </div>
+                        <div style="font-size: 0.92rem; color: rgba(255, 255, 255, 0.88); line-height: 1.6;">
+                            Cảm ơn <strong>${name}</strong>. Ban quản lý của MC Sinine đã nhận được thông tin sự kiện [<strong>${eventType}</strong>] và sẽ liên hệ lại qua số điện thoại <strong>${phone}</strong> / email <strong>${email}</strong> trong thời gian sớm nhất.
+                        </div>
+                    `;
+                    bookingStatusMsg.style.display = 'block';
+                }
+
+                bookingForm.reset();
+            })
+            .catch((error) => {
+                console.error('Error submitting booking:', error);
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
+                if (bookingStatusMsg) {
+                    bookingStatusMsg.className = 'form-status-msg error';
+                    bookingStatusMsg.innerHTML = '⚠️ Có lỗi xảy ra trong quá trình gửi yêu cầu. Vui lòng thử lại hoặc liên hệ trực tiếp qua Zalo/Điện thoại.';
+                    bookingStatusMsg.style.display = 'block';
+                }
+            });
+        });
+    }
+
     // Initialize all components
     initRecapShowcase();
     initStageGallery();
+    initMomentsGallery();
+    initBookingSystem();
 });
