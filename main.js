@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById('back-to-welcome');
     const scene = document.querySelector('.scene');
 
-    // Page Switching Management (Page 1: Home, Page 2: Artist, Page 3: Collection, Page 4: 360° Runway, Page 5: Video Recap, Page 6: Live Stage, Page 7: Moments)
     const pageHome = document.getElementById('page-home');
     const pageArtist = document.getElementById('page-artist');
     const pageCollection = document.getElementById('page-collection');
+    const pagePosters = document.getElementById('page-posters');
     const pageRunway = document.getElementById('page-runway');
     const pageRecap = document.getElementById('page-recap');
     const pageStage = document.getElementById('page-stage');
@@ -31,8 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const stageToMomentsBtn = document.getElementById('btn-stage-to-moments');
     const momentsToStageBtn = document.getElementById('btn-moments-to-stage');
     const momentsToHomeBtn = document.getElementById('btn-moments-to-home');
-    const momentsToBookingBtn = document.getElementById('btn-moments-to-booking');
-    const bookingToMomentsBtn = document.getElementById('btn-booking-to-moments');
+    const momentsToPostersBtn = document.getElementById('btn-moments-to-posters');
+    const postersToMomentsBtn = document.getElementById('btn-posters-to-moments');
+    const postersToBookingBtn = document.getElementById('btn-posters-to-booking');
+    const bookingToPostersBtn = document.getElementById('btn-booking-to-posters');
     const bookingToHomeBtn = document.getElementById('btn-booking-to-home');
     const bookingForm = document.getElementById('booking-inquiry-form');
     const bookingStatusMsg = document.getElementById('booking-status-msg');
@@ -41,9 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const recapMainVideo = document.getElementById('recap-main-video');
     const momentsLightbox = document.getElementById('moments-lightbox');
     const momentsLightboxVideo = document.getElementById('moments-lightbox-video');
+    const postersLightbox = document.getElementById('posters-lightbox');
     
     let currentPage = 'home';
     let isTransitioning = false;
+    let resumeRunwayPhysics = null;
+    let startTypewriterLoop = () => {};
 
     function switchPage(pageId) {
         if (!pageId || isTransitioning) return;
@@ -69,6 +74,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (pageMoments) {
                 pageMoments.style.overflow = '';
+                const playingPreviews = pageMoments.querySelectorAll('video.moment-preview-video');
+                playingPreviews.forEach(v => {
+                    if (!v.paused) {
+                        v.pause();
+                        v.currentTime = 1.0;
+                    }
+                });
+                const playingCards = pageMoments.querySelectorAll('.moment-card.is-playing');
+                playingCards.forEach(c => c.classList.remove('is-playing'));
+            }
+        }
+
+        // If navigating away from posters page, close posters lightbox
+        if (pageId !== 'posters') {
+            if (postersLightbox) {
+                postersLightbox.classList.remove('active');
             }
         }
 
@@ -76,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pageHome) pageHome.classList.remove('page-prev', 'active');
         if (pageArtist) pageArtist.classList.remove('page-prev', 'active');
         if (pageCollection) pageCollection.classList.remove('page-prev', 'active');
+        if (pagePosters) pagePosters.classList.remove('page-prev', 'active');
         if (pageRunway) pageRunway.classList.remove('page-prev', 'active');
         if (pageRecap) pageRecap.classList.remove('page-prev', 'active');
         if (pageStage) pageStage.classList.remove('page-prev', 'active');
@@ -95,7 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageArtist) pageArtist.classList.add('page-prev');
             if (pageCollection) {
                 pageCollection.classList.add('active');
-                pageCollection.scrollTop = 0;
+                if (previousPage === 'runway') {
+                    const setBottom = () => {
+                        pageCollection.scrollTop = Math.max(0, pageCollection.scrollHeight - pageCollection.clientHeight - 10);
+                    };
+                    setBottom();
+                    requestAnimationFrame(setBottom);
+                    setTimeout(setBottom, 50);
+                } else {
+                    pageCollection.scrollTop = 0;
+                }
             }
         } else if (pageId === 'runway') {
             if (pageHome) pageHome.classList.add('page-prev');
@@ -132,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageStage) {
                 pageStage.classList.add('active');
                 if (previousPage === 'moments') {
-                    // Seamlessly stay at the bottom of the stage photos
                     const setBottom = () => {
                         pageStage.scrollTop = Math.max(0, pageStage.scrollHeight - pageStage.clientHeight - 10);
                     };
@@ -152,8 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageStage) pageStage.classList.add('page-prev');
             if (pageMoments) {
                 pageMoments.classList.add('active');
-                if (previousPage === 'booking') {
-                    // Seamlessly stay at the bottom of moments grid
+                if (previousPage === 'posters') {
                     const setBottom = () => {
                         pageMoments.scrollTop = Math.max(0, pageMoments.scrollHeight - pageMoments.clientHeight - 10);
                     };
@@ -164,6 +193,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     pageMoments.scrollTop = 0;
                 }
             }
+        } else if (pageId === 'posters') {
+            if (pageHome) pageHome.classList.add('page-prev');
+            if (pageArtist) pageArtist.classList.add('page-prev');
+            if (pageCollection) pageCollection.classList.add('page-prev');
+            if (pageRunway) pageRunway.classList.add('page-prev');
+            if (pageRecap) pageRecap.classList.add('page-prev');
+            if (pageStage) pageStage.classList.add('page-prev');
+            if (pageMoments) pageMoments.classList.add('page-prev');
+            if (pagePosters) {
+                pagePosters.classList.add('active');
+                if (previousPage === 'booking') {
+                    const setBottom = () => {
+                        pagePosters.scrollTop = Math.max(0, pagePosters.scrollHeight - pagePosters.clientHeight - 10);
+                    };
+                    setBottom();
+                    requestAnimationFrame(setBottom);
+                    setTimeout(setBottom, 50);
+                } else {
+                    pagePosters.scrollTop = 0;
+                }
+            }
         } else if (pageId === 'booking') {
             if (pageHome) pageHome.classList.add('page-prev');
             if (pageArtist) pageArtist.classList.add('page-prev');
@@ -172,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pageRecap) pageRecap.classList.add('page-prev');
             if (pageStage) pageStage.classList.add('page-prev');
             if (pageMoments) pageMoments.classList.add('page-prev');
+            if (pagePosters) pagePosters.classList.add('page-prev');
             if (pageBooking) {
                 pageBooking.classList.add('active');
                 pageBooking.scrollTop = 0;
@@ -182,21 +233,31 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.forEach(link => {
             if (link.getAttribute('data-target') === pageId) {
                 link.classList.add('active');
+                if (link.scrollIntoView) {
+                    link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
             } else {
                 link.classList.remove('active');
             }
         });
 
+        if (pageId === 'runway' && resumeRunwayPhysics) {
+            resumeRunwayPhysics();
+        }
+        if (pageId === 'home') {
+            startTypewriterLoop();
+        }
+
         setTimeout(() => {
             isTransitioning = false;
-        }, 1200);
+        }, 750);
     }
 
     // Nav link click listeners
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const target = link.getAttribute('data-target');
-            if (target === 'home' || target === 'artist' || target === 'collection' || target === 'runway' || target === 'recap' || target === 'stage' || target === 'moments' || target === 'booking') {
+            if (target === 'home' || target === 'artist' || target === 'collection' || target === 'posters' || target === 'runway' || target === 'recap' || target === 'stage' || target === 'moments' || target === 'booking') {
                 e.preventDefault();
                 switchPage(target);
             }
@@ -260,16 +321,24 @@ document.addEventListener('DOMContentLoaded', () => {
         momentsToStageBtn.addEventListener('click', () => switchPage('stage'));
     }
 
-    if (momentsToBookingBtn) {
-        momentsToBookingBtn.addEventListener('click', () => switchPage('booking'));
+    if (momentsToPostersBtn) {
+        momentsToPostersBtn.addEventListener('click', () => switchPage('posters'));
     }
 
     if (momentsToHomeBtn) {
         momentsToHomeBtn.addEventListener('click', () => switchPage('home'));
     }
 
-    if (bookingToMomentsBtn) {
-        bookingToMomentsBtn.addEventListener('click', () => switchPage('moments'));
+    if (postersToMomentsBtn) {
+        postersToMomentsBtn.addEventListener('click', () => switchPage('moments'));
+    }
+
+    if (postersToBookingBtn) {
+        postersToBookingBtn.addEventListener('click', () => switchPage('booking'));
+    }
+
+    if (bookingToPostersBtn) {
+        bookingToPostersBtn.addEventListener('click', () => switchPage('posters'));
     }
 
     if (bookingToHomeBtn) {
@@ -322,32 +391,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollHint = document.querySelector('.home-scroll-hint');
 
     // -------------------------------------------------------------
-    // 3. Scroll-Driven Multi-Page Navigation Engine
+    // 3. High-Performance Multi-Page Navigation & Scroll Engine
     // -------------------------------------------------------------
+    const PAGE_SEQUENCE = [
+        { id: 'home', el: pageHome },
+        { id: 'artist', el: pageArtist },
+        { id: 'collection', el: pageCollection },
+        { id: 'runway', el: pageRunway },
+        { id: 'recap', el: pageRecap },
+        { id: 'stage', el: pageStage },
+        { id: 'moments', el: pageMoments },
+        { id: 'posters', el: pagePosters },
+        { id: 'booking', el: pageBooking }
+    ];
+
     let targetScrollProgress = 0;
     let currentScrollProgress = 0;
     let lastTouchY = 0;
     let overscrollAccumulator = 0;
 
-    // Helper: Check if container is scrolled to bottom
+    // Fast boundary check helpers (Generous thresholds for effortless navigation)
     function isScrolledToBottom(el) {
         if (!el) return true;
-        return el.scrollTop + el.clientHeight >= el.scrollHeight - 15;
+        if (el.id === 'page-runway') return true;
+        return (el.scrollTop + el.clientHeight) >= (el.scrollHeight - 30);
     }
 
-    // Helper: Check if container is scrolled to top
     function isScrolledToTop(el) {
         if (!el) return true;
-        return el.scrollTop <= 5;
+        if (el.id === 'page-runway') return true;
+        return el.scrollTop <= 15;
     }
 
-    // Mouse Wheel Scroll Listener
+    // Mouse Wheel Scroll Listener (Desktop / Trackpad - Light 25px threshold)
     window.addEventListener('wheel', (e) => {
-        // If on Welcome Screen, any downward scroll enters the main site
         if (!homeScreen.classList.contains('visible')) {
-            if (e.deltaY > 10) {
-                enterSite();
-            }
+            if (e.deltaY > 10) enterSite();
             return;
         }
 
@@ -355,156 +434,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentPage === 'home') {
             if (e.deltaY > 0) {
-                // Scrolling down on home page
                 if (targetScrollProgress < 1.0) {
-                    targetScrollProgress += e.deltaY * 0.0016;
-                    targetScrollProgress = Math.min(1.0, targetScrollProgress);
-                } else if (targetScrollProgress >= 0.95) {
+                    targetScrollProgress = Math.min(1.0, targetScrollProgress + e.deltaY * 0.0016);
+                    startTypewriterLoop();
+                } else if (targetScrollProgress >= 0.96) {
                     overscrollAccumulator += e.deltaY;
-                    if (overscrollAccumulator > 60) {
+                    if (overscrollAccumulator > 25) {
                         overscrollAccumulator = 0;
                         switchPage('artist');
                     }
                 }
             } else if (e.deltaY < 0) {
-                // Scrolling up on home page
-                targetScrollProgress += e.deltaY * 0.0016;
-                targetScrollProgress = Math.max(0, targetScrollProgress);
+                targetScrollProgress = Math.max(0, targetScrollProgress + e.deltaY * 0.0016);
+                startTypewriterLoop();
                 overscrollAccumulator = 0;
             }
-        } else if (currentPage === 'artist') {
-            // In Artist Page:
-            if (e.deltaY < 0 && isScrolledToTop(pageArtist)) {
-                // Scrolling up at top -> return to Home
-                overscrollAccumulator += Math.abs(e.deltaY);
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('home');
-                }
-            } else if (e.deltaY > 0 && isScrolledToBottom(pageArtist)) {
-                // Scrolling down at bottom -> advance to Collection (Page 3)
-                overscrollAccumulator += e.deltaY;
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('collection');
-                }
-            } else {
+            return;
+        }
+
+        const currentIdx = PAGE_SEQUENCE.findIndex(p => p.id === currentPage);
+        if (currentIdx === -1) return;
+        const currentEl = PAGE_SEQUENCE[currentIdx].el;
+
+        if (e.deltaY < 0 && isScrolledToTop(currentEl)) {
+            overscrollAccumulator += Math.abs(e.deltaY);
+            if (overscrollAccumulator > 25) {
                 overscrollAccumulator = 0;
+                if (currentIdx > 0) {
+                    switchPage(PAGE_SEQUENCE[currentIdx - 1].id);
+                }
             }
-        } else if (currentPage === 'collection') {
-            // In Collection Page (Page 3):
-            if (e.deltaY < 0 && isScrolledToTop(pageCollection)) {
-                // Scrolling up at top -> return to Artist (Page 2)
-                overscrollAccumulator += Math.abs(e.deltaY);
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('artist');
-                }
-            } else if (e.deltaY > 0 && isScrolledToBottom(pageCollection)) {
-                // Scrolling down at bottom -> advance to 360° Runway (Page 4)
-                overscrollAccumulator += e.deltaY;
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('runway');
-                }
-            } else {
+        } else if (e.deltaY > 0 && isScrolledToBottom(currentEl)) {
+            overscrollAccumulator += e.deltaY;
+            if (overscrollAccumulator > 25) {
                 overscrollAccumulator = 0;
+                if (currentIdx < PAGE_SEQUENCE.length - 1) {
+                    switchPage(PAGE_SEQUENCE[currentIdx + 1].id);
+                }
             }
-        } else if (currentPage === 'runway') {
-            // In 360° Runway Page (Page 4):
-            if (e.deltaY < 0 && isScrolledToTop(pageRunway)) {
-                // Scrolling up at top -> return to Collection (Page 3)
-                overscrollAccumulator += Math.abs(e.deltaY);
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('collection');
-                }
-            } else if (e.deltaY > 0) {
-                // Scrolling down -> advance to Video Recap (Page 5)
-                overscrollAccumulator += e.deltaY;
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('recap');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'recap') {
-            // In Video Recap Page (Page 5):
-            if (e.deltaY < 0 && isScrolledToTop(pageRecap)) {
-                // Scrolling up at top -> return to Runway (Page 4)
-                overscrollAccumulator += Math.abs(e.deltaY);
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('runway');
-                }
-            } else if (e.deltaY > 0 && isScrolledToBottom(pageRecap)) {
-                // Scrolling down at bottom -> advance to Live Stage (Page 6)
-                overscrollAccumulator += e.deltaY;
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('stage');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'stage') {
-            // In Live Stage Page (Page 6):
-            if (e.deltaY < 0 && isScrolledToTop(pageStage)) {
-                // Scrolling up at top -> return to Video Recap (Page 5)
-                overscrollAccumulator += Math.abs(e.deltaY);
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('recap');
-                }
-            } else if (e.deltaY > 0 && isScrolledToBottom(pageStage)) {
-                // Scrolling down at bottom -> advance to Moments (Page 7)
-                overscrollAccumulator += e.deltaY;
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('moments');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'moments') {
-            // In Moments Page (Page 7):
-            if (e.deltaY < 0 && isScrolledToTop(pageMoments)) {
-                // Scrolling up at top -> return to Live Stage (Page 6)
-                overscrollAccumulator += Math.abs(e.deltaY);
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('stage');
-                }
-            } else if (e.deltaY > 0 && isScrolledToBottom(pageMoments)) {
-                // Scrolling down at bottom -> advance to Booking (Page 8)
-                overscrollAccumulator += e.deltaY;
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('booking');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'booking') {
-            // In Booking Page (Page 8):
-            if (e.deltaY < 0 && isScrolledToTop(pageBooking)) {
-                // Scrolling up at top -> return to Moments (Page 7)
-                overscrollAccumulator += Math.abs(e.deltaY);
-                if (overscrollAccumulator > 60) {
-                    overscrollAccumulator = 0;
-                    switchPage('moments');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
+        } else {
+            overscrollAccumulator = 0;
         }
     }, { passive: true });
 
-    // Touch Swipe Scroll for Mobile
+    // Touch Handling for Mobile (120Hz Native Smooth Scrolling + Ultra-Light Gentle Swipe Transitions)
+    let touchStartY = 0;
+    let touchStartX = 0;
+    let touchStartTime = 0;
+
     window.addEventListener('touchstart', (e) => {
         if (e.touches.length > 0) {
-            lastTouchY = e.touches[0].clientY;
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+            lastTouchY = touchStartY;
+            touchStartTime = performance.now();
             overscrollAccumulator = 0;
         }
     }, { passive: true });
@@ -513,243 +496,222 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isTransitioning || e.touches.length === 0) return;
 
         const touchY = e.touches[0].clientY;
+        const touchX = e.touches[0].clientX;
         const delta = lastTouchY - touchY;
         lastTouchY = touchY;
 
-        // If on Welcome Screen, swiping up enters main site
+        // If the gesture has noticeable horizontal movement, do NOT accumulate vertical page-switch overscroll
+        if (Math.abs(touchX - touchStartX) > Math.abs(touchY - touchStartY) * 0.9) {
+            overscrollAccumulator = 0;
+            return;
+        }
+
         if (!homeScreen.classList.contains('visible')) {
-            if (delta > 20) {
-                enterSite();
-            }
+            if (delta > 20) enterSite();
             return;
         }
 
         if (currentPage === 'home') {
-            // Lock browser pull-to-refresh on home
-            if (e.cancelable) {
-                e.preventDefault();
-            }
-
             if (delta > 0) {
-                // Swiping up (moving forward)
                 if (targetScrollProgress < 1.0) {
-                    targetScrollProgress += delta * 0.0035;
-                    targetScrollProgress = Math.min(1.0, targetScrollProgress);
-                } else if (targetScrollProgress >= 0.95) {
+                    targetScrollProgress = Math.min(1.0, targetScrollProgress + delta * 0.0035);
+                    startTypewriterLoop();
+                } else if (targetScrollProgress >= 0.96) {
                     overscrollAccumulator += delta;
-                    if (overscrollAccumulator > 40) {
+                    if (overscrollAccumulator > 35) {
                         overscrollAccumulator = 0;
                         switchPage('artist');
                     }
                 }
             } else if (delta < 0) {
-                // Swiping down (moving backward)
-                targetScrollProgress += delta * 0.0035;
-                targetScrollProgress = Math.max(0, targetScrollProgress);
+                targetScrollProgress = Math.max(0, targetScrollProgress + delta * 0.0035);
+                startTypewriterLoop();
                 overscrollAccumulator = 0;
             }
-        } else if (currentPage === 'artist') {
-            if (delta < 0 && isScrolledToTop(pageArtist)) {
-                // Swiping down at top -> return to Home
-                overscrollAccumulator += Math.abs(delta);
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('home');
-                }
-            } else if (delta > 0 && isScrolledToBottom(pageArtist)) {
-                // Swiping up at bottom -> advance to Collection (Page 3)
-                overscrollAccumulator += delta;
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('collection');
-                }
-            } else {
+            return;
+        }
+
+        const currentIdx = PAGE_SEQUENCE.findIndex(p => p.id === currentPage);
+        if (currentIdx === -1) return;
+        const currentEl = PAGE_SEQUENCE[currentIdx].el;
+
+        // Only switch pages with deliberate vertical overscroll (> 50px)
+        if (delta > 0 && isScrolledToBottom(currentEl)) {
+            overscrollAccumulator += delta;
+            if (overscrollAccumulator > 50) {
                 overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'collection') {
-            if (delta < 0 && isScrolledToTop(pageCollection)) {
-                // Swiping down at top -> return to Artist (Page 2)
-                overscrollAccumulator += Math.abs(delta);
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('artist');
+                if (currentIdx < PAGE_SEQUENCE.length - 1) {
+                    switchPage(PAGE_SEQUENCE[currentIdx + 1].id);
                 }
-            } else if (delta > 0 && isScrolledToBottom(pageCollection)) {
-                // Swiping up at bottom -> advance to 360° Runway (Page 4)
-                overscrollAccumulator += delta;
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('runway');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'runway') {
-            if (delta < 0 && isScrolledToTop(pageRunway)) {
-                // Swiping down at top -> return to Collection (Page 3)
-                overscrollAccumulator += Math.abs(delta);
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('collection');
-                }
-            } else if (delta > 0) {
-                // Swiping up at bottom of runway -> advance to Recap (Page 5)
-                overscrollAccumulator += delta;
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('recap');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'recap') {
-            if (delta < 0 && isScrolledToTop(pageRecap)) {
-                // Swiping down at top -> return to Runway (Page 4)
-                overscrollAccumulator += Math.abs(delta);
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('runway');
-                }
-            } else if (delta > 0 && isScrolledToBottom(pageRecap)) {
-                // Swiping up at bottom -> advance to Live Stage (Page 6)
-                overscrollAccumulator += delta;
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('stage');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'stage') {
-            if (delta < 0 && isScrolledToTop(pageStage)) {
-                // Swiping down at top -> return to Recap (Page 5)
-                overscrollAccumulator += Math.abs(delta);
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('recap');
-                }
-            } else if (delta > 0 && isScrolledToBottom(pageStage)) {
-                // Swiping up at bottom -> advance to Moments (Page 7)
-                overscrollAccumulator += delta;
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('moments');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'moments') {
-            if (delta < 0 && isScrolledToTop(pageMoments)) {
-                // Swiping down at top -> return to Live Stage (Page 6)
-                overscrollAccumulator += Math.abs(delta);
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('stage');
-                }
-            } else if (delta > 0 && isScrolledToBottom(pageMoments)) {
-                // Swiping up at bottom -> advance to Booking (Page 8)
-                overscrollAccumulator += delta;
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('booking');
-                }
-            } else {
-                overscrollAccumulator = 0;
-            }
-        } else if (currentPage === 'booking') {
-            if (delta < 0 && isScrolledToTop(pageBooking)) {
-                // Swiping down at top -> return to Moments (Page 7)
-                overscrollAccumulator += Math.abs(delta);
-                if (overscrollAccumulator > 40) {
-                    overscrollAccumulator = 0;
-                    switchPage('moments');
-                }
-            } else {
-                overscrollAccumulator = 0;
             }
         }
-    }, { passive: false });
-
-    // Typewriter Animation Loop
-    function updateTypewriter() {
-        if (homeScreen.classList.contains('visible')) {
-            // Apple-like gentle damping
-            currentScrollProgress += (targetScrollProgress - currentScrollProgress) * 0.065;
-
-            // 1. Reveal Decor Lines 0 to 3 sequentially
-            decorLines.forEach((line) => {
-                const lineIndex = parseInt(line.getAttribute('data-line'), 10) || 0;
-                const textSpan = line.querySelector('.decor-text');
-                if (!textSpan) return;
-                
-                const fullText = textSpan.getAttribute('data-text') || '';
-                const lineStart = 0.04 + lineIndex * 0.16;
-                const lineEnd = lineStart + 0.14;
-
-                if (currentScrollProgress < lineStart) {
-                    line.classList.remove('active', 'typing');
-                    textSpan.textContent = '';
-                } else if (currentScrollProgress >= lineStart && currentScrollProgress < lineEnd) {
-                    const progressInLine = (currentScrollProgress - lineStart) / (lineEnd - lineStart);
-                    const charCount = Math.floor(progressInLine * (fullText.length + 1));
-                    if (charCount <= 0) {
-                        line.classList.remove('active', 'typing');
-                        textSpan.textContent = '';
-                    } else {
-                        line.classList.add('active', 'typing');
-                        textSpan.textContent = fullText.slice(0, charCount);
-                    }
-                } else {
-                    line.classList.add('active');
-                    line.classList.remove('typing');
-                    textSpan.textContent = fullText;
+        else if (delta < 0 && isScrolledToTop(currentEl)) {
+            overscrollAccumulator += Math.abs(delta);
+            if (overscrollAccumulator > 50) {
+                overscrollAccumulator = 0;
+                if (currentIdx > 0) {
+                    switchPage(PAGE_SEQUENCE[currentIdx - 1].id);
                 }
-            });
+            }
+        } else {
+            overscrollAccumulator = 0;
+        }
+    }, { passive: true });
 
-            // 2. Reveal Giant SININE Wordmark as the FINAL step (0.70 to 0.96)
-            if (brandWordmark && brandTextSpan) {
-                const brandStart = 0.70;
-                const brandEnd = 0.96;
+    window.addEventListener('touchend', (e) => {
+        if (isTransitioning || e.changedTouches.length === 0) return;
+        if (currentPage === 'home') return;
 
-                if (currentScrollProgress < brandStart) {
+        const touchEndY = e.changedTouches[0].clientY;
+        const touchEndX = e.changedTouches[0].clientX;
+        const totalDeltaY = touchStartY - touchEndY;
+        const totalDeltaX = touchStartX - touchEndX;
+
+        // Require clear vertical intent: vertical distance must be significantly larger than horizontal
+        if (Math.abs(totalDeltaY) < Math.abs(totalDeltaX) * 1.5) return;
+
+        const currentIdx = PAGE_SEQUENCE.findIndex(p => p.id === currentPage);
+        if (currentIdx === -1) return;
+        const currentEl = PAGE_SEQUENCE[currentIdx].el;
+
+        // Intentional swipe at boundary
+        if (totalDeltaY > 40 && isScrolledToBottom(currentEl)) {
+            if (currentIdx < PAGE_SEQUENCE.length - 1) {
+                switchPage(PAGE_SEQUENCE[currentIdx + 1].id);
+            }
+        }
+        else if (totalDeltaY < -40 && isScrolledToTop(currentEl)) {
+            if (currentIdx > 0) {
+                switchPage(PAGE_SEQUENCE[currentIdx - 1].id);
+            }
+        }
+    }, { passive: true });
+
+    // -------------------------------------------------------------
+    // Typewriter Animation Engine (Pre-cached & Sleeping when idle)
+    // -------------------------------------------------------------
+    const cachedDecorLines = Array.from(decorLines).map(line => ({
+        el: line,
+        index: parseInt(line.getAttribute('data-line'), 10) || 0,
+        textSpan: line.querySelector('.decor-text'),
+        fullText: line.querySelector('.decor-text')?.getAttribute('data-text') || '',
+        currentCount: -1
+    }));
+
+    let lastBrandCount = -1;
+    let isTypewriterRunning = false;
+
+    function renderTypewriterFrames(progress) {
+        cachedDecorLines.forEach((item) => {
+            const lineStart = 0.04 + item.index * 0.16;
+            const lineEnd = lineStart + 0.14;
+
+            if (progress < lineStart) {
+                if (item.currentCount !== 0) {
+                    item.el.classList.remove('active', 'typing');
+                    if (item.textSpan) item.textSpan.textContent = '';
+                    item.currentCount = 0;
+                }
+            } else if (progress >= lineStart && progress < lineEnd) {
+                const progressInLine = (progress - lineStart) / (lineEnd - lineStart);
+                const charCount = Math.floor(progressInLine * (item.fullText.length + 1));
+                if (charCount <= 0) {
+                    if (item.currentCount !== 0) {
+                        item.el.classList.remove('active', 'typing');
+                        if (item.textSpan) item.textSpan.textContent = '';
+                        item.currentCount = 0;
+                    }
+                } else if (charCount !== item.currentCount) {
+                    item.el.classList.add('active', 'typing');
+                    if (item.textSpan) item.textSpan.textContent = item.fullText.slice(0, charCount);
+                    item.currentCount = charCount;
+                }
+            } else {
+                if (item.currentCount !== item.fullText.length) {
+                    item.el.classList.add('active');
+                    item.el.classList.remove('typing');
+                    if (item.textSpan) item.textSpan.textContent = item.fullText;
+                    item.currentCount = item.fullText.length;
+                }
+            }
+        });
+
+        if (brandWordmark && brandTextSpan) {
+            const brandStart = 0.70;
+            const brandEnd = 0.96;
+
+            if (progress < brandStart) {
+                if (lastBrandCount !== 0) {
                     brandWordmark.classList.remove('active', 'typing');
                     brandTextSpan.textContent = '';
-                } else if (currentScrollProgress >= brandStart && currentScrollProgress < brandEnd) {
-                    const progressInBrand = (currentScrollProgress - brandStart) / (brandEnd - brandStart);
-                    const charCount = Math.floor(progressInBrand * (brandFullText.length + 1));
-                    if (charCount <= 0) {
+                    lastBrandCount = 0;
+                }
+            } else if (progress >= brandStart && progress < brandEnd) {
+                const progressInBrand = (progress - brandStart) / (brandEnd - brandStart);
+                const charCount = Math.floor(progressInBrand * (brandFullText.length + 1));
+                if (charCount <= 0) {
+                    if (lastBrandCount !== 0) {
                         brandWordmark.classList.remove('active', 'typing');
                         brandTextSpan.textContent = '';
-                    } else {
-                        brandWordmark.classList.add('active', 'typing');
-                        brandTextSpan.textContent = brandFullText.slice(0, charCount);
+                        lastBrandCount = 0;
                     }
-                } else {
+                } else if (charCount !== lastBrandCount) {
+                    brandWordmark.classList.add('active', 'typing');
+                    brandTextSpan.textContent = brandFullText.slice(0, charCount);
+                    lastBrandCount = charCount;
+                }
+            } else {
+                if (lastBrandCount !== brandFullText.length) {
                     brandWordmark.classList.add('active');
                     brandWordmark.classList.remove('typing');
                     brandTextSpan.textContent = brandFullText;
-                }
-            }
-
-            // 3. Dynamic Scroll Hint Behavior
-            if (scrollHint) {
-                if (currentScrollProgress >= 0.95) {
-                    scrollHint.classList.add('ready-to-slide');
-                    scrollHint.classList.remove('faded');
-                    if (hintText) hintText.textContent = 'SCROLL TO SLIDE UP // ARTIST INFO ↓';
-                } else if (currentScrollProgress > 0.08) {
-                    scrollHint.classList.remove('ready-to-slide');
-                    scrollHint.classList.add('faded');
-                    if (hintText) hintText.textContent = 'SCROLL TO REVEAL';
-                } else {
-                    scrollHint.classList.remove('ready-to-slide', 'faded');
-                    if (hintText) hintText.textContent = 'SCROLL TO REVEAL';
+                    lastBrandCount = brandFullText.length;
                 }
             }
         }
-        requestAnimationFrame(updateTypewriter);
+
+        if (scrollHint) {
+            if (progress >= 0.95) {
+                scrollHint.classList.add('ready-to-slide');
+                scrollHint.classList.remove('faded');
+                if (hintText) hintText.textContent = 'SCROLL TO SLIDE UP // ARTIST INFO ↓';
+            } else if (progress > 0.08) {
+                scrollHint.classList.remove('ready-to-slide');
+                scrollHint.classList.add('faded');
+                if (hintText) hintText.textContent = 'SCROLL TO REVEAL';
+            } else {
+                scrollHint.classList.remove('ready-to-slide', 'faded');
+                if (hintText) hintText.textContent = 'SCROLL TO REVEAL';
+            }
+        }
     }
-    updateTypewriter();
+
+    function updateTypewriter() {
+        if (!homeScreen.classList.contains('visible') || currentPage !== 'home') {
+            isTypewriterRunning = false;
+            return;
+        }
+
+        const diff = targetScrollProgress - currentScrollProgress;
+        if (Math.abs(diff) > 0.0005) {
+            currentScrollProgress += diff * 0.085;
+            renderTypewriterFrames(currentScrollProgress);
+            requestAnimationFrame(updateTypewriter);
+        } else {
+            currentScrollProgress = targetScrollProgress;
+            renderTypewriterFrames(currentScrollProgress);
+            isTypewriterRunning = false;
+        }
+    }
+
+    startTypewriterLoop = function() {
+        if (!isTypewriterRunning && currentPage === 'home') {
+            isTypewriterRunning = true;
+            requestAnimationFrame(updateTypewriter);
+        }
+    };
+
+    renderTypewriterFrames(0);
 
     // -------------------------------------------------------------
     // 4. Premium 3D Mouse Parallax Effect
@@ -1085,6 +1047,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return idx;
         }
 
+        let isRunwayLoopRunning = false;
+        function ensureRunwayLoop() {
+            if (!isRunwayLoopRunning && currentPage === 'runway') {
+                isRunwayLoopRunning = true;
+                requestAnimationFrame(renderLoop);
+            }
+        }
+        resumeRunwayPhysics = ensureRunwayLoop;
+
         // Rotate to specific look index
         function rotateToIndex(targetIdx) {
             let currentNearest = getNearestIndex(targetAngle);
@@ -1094,10 +1065,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (diff < -itemCount / 2) diff += itemCount;
             targetAngle -= diff * angleStep;
             dragVelocity = 0;
+            ensureRunwayLoop();
         }
 
         // Animation Physics Loop (60/120fps Silky Smooth Decoupled Engine)
         function renderLoop() {
+            if (currentPage !== 'runway') {
+                isRunwayLoopRunning = false;
+                return;
+            }
+
             if (isDragging) {
                 // Responsive gentle lerp following the finger/pointer
                 currentAngle += (targetAngle - currentAngle) * 0.38;
@@ -1128,10 +1105,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateHUD(currentActive);
             }
 
-            requestAnimationFrame(renderLoop);
+            if (isDragging || Math.abs(dragVelocity) > 0.05 || Math.abs(targetAngle - currentAngle) > 0.02) {
+                requestAnimationFrame(renderLoop);
+            } else {
+                isRunwayLoopRunning = false;
+            }
         }
 
-        requestAnimationFrame(renderLoop);
         updateHUD(0);
 
         // Drag handlers (Decoupled Touch & Mouse with rolling average velocity)
@@ -1143,6 +1123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lastDragTime = performance.now();
             dragSamples = [];
             dragVelocity = 0;
+            ensureRunwayLoop();
         }
 
         function onDragMove(clientX) {
@@ -1242,6 +1223,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 targetAngle += angleStep;
                 dragVelocity = 0;
+                ensureRunwayLoop();
             });
         }
 
@@ -1250,6 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 targetAngle -= angleStep;
                 dragVelocity = 0;
+                ensureRunwayLoop();
             });
         }
 
@@ -1259,9 +1242,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'ArrowLeft') {
                 targetAngle += angleStep;
                 dragVelocity = 0;
+                ensureRunwayLoop();
             } else if (e.key === 'ArrowRight') {
                 targetAngle -= angleStep;
                 dragVelocity = 0;
+                ensureRunwayLoop();
             }
         });
     }
@@ -1297,26 +1282,6 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                         "id": "stage-1",
                         "index": "01",
-                        "filename": "stage_13.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_13.jpg",
-                        "fullPath": "assets/stage/full/stage_13.jpg",
-                        "width": 1279,
-                        "height": 1920,
-                        "isVertical": true,
-                        "aspectRatio": 0.666,
-                        "title": "KINETIC PULSE // MC SININE",
-                        "subtitle": "Cận cảnh thần thái MC SININE trong trang phục dạ kẻ Avant-Garde và kính vàng độc bản làm chủ nhịp điệu sân khấu.",
-                        "category": "portrait",
-                        "accentColor": "#ffaa25",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1279 x 1920 HD"
-                        }
-            },
-            {
-                        "id": "stage-2",
-                        "index": "02",
                         "filename": "stage_21.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_21.jpg",
                         "fullPath": "assets/stage/full/stage_21.jpg",
@@ -1335,27 +1300,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "filename": "stage_25.jpg",
-                        "width": 1920,
-                        "height": 1280,
-                        "isVertical": false,
-                        "title": "PANORAMIC APEX // STAGE VORTEX",
-                        "subtitle": "Toàn cảnh sân khấu góc rộng bao trọn không gian ánh sáng laser và màn hình LED đại cảnh.",
-                        "category": "wide",
-                        "accentColor": "#ffaa25",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1280 HD"
-                        },
-                        "id": "stage-3",
-                        "index": "03",
-                        "thumbPath": "assets/stage/thumbs/stage_25.jpg",
-                        "fullPath": "assets/stage/full/stage_25.jpg"
-            },
-            {
-                        "id": "stage-4",
-                        "index": "04",
+                        "id": "stage-2",
+                        "index": "02",
                         "filename": "stage_24.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_24.jpg",
                         "fullPath": "assets/stage/full/stage_24.jpg",
@@ -1374,26 +1320,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-5",
-                        "index": "05",
-                        "filename": "stage_07.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_07.jpg",
-                        "fullPath": "assets/stage/full/stage_07.jpg",
-                        "width": 1920,
-                        "height": 1279,
-                        "isVertical": false,
-                        "aspectRatio": 1.501,
-                        "title": "NEO-TOKYO VIBE // LIVE SET",
-                        "subtitle": "Đội hình trình diễn vũ đạo và âm nhạc đương đại rực sáng dưới luồng laser xanh neon sắc sảo.",
-                        "category": "wide",
-                        "accentColor": "#a3e635",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1279 HD"
-                        }
-            },
-            {
                         "filename": "stage_26.jpg",
                         "width": 1920,
                         "height": 1280,
@@ -1407,34 +1333,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     "freq": "99.8 MHz VOLTAGE",
                                     "resolution": "1920 x 1280 HD"
                         },
-                        "id": "stage-6",
-                        "index": "06",
+                        "id": "stage-3",
+                        "index": "03",
                         "thumbPath": "assets/stage/thumbs/stage_26.jpg",
                         "fullPath": "assets/stage/full/stage_26.jpg"
             },
             {
-                        "id": "stage-7",
-                        "index": "07",
-                        "filename": "stage_11.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_11.jpg",
-                        "fullPath": "assets/stage/full/stage_11.jpg",
-                        "width": 1920,
-                        "height": 1279,
-                        "isVertical": false,
-                        "aspectRatio": 1.501,
-                        "title": "STAGE ASCENSION // CLIMAX 18:13",
-                        "subtitle": "Thời khắc đếm ngược đỉnh cao khi toàn bộ nghệ sĩ cùng giơ tay hòa chung nhịp đập với biển khán giả cuồng nhiệt.",
-                        "category": "highlight",
-                        "accentColor": "#f43f5e",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1279 HD"
-                        }
-            },
-            {
-                        "id": "stage-8",
-                        "index": "08",
+                        "id": "stage-4",
+                        "index": "04",
                         "filename": "stage_01.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_01.jpg",
                         "fullPath": "assets/stage/full/stage_01.jpg",
@@ -1453,8 +1359,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-9",
-                        "index": "09",
+                        "id": "stage-5",
+                        "index": "05",
                         "filename": "stage_02.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_02.jpg",
                         "fullPath": "assets/stage/full/stage_02.jpg",
@@ -1486,14 +1392,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     "freq": "99.8 MHz VOLTAGE",
                                     "resolution": "1920 x 1279 HD"
                         },
-                        "id": "stage-10",
-                        "index": "10",
+                        "id": "stage-6",
+                        "index": "06",
                         "thumbPath": "assets/stage/thumbs/stage_27.jpg",
                         "fullPath": "assets/stage/full/stage_27.jpg"
             },
             {
-                        "id": "stage-11",
-                        "index": "11",
+                        "id": "stage-7",
+                        "index": "07",
                         "filename": "stage_03.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_03.jpg",
                         "fullPath": "assets/stage/full/stage_03.jpg",
@@ -1512,8 +1418,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-12",
-                        "index": "12",
+                        "id": "stage-8",
+                        "index": "08",
                         "filename": "stage_04.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_04.jpg",
                         "fullPath": "assets/stage/full/stage_04.jpg",
@@ -1532,8 +1438,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-13",
-                        "index": "13",
+                        "id": "stage-9",
+                        "index": "09",
                         "filename": "stage_05.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_05.jpg",
                         "fullPath": "assets/stage/full/stage_05.jpg",
@@ -1565,50 +1471,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                     "freq": "99.8 MHz VOLTAGE",
                                     "resolution": "1920 x 1280 HD"
                         },
-                        "id": "stage-14",
-                        "index": "14",
+                        "id": "stage-10",
+                        "index": "10",
                         "thumbPath": "assets/stage/thumbs/stage_28.jpg",
                         "fullPath": "assets/stage/full/stage_28.jpg"
-            },
-            {
-                        "id": "stage-15",
-                        "index": "15",
-                        "filename": "stage_06.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_06.jpg",
-                        "fullPath": "assets/stage/full/stage_06.jpg",
-                        "width": 1920,
-                        "height": 1277,
-                        "isVertical": false,
-                        "aspectRatio": 1.504,
-                        "title": "HIGH FREQUENCY COMMAND",
-                        "subtitle": "Vocal command driving thousands in rhythmic unison",
-                        "category": "wide",
-                        "accentColor": "#06b6d4",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1277 HD"
-                        }
-            },
-            {
-                        "id": "stage-16",
-                        "index": "16",
-                        "filename": "stage_08.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_08.jpg",
-                        "fullPath": "assets/stage/full/stage_08.jpg",
-                        "width": 1920,
-                        "height": 1279,
-                        "isVertical": false,
-                        "aspectRatio": 1.501,
-                        "title": "MIC FLUIDITY // FLOW MATRIX",
-                        "subtitle": "Sculptural posture and flawless microphone handling",
-                        "category": "wide",
-                        "accentColor": "#eab308",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1279 HD"
-                        }
             },
             {
                         "filename": "stage_29.jpg",
@@ -1624,14 +1490,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     "freq": "99.8 MHz VOLTAGE",
                                     "resolution": "1920 x 1280 HD"
                         },
-                        "id": "stage-17",
-                        "index": "17",
+                        "id": "stage-11",
+                        "index": "11",
                         "thumbPath": "assets/stage/thumbs/stage_29.jpg",
                         "fullPath": "assets/stage/full/stage_29.jpg"
             },
             {
-                        "id": "stage-18",
-                        "index": "18",
+                        "id": "stage-12",
+                        "index": "12",
                         "filename": "stage_09.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_09.jpg",
                         "fullPath": "assets/stage/full/stage_09.jpg",
@@ -1650,8 +1516,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-19",
-                        "index": "19",
+                        "id": "stage-13",
+                        "index": "13",
                         "filename": "stage_10.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_10.jpg",
                         "fullPath": "assets/stage/full/stage_10.jpg",
@@ -1670,8 +1536,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-20",
-                        "index": "20",
+                        "id": "stage-14",
+                        "index": "14",
                         "filename": "stage_12.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_12.jpg",
                         "fullPath": "assets/stage/full/stage_12.jpg",
@@ -1703,14 +1569,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     "freq": "99.8 MHz VOLTAGE",
                                     "resolution": "1920 x 1280 HD"
                         },
-                        "id": "stage-21",
-                        "index": "21",
+                        "id": "stage-15",
+                        "index": "15",
                         "thumbPath": "assets/stage/thumbs/stage_30.jpg",
                         "fullPath": "assets/stage/full/stage_30.jpg"
             },
             {
-                        "id": "stage-22",
-                        "index": "22",
+                        "id": "stage-16",
+                        "index": "16",
                         "filename": "stage_14.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_14.jpg",
                         "fullPath": "assets/stage/full/stage_14.jpg",
@@ -1729,67 +1595,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-23",
-                        "index": "23",
-                        "filename": "stage_15.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_15.jpg",
-                        "fullPath": "assets/stage/full/stage_15.jpg",
-                        "width": 1280,
-                        "height": 1920,
-                        "isVertical": true,
-                        "aspectRatio": 0.667,
-                        "title": "ULTRAVIOLET ECHO",
-                        "subtitle": "Ultraviolet wash highlighting cyber metallic accessories",
-                        "category": "highlight",
-                        "accentColor": "#ec4899",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1280 x 1920 HD"
-                        }
-            },
-            {
-                        "filename": "stage_31.jpg",
-                        "width": 1920,
-                        "height": 1280,
-                        "isVertical": false,
-                        "title": "MASS RESONANCE // 99.8 MHz",
-                        "subtitle": "Góc rộng bắt trọn sự cuồng nhiệt và năng lượng bùng nổ từ hàng ghế khán giả tới tâm điểm sân khấu.",
-                        "category": "wide",
-                        "accentColor": "#eab308",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1280 HD"
-                        },
-                        "id": "stage-24",
-                        "index": "24",
-                        "thumbPath": "assets/stage/thumbs/stage_31.jpg",
-                        "fullPath": "assets/stage/full/stage_31.jpg"
-            },
-            {
-                        "id": "stage-25",
-                        "index": "25",
-                        "filename": "stage_16.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_16.jpg",
-                        "fullPath": "assets/stage/full/stage_16.jpg",
-                        "width": 1280,
-                        "height": 1920,
-                        "isVertical": true,
-                        "aspectRatio": 0.667,
-                        "title": "MONOCHROME VOLT",
-                        "subtitle": "High contrast silhouette framed by massive LED graphics",
-                        "category": "portrait",
-                        "accentColor": "#eab308",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1280 x 1920 HD"
-                        }
-            },
-            {
-                        "id": "stage-26",
-                        "index": "26",
+                        "id": "stage-17",
+                        "index": "17",
                         "filename": "stage_17.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_17.jpg",
                         "fullPath": "assets/stage/full/stage_17.jpg",
@@ -1808,8 +1615,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-27",
-                        "index": "27",
+                        "id": "stage-18",
+                        "index": "18",
                         "filename": "stage_18.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_18.jpg",
                         "fullPath": "assets/stage/full/stage_18.jpg",
@@ -1841,14 +1648,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                     "freq": "99.8 MHz VOLTAGE",
                                     "resolution": "1920 x 1280 HD"
                         },
-                        "id": "stage-28",
-                        "index": "28",
+                        "id": "stage-19",
+                        "index": "19",
                         "thumbPath": "assets/stage/thumbs/stage_32.jpg",
                         "fullPath": "assets/stage/full/stage_32.jpg"
             },
             {
-                        "id": "stage-29",
-                        "index": "29",
+                        "id": "stage-20",
+                        "index": "20",
                         "filename": "stage_19.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_19.jpg",
                         "fullPath": "assets/stage/full/stage_19.jpg",
@@ -1867,47 +1674,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-30",
-                        "index": "30",
-                        "filename": "stage_20.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_20.jpg",
-                        "fullPath": "assets/stage/full/stage_20.jpg",
-                        "width": 1920,
-                        "height": 1277,
-                        "isVertical": false,
-                        "aspectRatio": 1.504,
-                        "title": "METROPOLIS BEAT",
-                        "subtitle": "Urban sonic architecture echoing through metropolitan night",
-                        "category": "wide",
-                        "accentColor": "#e11d48",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1277 HD"
-                        }
-            },
-            {
-                        "filename": "stage_33.jpg",
-                        "width": 1920,
-                        "height": 1280,
-                        "isVertical": false,
-                        "title": "GRAND SPECTACLE // PULSE",
-                        "subtitle": "Toàn cảnh khoảnh khắc thăng hoa cao trào khi toàn bộ hệ thống pháo sáng và visual kích hoạt.",
-                        "category": "highlight",
-                        "accentColor": "#e11d48",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1280 HD"
-                        },
-                        "id": "stage-31",
-                        "index": "31",
-                        "thumbPath": "assets/stage/thumbs/stage_33.jpg",
-                        "fullPath": "assets/stage/full/stage_33.jpg"
-            },
-            {
-                        "id": "stage-32",
-                        "index": "32",
+                        "id": "stage-21",
+                        "index": "21",
                         "filename": "stage_22.jpg",
                         "thumbPath": "assets/stage/thumbs/stage_22.jpg",
                         "fullPath": "assets/stage/full/stage_22.jpg",
@@ -1926,26 +1694,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
             },
             {
-                        "id": "stage-33",
-                        "index": "33",
-                        "filename": "stage_23.jpg",
-                        "thumbPath": "assets/stage/thumbs/stage_23.jpg",
-                        "fullPath": "assets/stage/full/stage_23.jpg",
-                        "width": 1920,
-                        "height": 1280,
-                        "isVertical": false,
-                        "aspectRatio": 1.5,
-                        "title": "ATMOSPHERIC CLIMAX",
-                        "subtitle": "Atmospheric crescendo with full-spectrum stage lasers",
-                        "category": "highlight",
-                        "accentColor": "#ec4899",
-                        "specs": {
-                                    "venue": "METROPOLIS ARENA // STAGE 01",
-                                    "freq": "99.8 MHz VOLTAGE",
-                                    "resolution": "1920 x 1280 HD"
-                        }
-            },
-            {
                         "filename": "stage_34.jpg",
                         "width": 1920,
                         "height": 1279,
@@ -1959,8 +1707,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                     "freq": "99.8 MHz VOLTAGE",
                                     "resolution": "1920 x 1279 HD"
                         },
-                        "id": "stage-34",
-                        "index": "34",
+                        "id": "stage-22",
+                        "index": "22",
                         "thumbPath": "assets/stage/thumbs/stage_34.jpg",
                         "fullPath": "assets/stage/full/stage_34.jpg"
             }
@@ -2189,6 +1937,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!recapPlayer || playlistCards.length === 0) return;
 
+        const LOCAL_FALLBACKS = {
+            'recap_vtnl.mp4': '/optimized_videos/recap_vtnl.mp4',
+            'recap_short_1.mp4': '/optimized_videos/recap_short_1.mp4',
+            'recap_dam_cuoi.mp4': '/optimized_videos/recap_dam_cuoi.mp4',
+            'Sinine_recap.mp4': '/optimized_videos/recap_sinine.mp4'
+        };
+
+        // Automatic fallback if remote R2 stream fails
+        recapPlayer.addEventListener('error', () => {
+            const currentSrc = recapPlayer.currentSrc || recapPlayer.src || '';
+            for (const [key, fallbackPath] of Object.entries(LOCAL_FALLBACKS)) {
+                if (currentSrc.includes(key) && !currentSrc.includes('/optimized_videos/')) {
+                    console.warn(`[Recap] Remote stream error, falling back to local: ${fallbackPath}`);
+                    recapPlayer.src = fallbackPath;
+                    recapPlayer.load();
+                    recapPlayer.play().catch(() => {});
+                    break;
+                }
+            }
+        });
+
+        // Playlist preview videos error fallback
+        const previewVideos = document.querySelectorAll('.recap-item-preview video');
+        previewVideos.forEach(v => {
+            v.addEventListener('error', () => {
+                const src = v.currentSrc || v.src || '';
+                for (const [key, fallbackPath] of Object.entries(LOCAL_FALLBACKS)) {
+                    if (src.includes(key) && !src.includes('/optimized_videos/')) {
+                        v.src = `${fallbackPath}#t=1.0`;
+                        v.load();
+                        break;
+                    }
+                }
+            });
+        });
+
         playlistCards.forEach(card => {
             card.addEventListener('click', () => {
                 const videoSrc = card.getAttribute('data-video-src');
@@ -2239,41 +2023,64 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!grid) return;
 
         const MOMENTS_DATA = [
-            { id: "m-01", index: "01", filename: "1IV7JRFQH_3SELQ7.mp4", isVertical: true, duration: "00:48", title: "STAGE HYPE // CROWD SHOUT", tag: "CROWD & HYPE", category: "vertical" },
-            { id: "m-02", index: "02", filename: "32d2dcb7efbe47e6ace669fae7737f2c.mp4", isVertical: true, duration: "00:25", title: "DYNAMIC BEAT DROP // MC SININE", tag: "STAGE ENERGY", category: "vertical" },
-            { id: "m-03", index: "03", filename: "6f4b94c8432247f8b53a819d38d64295.mp4", isVertical: true, duration: "01:05", title: "NIGHT ARENA // CROWD ENERGY", tag: "CROWD & HYPE", category: "vertical" },
-            { id: "m-04", index: "04", filename: "IMG_1758.mp4", isVertical: true, duration: "01:17", title: "METROPOLIS PULSE // LIVE VOCAL", tag: "LIVE STAGE", category: "vertical" },
-            { id: "m-05", index: "05", filename: "IMG_1761.mp4", isVertical: true, duration: "00:53", title: "CYBER WAVE // FLOW & RHYTHM", tag: "STAGE FLOW", category: "vertical" },
-            { id: "m-06", index: "06", filename: "IMG_1763.mp4", isVertical: true, duration: "00:57", title: "LASER BEAM MOMENT // MC FOCUS", tag: "VISUAL LIGHT", category: "vertical" },
-            { id: "m-07", index: "07", filename: "IMG_2138.mp4", isVertical: false, duration: "00:52", title: "PANORAMA STAGE // FULL VENUE", tag: "WIDE STAGE", category: "horizontal" },
-            { id: "m-08", index: "08", filename: "IMG_3527.mp4", isVertical: false, duration: "00:21", title: "WIDE ARENA BASS DROP", tag: "WIDE STAGE", category: "horizontal" },
-            { id: "m-09", index: "09", filename: "IMG_3576.mp4", isVertical: true, duration: "00:23", title: "STAGE SPOTLIGHT // CLOSE-UP", tag: "SOLO SHOT", category: "vertical" },
-            { id: "m-10", index: "10", filename: "IMG_3807.mp4", isVertical: false, duration: "01:40", title: "FESTIVAL HIGHLIGHT // WIDE REEL", tag: "WIDE STAGE", category: "horizontal" },
-            { id: "m-11", index: "11", filename: "IMG_3927.mp4", isVertical: true, duration: "01:02", title: "ELECTRIC ATMOSPHERE // MC POWER", tag: "STAGE ENERGY", category: "vertical" },
-            { id: "m-12", index: "12", filename: "IMG_4372.mp4", isVertical: true, duration: "00:53", title: "CROWD CHANT // SOUND MATRIX", tag: "CROWD & HYPE", category: "vertical" },
-            { id: "m-13", index: "13", filename: "IMG_4561.mp4", isVertical: true, duration: "01:09", title: "CLIMAX PERFORMANCE // MC SININE", tag: "LIVE STAGE", category: "vertical" },
-            { id: "m-14", index: "14", filename: "IMG_4618.mp4", isVertical: true, duration: "00:34", title: "NEON GLOW // RHYTHMIC ACCENT", tag: "STAGE ENERGY", category: "vertical" },
-            { id: "m-15", index: "15", filename: "IMG_4620.mp4", isVertical: true, duration: "00:24", title: "BASSLINE VIBRATION // HYPE", tag: "CROWD & HYPE", category: "vertical" },
-            { id: "m-16", index: "16", filename: "IMG_7073.mp4", isVertical: true, duration: "01:21", title: "MIDNIGHT ANTHEM // MAIN STAGE", tag: "LIVE STAGE", category: "vertical" },
-            { id: "m-17", index: "17", filename: "IMG_8255.mp4", isVertical: false, duration: "00:57", title: "HORIZON AUDITORIUM // LIVE", tag: "WIDE STAGE", category: "horizontal" },
-            { id: "m-18", index: "18", filename: "IMG_8255_1.mp4", isVertical: true, duration: "01:27", title: "AVANT-GARDE FLOW // VOCAL SET", tag: "LIVE STAGE", category: "vertical" },
-            { id: "m-19", index: "19", filename: "IMG_8263.mp4", isVertical: true, duration: "00:31", title: "STAGE PYRO & LASER RUN", tag: "VISUAL LIGHT", category: "vertical" },
-            { id: "m-20", index: "20", filename: "IMG_9784.mp4", isVertical: true, duration: "00:13", title: "HYPER QUICK IMPACT", tag: "QUICK CUT", category: "vertical" },
-            { id: "m-21", index: "21", filename: "IMG_9785.mp4", isVertical: true, duration: "00:26", title: "KINETIC MOTION // MC VERSE", tag: "STAGE ENERGY", category: "vertical" },
-            { id: "m-22", index: "22", filename: "IMG_9891.mp4", isVertical: true, duration: "00:35", title: "SOUNDWAVE SURGE // LIVE SHOT", tag: "LIVE STAGE", category: "vertical" },
-            { id: "m-23", index: "23", filename: "IMG_9892.mp4", isVertical: true, duration: "00:24", title: "AUDIENCE CELEBRATION", tag: "CROWD & HYPE", category: "vertical" },
-            { id: "m-24", index: "24", filename: "dji_mimo_20251224_233904_0_1766594721238_video.mp4", isVertical: true, duration: "01:33", title: "CINEMATIC REEL // MC SININE", tag: "CINEMATIC", category: "vertical" },
-            { id: "m-25", index: "25", filename: "f621555d1183408aaf9941348c40f812.mp4", isVertical: true, duration: "00:14", title: "RAPID FIRE // BEAT ACCENT", tag: "STAGE ENERGY", category: "vertical" },
-            { id: "m-26", index: "26", filename: "quality_restoration_20250517164841130.mp4", isVertical: true, duration: "00:38", title: "RESTORED MASTER CUT // FINALE", tag: "SPECIAL CUT", category: "vertical" }
+            { id: "m-01", index: "01", filename: "IMG_8255.mp4", isVertical: false, duration: "00:57", title: "HORIZON AUDITORIUM // LIVE", tag: "WIDE PANORAMA", category: "horizontal", subtitle: "Khung cảnh đại khán trường đồng thanh hòa nhịp cùng năng lượng sân khấu đỉnh cao." },
+            { id: "m-02", index: "02", filename: "1IV7JRFQH_3SELQ7.mp4", isVertical: true, duration: "00:48", title: "STAGE HYPE // CROWD SHOUT", tag: "CROWD & HYPE", category: "vertical" },
+            { id: "m-03", index: "03", filename: "dji_mimo_20251224_233904_0_1766594721238_video.mp4", isVertical: true, duration: "01:33", title: "CINEMATIC REEL // MC SININE", tag: "CINEMATIC", category: "vertical" },
+            { id: "m-04", index: "04", filename: "IMG_1763.mp4", isVertical: true, duration: "00:57", title: "LASER BEAM MOMENT // MC FOCUS", tag: "VISUAL LIGHT", category: "vertical" },
+            { id: "m-05", index: "05", filename: "IMG_7073.mp4", isVertical: true, duration: "01:21", title: "MIDNIGHT ANTHEM // MAIN STAGE", tag: "LIVE STAGE", category: "vertical" },
+            { id: "m-06", index: "06", filename: "IMG_9891.mp4", isVertical: true, duration: "00:35", title: "SOUNDWAVE SURGE // LIVE SHOT", tag: "LIVE STAGE", category: "vertical" }
         ];
 
         const BASE_R2_URL = "https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/moment/sinine%20moment%201/";
 
         let filteredItems = [...MOMENTS_DATA];
         let currentModalIndex = 0;
+        let currentActiveInlineCard = null;
+        let scrollObserver = null;
+
+        function stopAllInlineVideos(exceptCard = null) {
+            const playingCards = grid.querySelectorAll('.moment-card.is-inline-playing');
+            playingCards.forEach(c => {
+                if (c !== exceptCard) {
+                    const v = c.querySelector('.moment-preview-video');
+                    if (v) {
+                        v.pause();
+                        v.muted = true;
+                    }
+                    c.classList.remove('is-inline-playing');
+                }
+            });
+            if (!exceptCard) {
+                currentActiveInlineCard = null;
+            }
+        }
+
+        function toggleInlinePlayback(card, video) {
+            if (!video) return;
+
+            const isCurrentlyPlaying = card.classList.contains('is-inline-playing') && !video.paused;
+
+            if (isCurrentlyPlaying) {
+                video.pause();
+                card.classList.remove('is-inline-playing');
+                currentActiveInlineCard = null;
+            } else {
+                stopAllInlineVideos(card);
+
+                currentActiveInlineCard = card;
+                card.classList.add('is-inline-playing');
+                video.muted = false;
+                video.volume = 1.0;
+                video.play().catch(() => {
+                    video.muted = true;
+                    video.play().catch(() => {});
+                });
+            }
+        }
 
         function renderCards() {
             grid.innerHTML = '';
+
             filteredItems.forEach((item, fIndex) => {
                 const card = document.createElement('div');
                 card.className = `moment-card ${item.isVertical ? 'is-vertical' : 'is-horizontal'}`;
@@ -2287,18 +2094,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         <video class="moment-preview-video" preload="metadata" muted playsinline loop src="${videoUrl}#t=1.0"></video>
                         <div class="moment-card-overlay">
                             <div class="moment-top-row">
-                                <span class="moment-index-badge">// ${item.index}</span>
                                 <span class="moment-duration-pill">
-                                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                                    <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
                                     ${item.duration}
                                 </span>
+                                <button class="moment-expand-btn" title="Xem toàn màn hình" aria-label="Phóng to">
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                </button>
                             </div>
                             <div class="moment-play-btn">
-                                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg>
+                                <svg viewBox="0 0 24 24" width="${item.isVertical ? '22' : '28'}" height="${item.isVertical ? '22' : '28'}" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg>
                             </div>
                             <div class="moment-bottom-row">
                                 <h4 class="moment-title">${item.title}</h4>
-                                <span class="moment-tag">${item.tag}</span>
                             </div>
                         </div>
                     </div>
@@ -2306,27 +2114,82 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const previewVideo = card.querySelector('.moment-preview-video');
 
-                // Hover preview play
+                // When video naturally ends or loops, reset state if needed
+                previewVideo.addEventListener('ended', () => {
+                    card.classList.remove('is-inline-playing');
+                    if (currentActiveInlineCard === card) {
+                        currentActiveInlineCard = null;
+                    }
+                });
+
+                // Expand button clicks -> Fullscreen Lightbox
+                const expandBtn = card.querySelector('.moment-expand-btn');
+                if (expandBtn) {
+                    expandBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openModal(fIndex);
+                    });
+                }
+
+                // Card click -> In-place play/pause with audio
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.moment-expand-btn')) return;
+                    toggleInlinePlayback(card, previewVideo);
+                });
+
+                // Desktop hover preview (silent) when not playing inline
                 card.addEventListener('mouseenter', () => {
-                    if (previewVideo && previewVideo.paused) {
+                    if (!card.classList.contains('is-inline-playing') && window.innerWidth > 768) {
+                        card.classList.add('is-playing');
+                        previewVideo.muted = true;
                         previewVideo.play().catch(() => {});
                     }
                 });
 
                 card.addEventListener('mouseleave', () => {
-                    if (previewVideo && !previewVideo.paused) {
+                    if (!card.classList.contains('is-inline-playing') && window.innerWidth > 768) {
+                        card.classList.remove('is-playing');
                         previewVideo.pause();
                         previewVideo.currentTime = 1.0;
                     }
                 });
 
-                // Click to open modal
-                card.addEventListener('click', () => {
-                    openModal(fIndex);
-                });
-
                 grid.appendChild(card);
             });
+
+            setupMobileScrollObserver();
+        }
+
+        // Auto pause inline playback when user scrolls away
+        function setupMobileScrollObserver() {
+            if (scrollObserver) {
+                scrollObserver.disconnect();
+            }
+
+            const cards = grid.querySelectorAll('.moment-card');
+            if (cards.length === 0) return;
+
+            scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const card = entry.target;
+                    const video = card.querySelector('.moment-preview-video');
+                    if (!video) return;
+
+                    if (!entry.isIntersecting && card.classList.contains('is-inline-playing')) {
+                        video.pause();
+                        video.muted = true;
+                        card.classList.remove('is-inline-playing');
+                        if (currentActiveInlineCard === card) {
+                            currentActiveInlineCard = null;
+                        }
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.15
+            });
+
+            cards.forEach(c => scrollObserver.observe(c));
         }
 
         function openModal(index) {
@@ -2334,11 +2197,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = filteredItems[currentModalIndex];
             if (!item || !lightbox || !lightboxVideo) return;
 
+            stopAllInlineVideos();
+
             const videoUrl = `${BASE_R2_URL}${encodeURIComponent(item.filename)}`;
             
             if (badgeEl) badgeEl.textContent = `// REEL #${item.index}`;
             if (titleEl) titleEl.textContent = item.title;
-            if (counterEl) counterEl.textContent = `${item.index} / ${MOMENTS_DATA.length}`;
+            if (counterEl) counterEl.textContent = `${item.index} / ${String(MOMENTS_DATA.length).padStart(2, '0')}`;
 
             lightboxVideo.src = videoUrl;
             lightboxVideo.load();
@@ -2383,6 +2248,33 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'ArrowRight') nextVideo();
             if (e.key === 'ArrowLeft') prevVideo();
         });
+
+        // Touch swipe navigation for mobile Lightbox
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        if (lightbox) {
+            lightbox.addEventListener('touchstart', (e) => {
+                if (e.touches && e.touches[0]) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            lightbox.addEventListener('touchend', (e) => {
+                if (e.changedTouches && e.changedTouches[0]) {
+                    const diffX = e.changedTouches[0].clientX - touchStartX;
+                    const diffY = e.changedTouches[0].clientY - touchStartY;
+                    if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+                        if (diffX < 0) {
+                            nextVideo(); // Swipe left -> Next
+                        } else {
+                            prevVideo(); // Swipe right -> Prev
+                        }
+                    }
+                }
+            }, { passive: true });
+        }
 
         // Filter Controls
         filterBtns.forEach(btn => {
@@ -2501,7 +2393,340 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // -------------------------------------------------------------
+    // POSTERS ARCHIVE LOGIC & LIGHTBOX
+    // -------------------------------------------------------------
+    function initPostersGallery() {
+        const postersGrid = document.getElementById('posters-grid');
+        const filterBar = document.getElementById('posters-filter-bar');
+        const filterBtns = filterBar ? filterBar.querySelectorAll('.posters-filter-btn') : [];
+        const counterPill = document.getElementById('posters-counter-pill');
+
+        const lightbox = document.getElementById('posters-lightbox');
+        const lightboxBackdrop = document.getElementById('posters-lightbox-backdrop');
+        const lightboxCloseBtn = document.getElementById('posters-lightbox-close-btn');
+        const lightboxPrevBtn = document.getElementById('posters-lightbox-prev');
+        const lightboxNextBtn = document.getElementById('posters-lightbox-next');
+        const lightboxImg = document.getElementById('posters-lightbox-main-img');
+        const lightboxBadge = document.getElementById('posters-lightbox-badge');
+        const lightboxTitle = document.getElementById('posters-lightbox-title');
+        const lightboxCounter = document.getElementById('posters-lightbox-counter');
+        const lightboxCaption = document.getElementById('posters-lightbox-caption-text');
+        const lightboxSpecsRow = document.getElementById('posters-lightbox-specs-row');
+        const lightboxFilmstrip = document.getElementById('posters-lightbox-filmstrip');
+        const downloadBtn = document.getElementById('posters-download-btn');
+
+        if (!postersGrid) return;
+
+        const POSTERS_DATA = [
+            {
+                id: "poster-tiger-16",
+                index: "01",
+                title: "TIGER CRYSTAL // ICY NIGHT",
+                category: "brand",
+                categoryLabel: "EVENT & BRAND",
+                badge: "16.07 // TIGER CRYSTAL",
+                date: "16/07",
+                brand: "Tiger Crystal x MC SiNine",
+                description: "Chiến dịch Tiger Crystal bùng nổ năng lượng băng tuyết sảng khoái và ánh sáng thành phố đêm rực rỡ cùng phong cách leather jacket quyền lực của MC SININE.",
+                thumb: "assets/posters/thumbs/16.7.jpg",
+                full: "assets/posters/16.7.png",
+                accentColor: "#f59e0b",
+                glowColor: "rgba(245, 158, 11, 0.4)",
+                specs: {
+                    brand: "TIGER CRYSTAL",
+                    date: "16 / 07",
+                    resolution: "1856 x 2304 HD",
+                    concept: "ICY METROPOLIS"
+                }
+            },
+            {
+                id: "poster-tiger-18",
+                index: "02",
+                title: "TIGER CRYSTAL // GOLDEN FROST",
+                category: "brand",
+                categoryLabel: "EVENT & BRAND",
+                badge: "18.07 // TIGER CRYSTAL",
+                date: "18/07",
+                brand: "Tiger Crystal x MC SiNine",
+                description: "Visual phong cách White Techwear trẻ trung, tinh tế kết hợp chai bia Tiger Crystal mát lạnh cùng ánh hoàng hôn vàng rực rỡ.",
+                thumb: "assets/posters/thumbs/18.7.jpg",
+                full: "assets/posters/18.7.png",
+                accentColor: "#38bdf8",
+                glowColor: "rgba(56, 189, 248, 0.4)",
+                specs: {
+                    brand: "TIGER CRYSTAL",
+                    date: "18 / 07",
+                    resolution: "1856 x 2304 HD",
+                    concept: "GOLDEN FROST"
+                }
+            },
+            {
+                id: "poster-heineken-wonderland",
+                index: "03",
+                title: "WELCOME TO WONDERLAND // HEINEKEN",
+                category: "brand",
+                categoryLabel: "EVENT & BRAND",
+                badge: "25.07 // HEINEKEN",
+                date: "25/07",
+                brand: "Heineken x MC SiNine & S-Lady",
+                description: "Đại tiệc âm nhạc nhiệt đới Heineken tại 88 Beer Garden Vũng Tàu quy tụ dàn người đẹp S-Lady và MC SiNine trong không gian xanh neon cuốn hút.",
+                thumb: "assets/posters/thumbs/IMG_2223.jpg",
+                full: "assets/posters/IMG_2223.JPG",
+                accentColor: "#22c55e",
+                glowColor: "rgba(34, 197, 94, 0.4)",
+                specs: {
+                    brand: "HEINEKEN // 88 BEER GARDEN",
+                    date: "25 / 07",
+                    resolution: "2048 x 2560 HD",
+                    concept: "TROPICAL WONDERLAND"
+                }
+            },
+            {
+                id: "poster-y2k-prom",
+                index: "04",
+                title: "WESTSIDE TEAM // RETRO Y2K PARTY",
+                category: "editorial",
+                categoryLabel: "EDITORIAL & FASHION",
+                badge: "RETRO Y2K // ZÔ DỨT CẠN",
+                date: "SPECIAL NIGHT",
+                brand: "Westside Team x Zô Dứt Cạn",
+                description: "Thiết kế đồ họa phá cách mang hơi hướng Y2K Cyberpunk đường phố với giao diện retro pop-up windows, graffiti và nhịp đập âm thanh sống động.",
+                thumb: "assets/posters/thumbs/IMG_1400.jpg",
+                full: "assets/posters/IMG_1400.JPG",
+                accentColor: "#00f0ff",
+                glowColor: "rgba(0, 240, 255, 0.4)",
+                specs: {
+                    series: "WESTSIDE TEAM ARCHIVE",
+                    style: "RETRO Y2K CYBER",
+                    resolution: "1856 x 2304 HD",
+                    location: "NINH KIỀU // CẦN THƠ"
+                }
+            },
+            {
+                id: "poster-westside-black",
+                index: "05",
+                title: "WESTSIDE // LIFESTYLE FOOTBALL (BLACK)",
+                category: "editorial",
+                categoryLabel: "EDITORIAL & FASHION",
+                badge: "EDITORIAL // LUXURY TECHWEAR",
+                date: "ARCHIVE 2026",
+                brand: "Westside x MC SiNine",
+                description: "Ấn phẩm Editorial thời trang Sporty Luxury: MC SiNine trong trang phục da đen bóng bẩy, gậy bóng chày và bảng thông số chiến thuật bóng đá.",
+                thumb: "assets/posters/thumbs/Si Nine 1.jpg",
+                full: "assets/posters/Si Nine 1.png",
+                accentColor: "#eab308",
+                glowColor: "rgba(234, 179, 8, 0.4)",
+                specs: {
+                    series: "WESTSIDE LIFESTYLE",
+                    palette: "BLACK & EMERALD",
+                    resolution: "1856 x 2304 HD",
+                    concept: "TACTICAL FASHION"
+                }
+            },
+            {
+                id: "poster-westside-white",
+                index: "06",
+                title: "WESTSIDE // LIFESTYLE FOOTBALL (WHITE)",
+                category: "editorial",
+                categoryLabel: "EDITORIAL & FASHION",
+                badge: "EDITORIAL // MONOCHROME WHITE",
+                date: "ARCHIVE 2026",
+                brand: "Westside x MC SiNine",
+                description: "Visual tạp chí Monochrome trắng tinh tế: Set đồ techwear trắng cùng gậy bóng chày trên vai, khẳng định bản lĩnh tiên phong và thần thái cuốn hút.",
+                thumb: "assets/posters/thumbs/Si Nine 2.jpg",
+                full: "assets/posters/Si Nine 2.png",
+                accentColor: "#ffffff",
+                glowColor: "rgba(255, 255, 255, 0.35)",
+                specs: {
+                    series: "WESTSIDE LIFESTYLE",
+                    palette: "PURE WHITE & STEEL",
+                    resolution: "1856 x 2304 HD",
+                    concept: "AVANT-GARDE STREET"
+                }
+            },
+            {
+                id: "poster-worldcup-fanzone",
+                index: "07",
+                title: "WORLD CUP SEASON // STADIUM FAN ZONE",
+                category: "special",
+                categoryLabel: "SPECIAL EDITION",
+                badge: "WORLD CUP // FAN ZONE",
+                date: "WORLD CUP NIGHT",
+                brand: "MC SiNine x Westside Team",
+                description: "Bầu không khí lễ hội bóng đá đỉnh cao tại Fan Zone khán đài sân vận động rực lửa dưới ánh đèn pha và pháo hoa rực rỡ.",
+                thumb: "assets/posters/thumbs/Si Nine.jpg",
+                full: "assets/posters/Si Nine.png",
+                accentColor: "#fb923c",
+                glowColor: "rgba(251, 146, 60, 0.4)",
+                specs: {
+                    theme: "WORLD CUP CELEBRATION",
+                    lighting: "STADIUM ILLUMINATION",
+                    resolution: "1856 x 2304 HD",
+                    energy: "MAXIMUM HYPE"
+                }
+            }
+        ];
+
+        let activeFilter = 'all';
+        let currentPosterIndex = 0;
+        let filteredPosters = [...POSTERS_DATA];
+
+        // Render Poster Cards
+        function renderPosters() {
+            postersGrid.innerHTML = '';
+            filteredPosters = activeFilter === 'all'
+                ? [...POSTERS_DATA]
+                : POSTERS_DATA.filter(p => p.category === activeFilter);
+
+            filteredPosters.forEach((poster, idx) => {
+                const card = document.createElement('div');
+                card.className = 'poster-card';
+                card.dataset.id = poster.id;
+                card.dataset.index = idx;
+                card.style.setProperty('--poster-accent', poster.accentColor);
+                card.style.setProperty('--poster-glow', poster.glowColor);
+
+                card.innerHTML = `
+                    <div class="poster-card-media">
+                        <img class="poster-card-img" src="${poster.thumb}" alt="${poster.title}" loading="lazy" />
+                    </div>
+                `;
+
+                // Interactive 3D tilt effect on mouse movement
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -7;
+                    const rotateY = ((x - centerX) / centerX) * 7;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+
+                // Click to open lightbox
+                card.addEventListener('click', () => {
+                    openPostersLightbox(idx);
+                });
+
+                postersGrid.appendChild(card);
+            });
+
+            if (counterPill) {
+                counterPill.textContent = `${filteredPosters.length.toString().padStart(2, '0')} IMPRESSIONS`;
+            }
+        }
+
+        // Filtering
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter || 'all';
+                renderPosters();
+            });
+        });
+
+        // Lightbox Logic
+        function openPostersLightbox(index) {
+            currentPosterIndex = index;
+            updateLightboxContent();
+            renderFilmstrip();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePostersLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightboxContent() {
+            const poster = filteredPosters[currentPosterIndex];
+            if (!poster) return;
+
+            lightboxImg.style.opacity = '0';
+            setTimeout(() => {
+                lightboxImg.src = poster.full;
+                lightboxImg.alt = poster.title;
+                lightboxImg.onload = () => {
+                    lightboxImg.style.opacity = '1';
+                };
+            }, 100);
+
+            if (lightboxBadge) lightboxBadge.textContent = `// POSTER ARCHIVE 0${poster.index}`;
+            if (lightboxTitle) lightboxTitle.textContent = poster.title;
+            if (lightboxCounter) lightboxCounter.textContent = `${(currentPosterIndex + 1).toString().padStart(2, '0')} / ${filteredPosters.length.toString().padStart(2, '0')}`;
+            if (lightboxCaption) lightboxCaption.textContent = poster.description;
+
+            if (downloadBtn) {
+                downloadBtn.href = poster.full;
+                downloadBtn.setAttribute('download', `${poster.title.replace(/[^a-zA-Z0-9]/g, '_')}.png`);
+            }
+
+            if (lightboxSpecsRow) {
+                lightboxSpecsRow.innerHTML = Object.entries(poster.specs).map(([k, v]) => `
+                    <div class="posters-lightbox-spec-item">${k.toUpperCase()}: <span>${v}</span></div>
+                `).join('');
+            }
+
+            // Update filmstrip active state
+            const thumbs = lightboxFilmstrip ? lightboxFilmstrip.querySelectorAll('.posters-filmstrip-thumb') : [];
+            thumbs.forEach((thumb, idx) => {
+                thumb.classList.toggle('active', idx === currentPosterIndex);
+            });
+        }
+
+        function renderFilmstrip() {
+            if (!lightboxFilmstrip) return;
+            lightboxFilmstrip.innerHTML = '';
+            filteredPosters.forEach((p, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = `posters-filmstrip-thumb ${idx === currentPosterIndex ? 'active' : ''}`;
+                thumb.innerHTML = `<img src="${p.thumb}" alt="${p.title}" />`;
+                thumb.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentPosterIndex = idx;
+                    updateLightboxContent();
+                });
+                lightboxFilmstrip.appendChild(thumb);
+            });
+        }
+
+        function nextPoster() {
+            currentPosterIndex = (currentPosterIndex + 1) % filteredPosters.length;
+            updateLightboxContent();
+        }
+
+        function prevPoster() {
+            currentPosterIndex = (currentPosterIndex - 1 + filteredPosters.length) % filteredPosters.length;
+            updateLightboxContent();
+        }
+
+        if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closePostersLightbox);
+        if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closePostersLightbox);
+        if (lightboxNextBtn) lightboxNextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextPoster(); });
+        if (lightboxPrevBtn) lightboxPrevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevPoster(); });
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closePostersLightbox();
+            if (e.key === 'ArrowRight') nextPoster();
+            if (e.key === 'ArrowLeft') prevPoster();
+        });
+
+        // Initialize Render
+        renderPosters();
+    }
+
     // Initialize all components
+    initPostersGallery();
     initRecapShowcase();
     initStageGallery();
     initMomentsGallery();

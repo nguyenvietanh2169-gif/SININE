@@ -55,9 +55,12 @@
 
     <!-- Main Site Application Container -->
     <main id="home-screen" class="home-screen hidden">
-        <!-- Fullscreen Background Layer (nen.png) -->
+        <!-- Cinematic Analog Film Grain Texture Overlay -->
+        <div class="cinema-grain-overlay" aria-hidden="true"></div>
+
+        <!-- Fullscreen Background Layer (nen.jpg) -->
         <div class="home-fullscreen-bg">
-            <img src="assets/nen.png" class="home-bg-img" alt="Sinine Background">
+            <img src="assets/nen.jpg" class="home-bg-img" alt="Sinine Background" fetchpriority="high" decoding="async">
             <div class="home-bg-overlay"></div>
         </div>
 
@@ -74,6 +77,7 @@
                 <a href="#recap" class="nav-link" data-target="recap">VIDEO RECAP</a>
                 <a href="#stage" class="nav-link" data-target="stage">LIVE STAGE</a>
                 <a href="#moments" class="nav-link" data-target="moments">MOMENTS</a>
+                <a href="#posters" class="nav-link" data-target="posters">POSTERS</a>
                 <a href="#booking" class="nav-link" data-target="booking">BOOKING</a>
             </nav>
             <button id="back-to-welcome" class="back-btn" title="Back to welcome screen">
@@ -125,7 +129,7 @@
                     <div class="home-stage-container">
                         <div class="home-stage">
                             <div class="home-stage-layer layer-character">
-                                <img src="assets/nguoi.png" class="stage-element element-model" alt="Sinine Model">
+                                <img src="assets/nguoi.png" class="stage-element element-model" alt="Sinine Model" fetchpriority="high" decoding="async">
                             </div>
                         </div>
                     </div>
@@ -185,70 +189,66 @@
                     <div class="artist-portrait-card">
                         <div class="portrait-frame">
                             <div class="portrait-glow-fx"></div>
-                            <img src="assets/artist.png" class="artist-img" alt="Sinine Artist Portrait">
+                            <img src="assets/artist.jpg" class="artist-img" alt="Sinine Artist Portrait" loading="lazy" decoding="async">
                             <div class="portrait-corner top-left"></div>
                             <div class="portrait-corner top-right"></div>
                             <div class="portrait-corner bottom-left"></div>
                             <div class="portrait-corner bottom-right"></div>
-                            <div class="portrait-overlay-badge">
-                                <span class="pulse-dot"></span>
-                                <span>LIVE // ARTIST PROFILE</span>
-                            </div>
                         </div>
                         <div class="artist-id-bar">
-                            <div class="id-name">SININE</div>
-                            <div class="id-role">CREATIVE DIRECTOR & LEAD ARTIST</div>
+                            <div class="id-name">MC SININE</div>
+                            <div class="id-role">MC HYPE // DJ PERFORMANCE</div>
                         </div>
                     </div>
 
-                    <!-- Right: Artist Manifesto, HUD Data & Highlights -->
+                    <!-- Right: Artist Profile, Core Pillars & Signature Genres -->
                     <div class="artist-details">
                         <!-- Header & Title -->
                         <div class="artist-header-block">
                             <h2 class="artist-title">
-                                <span class="artist-title-highlight">NEO-CYBER</span> VISUAL & SONIC ARCHITECT
+                                <span class="artist-title-highlight">MC HYPE & DJ</span> // MC SININE
                             </h2>
                             <p class="artist-quote">
-                                "Transcending conventional aesthetics through raw kinetic voltage, electric high-frequencies, and avant-garde cyber couture."
+                                "Làm chủ nhịp điệu từ bàn mix DJ — Thổi bùng năng lượng sân khấu cùng micro MC Hype."
                             </p>
                         </div>
 
-                        <!-- HUD Specs Grid -->
-                        <div class="artist-hud-grid">
-                            <div class="hud-card">
-                                <span class="hud-label">ESTABLISHED</span>
-                                <span class="hud-value">2026 // METROPOLIS</span>
+                        <!-- Core Artist Pillars (Sạch đẹp, tinh gọn, không bị rối mắt) -->
+                        <div class="artist-core-pillars">
+                            <div class="pillar-item">
+                                <span class="pillar-meta">KINH NGHIỆM SÂN KHẤU</span>
+                                <span class="pillar-value">TỪ NĂM 2021</span>
+                                <span class="pillar-desc">5+ năm khuấy động sân khấu & club show</span>
                             </div>
-                            <div class="hud-card">
-                                <span class="hud-label">FREQUENCY</span>
-                                <span class="hud-value">99.8 MHz SONIC</span>
+                            <div class="pillar-item highlight">
+                                <span class="pillar-meta">VAI TRÒ NGHỆ SĨ</span>
+                                <span class="pillar-value">MC HYPE & DJ</span>
+                                <span class="pillar-desc">Bộ đôi kỹ năng kép hiếm có & bùng nổ</span>
                             </div>
-                            <div class="hud-card">
-                                <span class="hud-label">DISCIPLINE</span>
-                                <span class="hud-value">CYBER ATTIRE & AUDIO</span>
-                            </div>
-                            <div class="hud-card">
-                                <span class="hud-label">CURRENT WAVE</span>
-                                <span class="hud-value">AVANT-GARDE 2.0</span>
+                            <div class="pillar-item">
+                                <span class="pillar-meta">ĐIỂM MẠNH VƯỢT TRỘI</span>
+                                <span class="pillar-value">ALL-GENRES</span>
+                                <span class="pillar-desc">Chơi đa dạng & làm chủ tất cả các dòng nhạc</span>
                             </div>
                         </div>
 
                         <!-- Bio / Manifesto Text -->
                         <div class="artist-bio-block">
-                            <h4 class="bio-subtitle">// ARTISTIC MANIFESTO</h4>
+                            <h4 class="bio-subtitle">// GIỚI THIỆU & PHONG CÁCH BIỂU DIỄN</h4>
                             <p class="bio-paragraph">
-                                <strong>SININE</strong> đại diện cho tinh thần tiên phong của thế hệ mới — nơi giao thoa giữa thời trang đường phố tương lai, công nghệ vi mạch và năng lượng âm thanh thô mộc. Mỗi tác phẩm và bộ sưu tập là một tuyên ngôn thị giác phá vỡ mọi khuôn mẫu quy ước.
+                                <strong>MC SININE</strong> bắt đầu hoạt động nghệ thuật chuyên nghiệp từ năm <strong>2021</strong>, khẳng định tên tuổi nhờ bộ kỹ năng kép độc đáo: vừa trực tiếp điều phối âm thanh sau bàn mix <strong>DJ</strong>, vừa là <strong>MC Hype</strong> dẫn dắt và kích hoạt năng lượng đám đông lên đỉnh điểm. Khả năng cảm thụ âm nhạc sắc bén cùng kỹ thuật làm chủ sân khấu giúp Sinine chơi thuần thục <strong>tất cả các dòng nhạc</strong>, biến mọi không gian biểu diễn thành đại tiệc âm thanh bùng nổ.
                             </p>
                         </div>
 
-                        <!-- Featured Themes / Works -->
-                        <div class="artist-works-block">
-                            <h4 class="bio-subtitle">// SIGNATURE ELEMENTS & WORKS</h4>
-                            <div class="works-tags">
-                                <span class="work-tag"><span>01</span> SONIC PULSE 99.8</span>
-                                <span class="work-tag"><span>02</span> HAUTE CYBER COUTURE</span>
-                                <span class="work-tag"><span>03</span> SYNTHETIC RESONANCE</span>
-                                <span class="work-tag"><span>04</span> RAW KINETIC ENERGY</span>
+                        <!-- Signature Genres Showcase (Sở trường âm nhạc) -->
+                        <div class="artist-genres-block">
+                            <h4 class="bio-subtitle">// DÒNG NHẠC SỞ TRƯỜNG</h4>
+                            <div class="genres-grid">
+                                <span class="genre-pill">HARD DANCE</span>
+                                <span class="genre-pill">PSY / PSYTRANCE</span>
+                                <span class="genre-pill">TECHNO</span>
+                                <span class="genre-pill">VINAHOUSE</span>
+                                <span class="genre-pill genre-all">ALL-GENRE ADAPTIVE</span>
                             </div>
                         </div>
 
@@ -259,18 +259,14 @@
                                     <span>INSTAGRAM</span>
                                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
                                 </a>
-                                <a href="https://spotify.com" target="_blank" rel="noopener" class="social-btn">
-                                    <span>SOUND ARCHIVE</span>
-                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-                                </a>
                                 <button class="social-btn highlight" id="btn-jump-to-collection">
-                                    <span>COLLECTION LOOKBOOK ↓</span>
+                                    <span>TIẾP THEO: BỘ SƯU TẬP ↓</span>
                                 </button>
                             </div>
 
                             <button class="nav-prev-btn" id="btn-back-to-hero">
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                                <span>BACK TO HERO</span>
+                                <span>VỀ TRANG CHỦ</span>
                             </button>
                         </div>
                     </div>
@@ -366,7 +362,7 @@
 
                     <!-- Main Poster Image Frame -->
                     <div class="collection-hero-frame" id="collection-poster-frame">
-                        <img src="assets/collection_lookbook.png" class="collection-hero-img" alt="Sinine Lookbook Campaign">
+                        <img src="assets/collection_lookbook.jpg" class="collection-hero-img" alt="Sinine Lookbook Campaign" loading="lazy" decoding="async">
                     </div>
 
                     <!-- Bottom Controls & Quick Navigation -->
@@ -437,17 +433,8 @@
                 <div class="collection-cylinder-wrapper">
                     <!-- Top HUD Meta Header -->
                     <div class="cylinder-hud-header">
-                        <div class="hud-top-meta">
-                            <span class="hud-archive-badge">// ARCHIVE NO. 26 // VIRTUAL RUNWAY</span>
-                            <span class="hud-counter" id="cylinder-counter">01 / 06</span>
-                        </div>
                         <div class="hud-look-details">
                             <h2 class="hud-look-title" id="hud-look-title">CHROME GRAVITY</h2>
-                            <div class="hud-look-tags" id="hud-look-tags">
-                                <span class="tag-pill">// SPECIMEN 01</span>
-                                <span class="tag-pill">TORUS FLUID</span>
-                                <span class="tag-pill">AVANT-GARDE STREET</span>
-                            </div>
                         </div>
                     </div>
 
@@ -487,6 +474,14 @@
                         <div class="cylinder-pagination" id="cylinder-pagination">
                             <!-- 6 pills generated by JS -->
                         </div>
+
+                        <!-- Direct Jump to Recap Page -->
+                        <button class="cylinder-jump-recap-btn" id="btn-jump-to-recap" aria-label="Chuyển đến Video Recap">
+                            <span>TIẾP THEO: VIDEO RECAP</span>
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -511,8 +506,9 @@
                             <div class="card-corner corner-br"></div>
 
                             <div class="recap-video-viewport">
-                                <video id="recap-main-video" playsinline preload="metadata" controls controlslist="nodownload">
-                                    <source src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4" type="video/mp4">
+                                <video id="recap-main-video" playsinline preload="metadata" controls controlslist="nodownload" src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4#t=0.5">
+                                    <source src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4#t=0.5" type="video/mp4">
+                                    <source src="/optimized_videos/recap_vtnl.mp4#t=0.5" type="video/mp4">
                                     Trình duyệt không hỗ trợ phát video HTML5.
                                 </video>
                             </div>
@@ -606,6 +602,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Bottom Navigation Controls -->
+                    <div class="recap-footer-nav">
+                        <button class="recap-nav-btn prev-btn" id="btn-recap-to-runway">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>QUAY LẠI: 360° RUNWAY</span>
+                        </button>
+                        <button class="recap-nav-btn next-btn" id="btn-recap-to-stage">
+                            <span>TIẾP THEO: LIVE STAGE ARCHIVE</span>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </section>
 
@@ -618,31 +630,11 @@
                         <h2 class="stage-main-title">
                             <span class="text-gradient">MC SININE</span> LIVE STAGE ARCHIVE
                         </h2>
-
-                        <!-- Filter HUD Bar -->
-                        <div class="stage-filter-bar" id="stage-filter-bar">
-                            <button class="stage-filter-btn active" data-filter="all">
-                                <span class="filter-dot"></span>
-                                <span>TẤT CẢ (34)</span>
-                            </button>
-                            <button class="stage-filter-btn" data-filter="portrait">
-                                <span class="filter-dot"></span>
-                                <span>MC PORTRAIT (7)</span>
-                            </button>
-                            <button class="stage-filter-btn" data-filter="wide">
-                                <span class="filter-dot"></span>
-                                <span>WIDE STAGE (27)</span>
-                            </button>
-                            <button class="stage-filter-btn" data-filter="highlight">
-                                <span class="filter-dot"></span>
-                                <span>HIGHLIGHTS (9)</span>
-                            </button>
-                        </div>
                     </div>
 
                     <!-- Dynamic Bento Stage Gallery Grid -->
                     <div class="stage-bento-grid" id="stage-bento-grid">
-                        <!-- Populated by main.js with 34 photo cards -->
+                        <!-- Populated by main.js with 22 photo cards -->
                     </div>
 
                     <!-- Navigation to Moments Section -->
@@ -664,9 +656,9 @@
                     <div class="lightbox-hud-top">
                         <div class="lightbox-meta">
                             <span class="lightbox-badge" id="lightbox-badge">// SPECIMEN #01</span>
-                            <span class="lightbox-title" id="lightbox-title">KINETIC PULSE // MC SININE</span>
+                            <span class="lightbox-title" id="lightbox-title">INFINITY STAGE // ILLUMINATION</span>
                         </div>
-                        <div class="lightbox-counter" id="lightbox-counter">01 / 34</div>
+                        <div class="lightbox-counter" id="lightbox-counter">01 / 22</div>
                         <button class="lightbox-close-btn" id="lightbox-close-btn" aria-label="Đóng rạp xem ảnh">
                             <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none">
                                 <path d="M18 6L6 18M6 6l12 12"/>
@@ -707,32 +699,14 @@
                 <div class="moments-container">
                     <!-- Moments Header Block -->
                     <div class="moments-header-block">
-                        <div class="moments-header-badge">// HIGHLIGHT REELS & CLIPS</div>
                         <h2 class="moments-main-title">
                             <span class="text-gradient">MC SININE</span> MOMENTS ARCHIVE
                         </h2>
-                        <p class="moments-subtitle">Tuyển tập 26 thước phim khoảnh khắc sân khấu, visual năng động và nhịp điệu cuồng nhiệt của MC SININE.</p>
-
-                        <!-- Filter HUD Bar -->
-                        <div class="moments-filter-bar" id="moments-filter-bar">
-                            <button class="moments-filter-btn active" data-filter="all">
-                                <span class="filter-dot"></span>
-                                <span>TẤT CẢ (26)</span>
-                            </button>
-                            <button class="moments-filter-btn" data-filter="vertical">
-                                <span class="filter-dot"></span>
-                                <span>REELS 9:16 (22)</span>
-                            </button>
-                            <button class="moments-filter-btn" data-filter="horizontal">
-                                <span class="filter-dot"></span>
-                                <span>WIDE 16:9 (4)</span>
-                            </button>
-                        </div>
                     </div>
 
                     <!-- Moments Bento/Reels Grid -->
                     <div class="moments-grid" id="moments-grid">
-                        <!-- Populated dynamically by main.js with 26 video cards -->
+                        <!-- Populated dynamically by main.js with 6 video cards -->
                     </div>
 
                     <!-- Bottom Nav Controls -->
@@ -743,12 +717,96 @@
                             </svg>
                             <span>QUAY LẠI: LIVE STAGE</span>
                         </button>
-                        <button class="moments-nav-btn next-btn" id="btn-moments-to-booking">
+                        <button class="moments-nav-btn next-btn" id="btn-moments-to-posters">
+                            <span>TIẾP THEO: POSTER ARCHIVE →</span>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 8: Posters Archive (Tuyển tập Poster & Chiến dịch Thương hiệu) -->
+            <section id="page-posters" class="site-page page-posters">
+                <div class="posters-container">
+                    <!-- Posters Header Block -->
+                    <div class="posters-header-block">
+                        <h2 class="posters-main-title">
+                            <span class="text-gradient">MC SININE</span> POSTER ARCHIVE
+                        </h2>
+                    </div>
+
+                    <!-- Dynamic Posters Grid -->
+                    <div class="posters-grid" id="posters-grid">
+                        <!-- Populated dynamically by main.js with 7 poster cards -->
+                    </div>
+
+                    <!-- Bottom Nav Controls -->
+                    <div class="posters-footer-nav">
+                        <button class="posters-nav-btn prev-btn" id="btn-posters-to-moments">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>QUAY LẠI: KHOẢNH KHẮC (MOMENTS)</span>
+                        </button>
+                        <button class="posters-nav-btn next-btn" id="btn-posters-to-booking">
                             <span>TIẾP THEO: BOOKING // LIÊN HỆ</span>
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
+                    </div>
+                </div>
+
+                <!-- Posters Lightbox Modal -->
+                <div class="posters-lightbox" id="posters-lightbox" aria-hidden="true" role="dialog">
+                    <div class="posters-lightbox-backdrop" id="posters-lightbox-backdrop"></div>
+
+                    <!-- Top HUD Controls -->
+                    <div class="posters-lightbox-hud-top">
+                        <div class="posters-lightbox-meta">
+                            <span class="posters-lightbox-badge" id="posters-lightbox-badge">// POSTER ARCHIVE #01</span>
+                            <span class="posters-lightbox-title" id="posters-lightbox-title">TIGER CRYSTAL // ICY NIGHT</span>
+                        </div>
+                        <div class="posters-lightbox-counter" id="posters-lightbox-counter">01 / 07</div>
+                        <div class="posters-lightbox-actions">
+                            <a id="posters-download-btn" class="posters-lightbox-action-btn" href="#" target="_blank" download title="Mở / Tải ảnh poster độ phân giải gốc">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                <span>TẢI ẢNH GỐC HD</span>
+                            </a>
+                            <button class="posters-lightbox-close-btn" id="posters-lightbox-close-btn" aria-label="Đóng xem poster">
+                                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Viewport Area -->
+                    <div class="posters-lightbox-viewport" id="posters-lightbox-viewport">
+                        <button class="posters-lightbox-nav-btn prev-btn" id="posters-lightbox-prev" aria-label="Poster trước">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                        </button>
+
+                        <div class="posters-lightbox-stage">
+                            <div class="posters-lightbox-image-wrapper" id="posters-lightbox-img-wrapper">
+                                <img id="posters-lightbox-main-img" src="" alt="Sinine Poster" />
+                            </div>
+                            <div class="posters-lightbox-info-overlay" id="posters-lightbox-info-overlay">
+                                <p class="posters-lightbox-caption-text" id="posters-lightbox-caption-text"></p>
+                                <div class="posters-lightbox-specs-row" id="posters-lightbox-specs-row"></div>
+                            </div>
+                        </div>
+
+                        <button class="posters-lightbox-nav-btn next-btn" id="posters-lightbox-next" aria-label="Poster kế tiếp">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Bottom Mini Filmstrip Reel -->
+                    <div class="posters-lightbox-filmstrip" id="posters-lightbox-filmstrip">
+                        <!-- Populated by JS -->
                     </div>
                 </div>
             </section>
@@ -758,16 +816,9 @@
                 <div class="booking-container">
                     <!-- Top HUD Block -->
                     <div class="booking-header-block">
-                        <div class="booking-badge-row">
-                            <span class="pulse-dot"></span>
-                            <span class="booking-badge">ĐẶT LỊCH // BOOKING & COLLABORATION</span>
-                        </div>
                         <h2 class="booking-title">
                             LIÊN HỆ <span class="booking-title-accent">ĐẶT LỊCH BIỂU DIỄN</span>
                         </h2>
-                        <p class="booking-subtitle">
-                            Đồng hành cùng MC Sinine trong các sự kiện thời trang, âm nhạc, club show, festival và các dự án sáng tạo nghệ thuật.
-                        </p>
                     </div>
 
                     <!-- Centered Booking Form -->
@@ -841,11 +892,11 @@
 
                     <!-- Bottom Nav Controls -->
                     <div class="booking-footer-nav">
-                        <button class="booking-nav-btn prev-btn" id="btn-booking-to-moments">
+                        <button class="booking-nav-btn prev-btn" id="btn-booking-to-posters">
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <span>QUAY LẠI: KHOẢNH KHẮC (MOMENTS)</span>
+                            <span>QUAY LẠI: POSTER ARCHIVE</span>
                         </button>
                         <button class="booking-nav-btn next-btn" id="btn-booking-to-home">
                             <span>VỀ TRANG CHỦ (HOME)</span>
@@ -855,6 +906,27 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- FOOTER (Tech Info & Designed by ART&TECH like project LOWT) -->
+                <!-- FOOTER (Tech Info & Designed by ART&TECH) -->
+                <footer class="site-footer">
+                    <div class="footer-container">
+                        <!-- Tech Decor HUD Badges -->
+                        <div class="footer-hud-decor left">SGN_LOC // 10.7725° N</div>
+                        <div class="footer-hud-decor right">SYS_VER // 2.6.4</div>
+                        
+                        <div class="footer-brand">
+                            <h3 class="footer-logo">MC <span class="logo-highlight">SININE</span></h3>
+                            <div class="logo-underline"></div>
+                        </div>
+                        
+                        <div class="footer-credits">
+                            <span class="credits-text">Designed by</span>
+                            <img src="assets/art_tech_logo.svg" alt="ART&TECH Logo" class="footer-art-tech-logo">
+                            <span class="credits-text credits-highlight">ART&TECH</span>
+                        </div>
+                    </div>
+                </footer>
             </section>
         </div>
     </main>
@@ -865,16 +937,20 @@
         
         <!-- Top HUD Controls -->
         <div class="moments-lightbox-hud-top">
-            <div class="lightbox-meta">
+            <div class="lightbox-hud-top-bar">
                 <span class="lightbox-badge" id="moments-lightbox-badge">// MOMENT #01</span>
+                <div class="lightbox-hud-actions">
+                    <div class="lightbox-counter" id="moments-lightbox-counter">01 / 06</div>
+                    <button class="lightbox-close-btn" id="moments-lightbox-close-btn" aria-label="Đóng video">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="lightbox-hud-title-bar">
                 <span class="lightbox-title" id="moments-lightbox-title">MC SININE HIGHLIGHT</span>
             </div>
-            <div class="lightbox-counter" id="moments-lightbox-counter">01 / 26</div>
-            <button class="lightbox-close-btn" id="moments-lightbox-close-btn" aria-label="Đóng video">
-                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none">
-                    <path d="M18 6L6 18M6 6l12 12"/>
-                </svg>
-            </button>
         </div>
 
         <!-- Main Video Player Viewport -->
@@ -884,7 +960,7 @@
             </button>
 
             <div class="moments-player-box" id="moments-player-box">
-                <video id="moments-lightbox-video" playsinline controls preload="auto"></video>
+                <video id="moments-lightbox-video" playsinline controls preload="none"></video>
             </div>
 
             <button class="lightbox-nav-btn next-btn" id="moments-lightbox-next" aria-label="Video kế tiếp">
