@@ -15,3 +15,10 @@ optimized_videos/
 scratch_match/
 assets/stage/
 .backup_assets/
+.wrangler/
+CLOUDFLARE_R2_OPTIMIZED/
+convert_1080p.py
+generate_thumbnails.py
+upload_1080p.sh
+extract_frame
+extract_frame.m

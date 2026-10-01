@@ -23,6 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToArtistBtn = document.getElementById('btn-back-to-artist');
     const jumpToRunwayBtn = document.getElementById('btn-jump-to-runway');
     const backToCollectionBtn = document.getElementById('btn-back-to-collection');
+
+    // Background Audio Controller Placeholder
+    let bgAudioController = {
+        play: () => {},
+        pause: () => {},
+        toggle: () => {},
+        handleVideoPlay: () => {},
+        handleVideoStop: () => {}
+    };
     const jumpToRecapBtn = document.getElementById('btn-jump-to-recap');
     const recapToRunwayBtn = document.getElementById('btn-recap-to-runway');
     const recapToStageBtn = document.getElementById('btn-recap-to-stage');
@@ -91,6 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (postersLightbox) {
                 postersLightbox.classList.remove('active');
             }
+        }
+
+        // Resume background music if leaving video pages
+        if (pageId !== 'recap' && pageId !== 'moments') {
+            bgAudioController.handleVideoStop();
         }
 
         // Reset classes on all pages
@@ -355,6 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (enterBtn) enterBtn.style.pointerEvents = 'none';
         welcomeScreen.classList.add('leaving');
         
+        // Start background music immediately upon user gesture click
+        bgAudioController.play();
+        
         setTimeout(() => {
             homeScreen.classList.add('visible');
             currentPage = 'home';
@@ -378,6 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backBtn.addEventListener('click', () => {
         homeScreen.classList.remove('visible');
         welcomeScreen.classList.remove('leaving');
+        bgAudioController.pause(true);
         setTimeout(() => {
             if (enterBtn) enterBtn.style.pointerEvents = 'auto';
         }, 1200);
@@ -826,8 +844,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'CHROME GRAVITY',
                 badge: 'SPECIMEN #01',
                 tags: ['SPECIMEN 01', 'TORUS FLUID', 'AVANT-GARDE STREET'],
-                thumbImg: 'assets/collection/look_01_chrome_opt.jpg',
-                fullImg: 'assets/collection/look_01_chrome.png',
+                thumbImg: 'assets/collection/look_01_chrome.webp',
+                fullImg: 'assets/collection/look_01_chrome.webp',
                 accentColor: '#e2e8f0',
                 glowColor: 'rgba(226, 232, 240, 0.4)',
                 desc: 'Khối kim loại lỏng (liquid mirror chrome) phi trọng lực uốn lượn quanh cơ thể, kết hợp áo khoác phao đen bóng và quần cargo thụng hồng tro, định hình diện mạo tương lai phi thực tế.',
@@ -844,8 +862,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'DARK BIKER & THORNS',
                 badge: 'SPECIMEN #02',
                 tags: ['SPECIMEN 02', 'CYBER THORNS', 'NEO-GOTHIC REBEL'],
-                thumbImg: 'assets/collection/look_02_thorns_opt.jpg',
-                fullImg: 'assets/collection/look_02_thorns.png',
+                thumbImg: 'assets/collection/look_02_thorns.webp',
+                fullImg: 'assets/collection/look_02_thorns.webp',
                 accentColor: '#c084fc',
                 glowColor: 'rgba(192, 132, 252, 0.45)',
                 desc: 'Khí chất nổi loạn và kiên cường biểu hiện qua áo da biker nhiều khóa kéo kim loại, bao bọc bởi quầng hào quang gai nhọn hắc ám như một bức khiên phòng thủ cơ học.',
@@ -862,8 +880,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'GENESIS CHAMBER',
                 badge: 'SPECIMEN #03',
                 tags: ['SPECIMEN 03', 'CRYO POD', 'EXTRATERRESTRIAL COUTURE'],
-                thumbImg: 'assets/collection/look_03_cryopod_opt.jpg',
-                fullImg: 'assets/collection/look_03_cryopod.png',
+                thumbImg: 'assets/collection/look_03_cryopod.webp',
+                fullImg: 'assets/collection/look_03_cryopod.webp',
                 accentColor: '#fbbf24',
                 glowColor: 'rgba(251, 191, 36, 0.4)',
                 desc: 'Khoang ấp nở du hành vũ trụ giữa hoang mạc ngoại hành tinh. Bộ trang phục phao đơn sắc trắng tuyết với các đường bó dây viền tượng trưng cho sự tái sinh tinh khôi.',
@@ -880,8 +898,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'STREET SURRENDER',
                 badge: 'SPECIMEN #04',
                 tags: ['SPECIMEN 04', 'SURRENDER', 'URBAN GRAFFITI POSTER'],
-                thumbImg: 'assets/collection/look_04_surrender_opt.jpg',
-                fullImg: 'assets/collection/look_04_surrender.png',
+                thumbImg: 'assets/collection/look_04_surrender.webp',
+                fullImg: 'assets/collection/look_04_surrender.webp',
                 accentColor: '#f97316',
                 glowColor: 'rgba(249, 115, 22, 0.5)',
                 desc: 'Năng lượng đường phố phóng khoáng với áo khoác gió cam rực rỡ phong cách Stussy, phông nền xanh da trời sáng và typographic graffiti thô mộc đầy nhiệt huyết tuổi trẻ.',
@@ -898,8 +916,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'FROST ARMOR',
                 badge: 'SPECIMEN #05',
                 tags: ['SPECIMEN 05', 'CYAN MATRIX', 'CYBERNETIC SUB-ZERO'],
-                thumbImg: 'assets/collection/look_05_frost_opt.jpg',
-                fullImg: 'assets/collection/look_05_frost.png',
+                thumbImg: 'assets/collection/look_05_frost.webp',
+                fullImg: 'assets/collection/look_05_frost.webp',
                 accentColor: '#38bdf8',
                 glowColor: 'rgba(56, 189, 248, 0.5)',
                 desc: 'Thiết kế áo phao cổ dựng cao cực đại che kín khuôn mặt với túi hộp tiện ích mô-đun EAG và phụ kiện kim loại vi mạch vắt ngang sóng mũi, kiến tạo vẻ đẹp lạnh lùng bí ẩn.',
@@ -916,8 +934,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'KINETIC PULSE',
                 badge: 'SPECIMEN #06',
                 tags: ['SPECIMEN 06', 'NEON LIME', 'RAW KINETIC DANCEWEAR'],
-                thumbImg: 'assets/collection/look_06_kinetic_opt.jpg',
-                fullImg: 'assets/collection/look_06_kinetic.png',
+                thumbImg: 'assets/collection/look_06_kinetic.webp',
+                fullImg: 'assets/collection/look_06_kinetic.webp',
                 accentColor: '#a3e635',
                 glowColor: 'rgba(163, 230, 53, 0.5)',
                 desc: 'Vũ đạo không trọng lực kết hợp áo khoác hoa văn chần bông xám tro cùng điểm nhấn xanh neon chói lọi ở thắt lưng, kính tốc độ và giày bốt cao su tương lai.',
@@ -1991,7 +2009,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Update Video Source & Play
                 if (videoSrc) {
-                    recapPlayer.src = videoSrc;
+                    const poster = card.getAttribute('data-poster');
+                    if (poster) recapPlayer.poster = poster;
+
+                    if (typeof bgAudioController !== 'undefined' && bgAudioController.setVideoTransitioning) {
+                        bgAudioController.setVideoTransitioning(true);
+                    }
+
+                    const cleanSrc = videoSrc.replace(/#t=[\d.]+/, '');
+                    recapPlayer.src = cleanSrc;
+                    recapPlayer.preload = 'auto';
                     recapPlayer.load();
                     recapPlayer.play().catch(err => {
                         console.log('Autoplay policy caught, user can tap play button:', err);
@@ -2010,6 +2037,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterBtns = filterBar ? filterBar.querySelectorAll('.moments-filter-btn') : [];
 
         // Lightbox elements
+        // Lightbox elements
         const lightbox = document.getElementById('moments-lightbox');
         const backdrop = document.getElementById('moments-lightbox-backdrop');
         const closeBtn = document.getElementById('moments-lightbox-close-btn');
@@ -2023,12 +2051,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!grid) return;
 
         const MOMENTS_DATA = [
-            { id: "m-01", index: "01", filename: "IMG_8255.mp4", isVertical: false, duration: "00:57", title: "HORIZON AUDITORIUM // LIVE", tag: "WIDE PANORAMA", category: "horizontal", subtitle: "Khung cảnh đại khán trường đồng thanh hòa nhịp cùng năng lượng sân khấu đỉnh cao." },
-            { id: "m-02", index: "02", filename: "1IV7JRFQH_3SELQ7.mp4", isVertical: true, duration: "00:48", title: "STAGE HYPE // CROWD SHOUT", tag: "CROWD & HYPE", category: "vertical" },
-            { id: "m-03", index: "03", filename: "dji_mimo_20251224_233904_0_1766594721238_video.mp4", isVertical: true, duration: "01:33", title: "CINEMATIC REEL // MC SININE", tag: "CINEMATIC", category: "vertical" },
-            { id: "m-04", index: "04", filename: "IMG_1763.mp4", isVertical: true, duration: "00:57", title: "LASER BEAM MOMENT // MC FOCUS", tag: "VISUAL LIGHT", category: "vertical" },
-            { id: "m-05", index: "05", filename: "IMG_7073.mp4", isVertical: true, duration: "01:21", title: "MIDNIGHT ANTHEM // MAIN STAGE", tag: "LIVE STAGE", category: "vertical" },
-            { id: "m-06", index: "06", filename: "IMG_9891.mp4", isVertical: true, duration: "00:35", title: "SOUNDWAVE SURGE // LIVE SHOT", tag: "LIVE STAGE", category: "vertical" }
+            { id: "m-01", index: "01", filename: "IMG_8255.mp4", thumbnail: "/thumbnails/thumb_IMG_8255.jpg", isVertical: false, duration: "00:57", title: "HORIZON AUDITORIUM // LIVE", tag: "WIDE PANORAMA", category: "horizontal", subtitle: "Khung cảnh đại khán trường đồng thanh hòa nhịp cùng năng lượng sân khấu đỉnh cao." },
+            { id: "m-02", index: "02", filename: "1IV7JRFQH_3SELQ7.mp4", thumbnail: "/thumbnails/thumb_1IV7JRFQH_3SELQ7.jpg", isVertical: true, duration: "00:48", title: "STAGE HYPE // CROWD SHOUT", tag: "CROWD & HYPE", category: "vertical" },
+            { id: "m-03", index: "03", filename: "dji_mimo_20251224_233904_0_1766594721238_video.mp4", thumbnail: "/thumbnails/thumb_dji_mimo.jpg", isVertical: true, duration: "01:33", title: "CINEMATIC REEL // MC SININE", tag: "CINEMATIC", category: "vertical" },
+            { id: "m-04", index: "04", filename: "IMG_1763.mp4", thumbnail: "/thumbnails/thumb_IMG_1763.jpg", isVertical: true, duration: "00:57", title: "LASER BEAM MOMENT // MC FOCUS", tag: "VISUAL LIGHT", category: "vertical" },
+            { id: "m-05", index: "05", filename: "IMG_7073.mp4", thumbnail: "/thumbnails/thumb_IMG_7073.jpg", isVertical: true, duration: "01:21", title: "MIDNIGHT ANTHEM // MAIN STAGE", tag: "LIVE STAGE", category: "vertical" },
+            { id: "m-06", index: "06", filename: "IMG_9891.mp4", thumbnail: "/thumbnails/thumb_IMG_9891.jpg", isVertical: true, duration: "00:35", title: "SOUNDWAVE SURGE // LIVE SHOT", tag: "LIVE STAGE", category: "vertical" }
         ];
 
         const BASE_R2_URL = "https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/moment/sinine%20moment%201/";
@@ -2052,6 +2080,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!exceptCard) {
                 currentActiveInlineCard = null;
+                bgAudioController.handleVideoStop();
             }
         }
 
@@ -2064,6 +2093,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 video.pause();
                 card.classList.remove('is-inline-playing');
                 currentActiveInlineCard = null;
+                bgAudioController.handleVideoStop();
             } else {
                 stopAllInlineVideos(card);
 
@@ -2071,6 +2101,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add('is-inline-playing');
                 video.muted = false;
                 video.volume = 1.0;
+                if (typeof bgAudioController !== 'undefined' && bgAudioController.setVideoTransitioning) {
+                    bgAudioController.setVideoTransitioning(true);
+                } else {
+                    bgAudioController.handleVideoPlay();
+                }
                 video.play().catch(() => {
                     video.muted = true;
                     video.play().catch(() => {});
@@ -2091,7 +2126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 card.innerHTML = `
                     <div class="moment-video-container">
-                        <video class="moment-preview-video" preload="metadata" muted playsinline loop src="${videoUrl}#t=1.0"></video>
+                        <video class="moment-preview-video" poster="${item.thumbnail}" preload="none" muted playsinline loop src="${videoUrl}#t=1.0"></video>
                         <div class="moment-card-overlay">
                             <div class="moment-top-row">
                                 <span class="moment-duration-pill">
@@ -2114,15 +2149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const previewVideo = card.querySelector('.moment-preview-video');
 
-                // When video naturally ends or loops, reset state if needed
-                previewVideo.addEventListener('ended', () => {
-                    card.classList.remove('is-inline-playing');
-                    if (currentActiveInlineCard === card) {
-                        currentActiveInlineCard = null;
-                    }
-                });
-
-                // Expand button clicks -> Fullscreen Lightbox
+                // Expand button -> Fullscreen Lightbox
                 const expandBtn = card.querySelector('.moment-expand-btn');
                 if (expandBtn) {
                     expandBtn.addEventListener('click', (e) => {
@@ -2131,7 +2158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                // Card click -> In-place play/pause with audio
+                // Card tap -> Play inline directly in card (TikTok / Reels style)
                 card.addEventListener('click', (e) => {
                     if (e.target.closest('.moment-expand-btn')) return;
                     toggleInlinePlayback(card, previewVideo);
@@ -2182,6 +2209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (currentActiveInlineCard === card) {
                             currentActiveInlineCard = null;
                         }
+                        bgAudioController.handleVideoStop();
                     }
                 });
             }, {
@@ -2197,7 +2225,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = filteredItems[currentModalIndex];
             if (!item || !lightbox || !lightboxVideo) return;
 
-            stopAllInlineVideos();
+            if (typeof bgAudioController !== 'undefined' && bgAudioController.setVideoTransitioning) {
+                bgAudioController.setVideoTransitioning(true);
+            }
 
             const videoUrl = `${BASE_R2_URL}${encodeURIComponent(item.filename)}`;
             
@@ -2205,6 +2235,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (titleEl) titleEl.textContent = item.title;
             if (counterEl) counterEl.textContent = `${item.index} / ${String(MOMENTS_DATA.length).padStart(2, '0')}`;
 
+            lightboxVideo.poster = item.thumbnail || '';
+            lightboxVideo.preload = 'auto';
             lightboxVideo.src = videoUrl;
             lightboxVideo.load();
             lightbox.classList.add('active');
@@ -2221,6 +2253,14 @@ document.addEventListener('DOMContentLoaded', () => {
             lightboxVideo.pause();
             lightboxVideo.src = '';
             if (pageMoments) pageMoments.style.overflow = '';
+            bgAudioController.handleVideoStop();
+        }
+
+        if (lightboxVideo) {
+            lightboxVideo.addEventListener('play', () => bgAudioController.handleVideoPlay());
+            lightboxVideo.addEventListener('playing', () => bgAudioController.handleVideoPlay());
+            lightboxVideo.addEventListener('pause', () => bgAudioController.handleVideoStop());
+            lightboxVideo.addEventListener('ended', () => bgAudioController.handleVideoStop());
         }
 
         function nextVideo() {
@@ -2397,6 +2437,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // POSTERS ARCHIVE LOGIC & LIGHTBOX
     // -------------------------------------------------------------
     function initPostersGallery() {
+        const postersTrack = document.getElementById('posters-kinetic-track');
+        const postersViewport = document.getElementById('posters-kinetic-viewport');
+        const postersLaserProgress = document.getElementById('posters-laser-progress');
+        const postersLaserTrack = document.getElementById('posters-laser-track');
+        const postersHudStatus = document.getElementById('posters-hud-status');
+        const trackPrevBtn = document.getElementById('posters-track-prev');
+        const trackNextBtn = document.getElementById('posters-track-next');
         const postersGrid = document.getElementById('posters-grid');
         const filterBar = document.getElementById('posters-filter-bar');
         const filterBtns = filterBar ? filterBar.querySelectorAll('.posters-filter-btn') : [];
@@ -2416,7 +2463,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lightboxFilmstrip = document.getElementById('posters-lightbox-filmstrip');
         const downloadBtn = document.getElementById('posters-download-btn');
 
-        if (!postersGrid) return;
+        if (!postersTrack && !postersGrid) return;
 
         const POSTERS_DATA = [
             {
@@ -2572,55 +2619,197 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentPosterIndex = 0;
         let filteredPosters = [...POSTERS_DATA];
 
-        // Render Poster Cards
+        let isDragging = false;
+        let startX = 0;
+        let scrollStartLeft = 0;
+        let hasDragged = false;
+
+        // Render Kinetic Poster Cards & Watermark Typography
         function renderPosters() {
-            postersGrid.innerHTML = '';
+            const container = postersTrack || postersGrid;
+            if (!container) return;
+            container.innerHTML = '';
             filteredPosters = activeFilter === 'all'
                 ? [...POSTERS_DATA]
                 : POSTERS_DATA.filter(p => p.category === activeFilter);
 
             filteredPosters.forEach((poster, idx) => {
-                const card = document.createElement('div');
-                card.className = 'poster-card';
-                card.dataset.id = poster.id;
-                card.dataset.index = idx;
-                card.style.setProperty('--poster-accent', poster.accentColor);
-                card.style.setProperty('--poster-glow', poster.glowColor);
+                const item = document.createElement('div');
+                const isStaggered = idx % 2 === 1;
+                item.className = `poster-track-item ${isStaggered ? 'is-staggered' : ''}`;
+                item.dataset.id = poster.id;
+                item.dataset.index = idx;
+                item.style.setProperty('--poster-accent', poster.accentColor);
+                item.style.setProperty('--poster-glow', poster.glowColor);
 
-                card.innerHTML = `
-                    <div class="poster-card-media">
-                        <img class="poster-card-img" src="${poster.thumb}" alt="${poster.title}" loading="lazy" />
+                item.innerHTML = `
+                    <div class="poster-editorial-card">
+                        <span class="card-corner corner-tl"></span>
+                        <span class="card-corner corner-tr"></span>
+                        <span class="card-corner corner-bl"></span>
+                        <span class="card-corner corner-br"></span>
+
+                        <div class="poster-card-media">
+                            <img class="poster-card-img" src="${poster.thumb}" alt="${poster.title}" loading="lazy" />
+                            <div class="poster-card-vignette"></div>
+                            <div class="poster-card-scanline"></div>
+                        </div>
+
+                        <div class="poster-card-info">
+                            <h3 class="poster-card-title">${poster.title}</h3>
+                        </div>
                     </div>
                 `;
 
-                // Interactive 3D tilt effect on mouse movement
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -7;
-                    const rotateY = ((x - centerX) / centerX) * 7;
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
-                });
+                // Interactive 3D tilt effect on card
+                const card = item.querySelector('.poster-editorial-card');
+                if (card) {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -6;
+                        const rotateY = ((x - centerX) / centerX) * 6;
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                    });
 
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = '';
-                });
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = '';
+                    });
+                }
 
-                // Click to open lightbox
-                card.addEventListener('click', () => {
-                    openPostersLightbox(idx);
-                });
-
-                postersGrid.appendChild(card);
+                container.appendChild(item);
             });
 
             if (counterPill) {
                 counterPill.textContent = `${filteredPosters.length.toString().padStart(2, '0')} IMPRESSIONS`;
             }
+
+            updateTrackHUD();
         }
+
+        // Kinetic Track HUD & Laser Progress Calculation
+        function updateTrackHUD() {
+            if (!postersViewport) return;
+            const scrollLeft = postersViewport.scrollLeft;
+            const maxScroll = Math.max(1, postersViewport.scrollWidth - postersViewport.clientWidth);
+            const scrollPct = Math.min(100, Math.max(0, (scrollLeft / maxScroll) * 100));
+
+            if (postersLaserProgress) {
+                postersLaserProgress.style.width = `${Math.max(14, scrollPct)}%`;
+            }
+
+            // Detect centered / active poster card
+            const items = postersTrack ? postersTrack.querySelectorAll('.poster-track-item') : [];
+            if (!items.length) return;
+
+            const viewportCenter = postersViewport.getBoundingClientRect().left + postersViewport.clientWidth / 2;
+            let closestItem = null;
+            let minDistance = Infinity;
+
+            items.forEach((it, idx) => {
+                const rect = it.getBoundingClientRect();
+                const itemCenter = rect.left + rect.width / 2;
+                const dist = Math.abs(viewportCenter - itemCenter);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    closestItem = { item: it, index: idx };
+                }
+            });
+
+            if (closestItem) {
+                items.forEach((it, idx) => {
+                    it.classList.toggle('is-centered', idx === closestItem.index);
+                });
+                const activePoster = filteredPosters[closestItem.index];
+                if (activePoster && postersHudStatus) {
+                    postersHudStatus.textContent = `POSTER [ ${activePoster.index} / ${filteredPosters.length.toString().padStart(2, '0')} ] // ${activePoster.title}`;
+                }
+            }
+        }
+
+        // Viewport Drag, Wheel & Control Listeners
+        if (postersViewport) {
+            let ticking = false;
+            postersViewport.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateTrackHUD();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            // Mouse Drag to Scroll
+            postersViewport.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                hasDragged = false;
+                postersViewport.classList.add('is-dragging');
+                startX = e.pageX - postersViewport.offsetLeft;
+                scrollStartLeft = postersViewport.scrollLeft;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const x = e.pageX - postersViewport.offsetLeft;
+                const walk = (x - startX) * 1.35;
+                if (Math.abs(walk) > 6) {
+                    hasDragged = true;
+                }
+                postersViewport.scrollLeft = scrollStartLeft - walk;
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    postersViewport.classList.remove('is-dragging');
+                    setTimeout(() => { hasDragged = false; }, 80);
+                }
+            });
+
+            // Wheel horizontal navigation on track
+            postersViewport.addEventListener('wheel', (e) => {
+                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                    const atStart = postersViewport.scrollLeft <= 0;
+                    const atEnd = postersViewport.scrollLeft >= (postersViewport.scrollWidth - postersViewport.clientWidth - 2);
+                    if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
+                        e.preventDefault();
+                        postersViewport.scrollBy({ left: e.deltaY * 1.25, behavior: 'auto' });
+                    }
+                }
+            }, { passive: false });
+        }
+
+        // Prev & Next Buttons
+        if (trackPrevBtn && postersViewport) {
+            trackPrevBtn.addEventListener('click', () => {
+                postersViewport.scrollBy({ left: -380, behavior: 'smooth' });
+            });
+        }
+
+        if (trackNextBtn && postersViewport) {
+            trackNextBtn.addEventListener('click', () => {
+                postersViewport.scrollBy({ left: 380, behavior: 'smooth' });
+            });
+        }
+
+        // Laser scrubber click jump
+        if (postersLaserTrack && postersViewport) {
+            postersLaserTrack.addEventListener('click', (e) => {
+                const rect = postersLaserTrack.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const pct = Math.max(0, Math.min(1, clickX / rect.width));
+                const targetScroll = pct * (postersViewport.scrollWidth - postersViewport.clientWidth);
+                postersViewport.scrollTo({ left: targetScroll, behavior: 'smooth' });
+            });
+        }
+
+        window.addEventListener('resize', () => {
+            updateTrackHUD();
+        });
 
         // Filtering
         filterBtns.forEach(btn => {
@@ -2725,7 +2914,187 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPosters();
     }
 
+    // -------------------------------------------------------------
+    // BACKGROUND AUDIO ENGINE (SININE MUSIC)
+    // -------------------------------------------------------------
+    function initBackgroundAudio() {
+        const bgAudio = document.getElementById('bg-audio');
+        const audioToggleBtn = document.getElementById('audio-toggle-btn');
+        const recapVideo = document.getElementById('recap-main-video');
+
+        if (!bgAudio) return;
+
+        bgAudio.volume = 0;
+        const TARGET_VOLUME = 0.65;
+        let fadeInterval = null;
+        let isUserPaused = false;
+        let wasPlayingBeforeVideo = false;
+
+        function fadeAudio(targetVol, durationMs = 800, callback) {
+            clearInterval(fadeInterval);
+            const startVol = bgAudio.volume;
+            const diff = targetVol - startVol;
+            const stepTime = 30;
+            const totalSteps = Math.max(1, durationMs / stepTime);
+            let step = 0;
+
+            fadeInterval = setInterval(() => {
+                step++;
+                const progress = Math.min(1, step / totalSteps);
+                const current = startVol + diff * progress;
+                bgAudio.volume = Math.max(0, Math.min(1, current));
+
+                if (step >= totalSteps) {
+                    clearInterval(fadeInterval);
+                    bgAudio.volume = targetVol;
+                    if (callback) callback();
+                }
+            }, stepTime);
+        }
+
+        function playMusic() {
+            isUserPaused = false;
+            const playPromise = bgAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    fadeAudio(TARGET_VOLUME, 900);
+                    updateAudioUI(true);
+                }).catch(err => {
+                    console.warn('Autoplay prevented or audio error:', err);
+                    updateAudioUI(false);
+                });
+            }
+        }
+
+        function pauseMusic(fade = true) {
+            if (fade) {
+                fadeAudio(0, 400, () => {
+                    bgAudio.pause();
+                    updateAudioUI(false);
+                });
+            } else {
+                clearInterval(fadeInterval);
+                bgAudio.pause();
+                bgAudio.volume = 0;
+                updateAudioUI(false);
+            }
+        }
+
+        function toggleMusic() {
+            if (bgAudio.paused) {
+                playMusic();
+            } else {
+                isUserPaused = true;
+                pauseMusic(true);
+            }
+        }
+
+        function updateAudioUI(isPlaying) {
+            if (!audioToggleBtn) return;
+            const label = audioToggleBtn.querySelector('.audio-label');
+            if (isPlaying) {
+                audioToggleBtn.classList.add('is-playing');
+                audioToggleBtn.classList.remove('is-paused');
+                audioToggleBtn.setAttribute('aria-label', 'Dừng nhạc nền');
+                audioToggleBtn.setAttribute('title', 'Tạm dừng nhạc');
+                if (label) label.textContent = 'MUSIC';
+            } else {
+                audioToggleBtn.classList.remove('is-playing');
+                audioToggleBtn.classList.add('is-paused');
+                audioToggleBtn.setAttribute('aria-label', 'Phát nhạc nền');
+                audioToggleBtn.setAttribute('title', 'Phát nhạc nền');
+                if (label) label.textContent = 'PAUSED';
+            }
+        }
+
+        // Bind native audio play/pause events directly for instant UI sync
+        bgAudio.addEventListener('play', () => updateAudioUI(true));
+        bgAudio.addEventListener('playing', () => updateAudioUI(true));
+        bgAudio.addEventListener('pause', () => updateAudioUI(false));
+
+        if (audioToggleBtn) {
+            audioToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                toggleMusic();
+            });
+        }
+
+        let resumeTimeout = null;
+        let isVideoTransitioning = false;
+
+        function isAnySiteVideoPlaying() {
+            // 1. Recap main video
+            const recapVid = document.getElementById('recap-main-video');
+            if (recapVid && !recapVid.paused && !recapVid.ended && (recapVid.currentTime > 0 || recapVid.readyState > 1)) {
+                return true;
+            }
+            // 2. Moments lightbox video
+            const momentsModalVid = document.getElementById('moments-lightbox-video');
+            if (momentsModalVid && !momentsModalVid.paused && !momentsModalVid.ended && (momentsModalVid.currentTime > 0 || momentsModalVid.readyState > 1)) {
+                return true;
+            }
+            // 3. Any moments inline playing card video
+            const activeInlineCard = document.querySelector('.moment-card.is-inline-playing video');
+            if (activeInlineCard && !activeInlineCard.paused && !activeInlineCard.ended) {
+                return true;
+            }
+            return false;
+        }
+
+        function handleVideoStartedPlaying() {
+            isVideoTransitioning = false;
+            if (resumeTimeout) {
+                clearTimeout(resumeTimeout);
+                resumeTimeout = null;
+            }
+            // Cut music immediately (0 delay) so mobile browser grants full audio focus to video
+            pauseMusic(false);
+        }
+
+        function handleVideoStoppedPlaying() {
+            if (resumeTimeout) {
+                clearTimeout(resumeTimeout);
+            }
+            resumeTimeout = setTimeout(() => {
+                if (!isVideoTransitioning && !isAnySiteVideoPlaying() && !isUserPaused) {
+                    playMusic();
+                }
+            }, 350);
+        }
+
+        // Auto-pause background music when recap video plays & auto-resume when stopped
+        if (recapVideo) {
+            recapVideo.addEventListener('play', handleVideoStartedPlaying);
+            recapVideo.addEventListener('playing', handleVideoStartedPlaying);
+            recapVideo.addEventListener('waiting', () => {
+                if (resumeTimeout) clearTimeout(resumeTimeout);
+                pauseMusic(false);
+            });
+            recapVideo.addEventListener('pause', handleVideoStoppedPlaying);
+            recapVideo.addEventListener('ended', handleVideoStoppedPlaying);
+        }
+
+        bgAudioController = {
+            play: () => {
+                if (!isUserPaused && !isAnySiteVideoPlaying() && !isVideoTransitioning) playMusic();
+            },
+            pause: (fade = true) => pauseMusic(fade),
+            toggle: toggleMusic,
+            handleVideoPlay: handleVideoStartedPlaying,
+            handleVideoStop: handleVideoStoppedPlaying,
+            setVideoTransitioning: (val) => {
+                isVideoTransitioning = val;
+                if (val) {
+                    if (resumeTimeout) clearTimeout(resumeTimeout);
+                    pauseMusic(false);
+                }
+            }
+        };
+    }
+
     // Initialize all components
+    initBackgroundAudio();
     initPostersGallery();
     initRecapShowcase();
     initStageGallery();

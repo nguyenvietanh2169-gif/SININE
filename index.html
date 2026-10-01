@@ -53,6 +53,12 @@
         </button>
     </section>
 
+    <!-- Background Music Engine -->
+    <audio id="bg-audio" preload="auto" loop>
+        <source src="/audio/sinine-theme.m4a" type="audio/mp4">
+        <source src="/audio/sinine-theme.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Main Site Application Container -->
     <main id="home-screen" class="home-screen hidden">
         <!-- Cinematic Analog Film Grain Texture Overlay -->
@@ -80,8 +86,8 @@
                 <a href="#posters" class="nav-link" data-target="posters">POSTERS</a>
                 <a href="#booking" class="nav-link" data-target="booking">BOOKING</a>
             </nav>
-            <button id="back-to-welcome" class="back-btn" title="Back to welcome screen">
-                <svg viewBox="0 0 24 24" width="18" height="18">
+            <button id="back-to-welcome" class="back-btn" title="Quay lại trang chào mừng">
+                <svg viewBox="0 0 24 24" width="16" height="16">
                     <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                 </svg>
                 <span>BACK</span>
@@ -171,14 +177,6 @@
                         <span class="brand-big-text" data-text="SININE"></span>
                         <span class="brand-type-cursor"></span>
                     </div>
-
-                    <!-- Scroll Indicator / Quick Jump to Artist -->
-                    <button class="home-scroll-hint" id="jump-to-artist" aria-label="Explore Artist Info">
-                        <div class="scroll-hint-mouse">
-                            <div class="scroll-hint-wheel"></div>
-                        </div>
-                        <span class="hint-text">SCROLL TO REVEAL</span>
-                    </button>
                 </div>
             </section>
 
@@ -223,7 +221,7 @@
                             <div class="pillar-item highlight">
                                 <span class="pillar-meta">VAI TRÒ NGHỆ SĨ</span>
                                 <span class="pillar-value">MC HYPE & DJ</span>
-                                <span class="pillar-desc">Bộ đôi kỹ năng kép hiếm có & bùng nổ</span>
+                                <span class="pillar-desc">Bộ đôi kĩ năng kép</span>
                             </div>
                             <div class="pillar-item">
                                 <span class="pillar-meta">ĐIỂM MẠNH VƯỢT TRỘI</span>
@@ -252,13 +250,8 @@
                             </div>
                         </div>
 
-                        <!-- Social & Navigation Actions -->
                         <div class="artist-actions-bar">
                             <div class="artist-socials">
-                                <a href="https://instagram.com" target="_blank" rel="noopener" class="social-btn">
-                                    <span>INSTAGRAM</span>
-                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
-                                </a>
                                 <button class="social-btn highlight" id="btn-jump-to-collection">
                                     <span>TIẾP THEO: BỘ SƯU TẬP ↓</span>
                                 </button>
@@ -494,6 +487,9 @@
                         <h2 class="recap-main-title">
                             <span class="text-gradient">MC SININE</span> VIDEO RECAP
                         </h2>
+                        <p class="recap-main-desc">
+                            Thước phim ghi lại năng lượng bùng nổ & khoảnh khắc làm chủ sân khấu đỉnh cao
+                        </p>
                     </div>
 
                     <!-- Main Video Showcase Layout -->
@@ -506,9 +502,9 @@
                             <div class="card-corner corner-br"></div>
 
                             <div class="recap-video-viewport">
-                                <video id="recap-main-video" playsinline preload="metadata" controls controlslist="nodownload" src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4#t=0.5">
-                                    <source src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4#t=0.5" type="video/mp4">
-                                    <source src="/optimized_videos/recap_vtnl.mp4#t=0.5" type="video/mp4">
+                                <video id="recap-main-video" poster="/thumbnails/recap_vtnl.jpg" playsinline preload="auto" controls controlslist="nodownload" src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4">
+                                    <source src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4" type="video/mp4">
+                                    <source src="/optimized_videos/recap_vtnl.mp4" type="video/mp4">
                                     Trình duyệt không hỗ trợ phát video HTML5.
                                 </video>
                             </div>
@@ -530,13 +526,13 @@
                         <!-- Video Playlist Selector Grid -->
                         <div class="recap-playlist-grid">
                             <!-- Item 1: VTNL 1609 -->
-                            <div class="recap-item-card active" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4" data-badge="01 // STAGE DEMO" data-title="VTNL SHOWCASE 1609">
+                            <div class="recap-item-card active" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4" data-poster="/thumbnails/recap_vtnl.jpg" data-badge="01 // STAGE DEMO" data-title="VTNL SHOWCASE 1609">
                                 <div class="card-corner corner-tl"></div>
                                 <div class="card-corner corner-tr"></div>
                                 <div class="card-corner corner-bl"></div>
                                 <div class="card-corner corner-br"></div>
                                 <div class="recap-item-preview">
-                                    <video preload="metadata" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4#t=1.0"></video>
+                                    <video poster="/thumbnails/recap_vtnl.jpg" preload="none" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_vtnl.mp4"></video>
                                     <div class="recap-play-badge">
                                         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                                     </div>
@@ -548,13 +544,13 @@
                             </div>
 
                             <!-- Item 2: Short Reel -->
-                            <div class="recap-item-card" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_short_1.mp4" data-badge="02 // HIGHLIGHT REEL" data-title="DYNAMIC STAGE REEL">
+                            <div class="recap-item-card" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_short_1.mp4" data-poster="/thumbnails/recap_short_1.jpg" data-badge="02 // HIGHLIGHT REEL" data-title="DYNAMIC STAGE REEL">
                                 <div class="card-corner corner-tl"></div>
                                 <div class="card-corner corner-tr"></div>
                                 <div class="card-corner corner-bl"></div>
                                 <div class="card-corner corner-br"></div>
                                 <div class="recap-item-preview">
-                                    <video preload="metadata" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_short_1.mp4#t=1.0"></video>
+                                    <video poster="/thumbnails/recap_short_1.jpg" preload="none" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_short_1.mp4"></video>
                                     <div class="recap-play-badge">
                                         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                                     </div>
@@ -566,13 +562,13 @@
                             </div>
 
                             <!-- Item 3: Dam Cuoi -->
-                            <div class="recap-item-card" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_dam_cuoi.mp4" data-badge="03 // WEDDING GALA" data-title="WEDDING GALA EVENT">
+                            <div class="recap-item-card" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_dam_cuoi.mp4" data-poster="/thumbnails/recap_dam_cuoi.jpg" data-badge="03 // WEDDING GALA" data-title="WEDDING GALA EVENT">
                                 <div class="card-corner corner-tl"></div>
                                 <div class="card-corner corner-tr"></div>
                                 <div class="card-corner corner-bl"></div>
                                 <div class="card-corner corner-br"></div>
                                 <div class="recap-item-preview">
-                                    <video preload="metadata" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_dam_cuoi.mp4#t=1.0"></video>
+                                    <video poster="/thumbnails/recap_dam_cuoi.jpg" preload="none" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/recap_dam_cuoi.mp4"></video>
                                     <div class="recap-play-badge">
                                         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                                     </div>
@@ -584,13 +580,13 @@
                             </div>
 
                             <!-- Item 4: MC Sinine Performance Reel -->
-                            <div class="recap-item-card" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/Sinine_recap.mp4" data-badge="04 // SININE SHOWCASE" data-title="MC SININE STAGE PERFORMANCE">
+                            <div class="recap-item-card" data-video-src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/Sinine_recap.mp4" data-poster="/thumbnails/Sinine_recap.jpg" data-badge="04 // SININE SHOWCASE" data-title="MC SININE STAGE PERFORMANCE">
                                 <div class="card-corner corner-tl"></div>
                                 <div class="card-corner corner-tr"></div>
                                 <div class="card-corner corner-bl"></div>
                                 <div class="card-corner corner-br"></div>
                                 <div class="recap-item-preview">
-                                    <video preload="metadata" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/Sinine_recap.mp4#t=1.0"></video>
+                                    <video poster="/thumbnails/Sinine_recap.jpg" preload="none" muted playsinline src="https://pub-f02c9f1287b6454cba085755015617e1.r2.dev/Sinine_recap.mp4"></video>
                                     <div class="recap-play-badge">
                                         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                                     </div>
@@ -630,6 +626,17 @@
                         <h2 class="stage-main-title">
                             <span class="text-gradient">MC SININE</span> LIVE STAGE ARCHIVE
                         </h2>
+                        <p class="stage-main-desc">
+                            Lưu giữ những khoảnh khắc thăng hoa cùng âm nhạc & nhiệt huyết qua từng đêm diễn
+                        </p>
+                        <div class="stage-actions-row">
+                            <a href="https://drive.google.com/drive/folders/1fLzfdWWvIqF5mhL5lh5Vlenpijc1xitx" target="_blank" rel="noopener noreferrer" class="drive-download-pill-btn" id="stage-drive-download-btn" title="Truy cập Google Drive tải ảnh gốc">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                                </svg>
+                                <span>GOOGLE DRIVE</span>
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Dynamic Bento Stage Gallery Grid -->
@@ -702,6 +709,9 @@
                         <h2 class="moments-main-title">
                             <span class="text-gradient">MC SININE</span> MOMENTS ARCHIVE
                         </h2>
+                        <p class="moments-subtitle">
+                            Hành trình phong cách & những góc nhìn biểu diễn độc bản của MC Sinine
+                        </p>
                     </div>
 
                     <!-- Moments Bento/Reels Grid -->
@@ -732,14 +742,64 @@
                 <div class="posters-container">
                     <!-- Posters Header Block -->
                     <div class="posters-header-block">
+                        <div class="posters-top-meta">
+                            <span class="posters-badge">// EXCLUSIVE EDITORIAL ARCHIVE</span>
+                            <span class="posters-counter-pill" id="posters-counter-pill">07 IMPRESSIONS</span>
+                        </div>
                         <h2 class="posters-main-title">
                             <span class="text-gradient">MC SININE</span> POSTER ARCHIVE
                         </h2>
+                        <p class="posters-main-desc">
+                            Bộ sưu tập Visual Poster & Chiến dịch thương hiệu của MC SININE. Kéo chuột hoặc cuộn ngang để khám phá hành trình.
+                        </p>
+                        <div class="posters-download-action-bar">
+                            <a href="https://drive.google.com/drive/folders/1fLzfdWWvIqF5mhL5lh5Vlenpijc1xitx" target="_blank" rel="noopener noreferrer" class="drive-download-pill-btn" id="posters-drive-download-btn" title="Truy cập Google Drive tải ảnh gốc">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                                </svg>
+                                <span>GOOGLE DRIVE</span>
+                            </a>
+                        </div>
                     </div>
 
-                    <!-- Dynamic Posters Grid -->
-                    <div class="posters-grid" id="posters-grid">
-                        <!-- Populated dynamically by main.js with 7 poster cards -->
+                    <!-- Kinetic Track Navigation HUD -->
+                    <div class="posters-track-hud">
+                        <div class="posters-hud-hint">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 16l-4-4 4-4M17 8l4 4-4 4M3 12h18"/>
+                            </svg>
+                            <span>KÉO HOẶC CUỘN ĐỂ KHÁM PHÁ</span>
+                        </div>
+                        <div class="posters-hud-arrows">
+                            <button class="posters-hud-btn" id="posters-track-prev" aria-label="Poster trước">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <path d="M15 19l-7-7 7-7"/>
+                                </svg>
+                            </button>
+                            <button class="posters-hud-btn" id="posters-track-next" aria-label="Poster kế tiếp">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2">
+                                    <path d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kinetic Horizontal Track Viewport -->
+                    <div class="posters-kinetic-viewport" id="posters-kinetic-viewport">
+                        <div class="posters-kinetic-track" id="posters-kinetic-track">
+                            <!-- Populated dynamically by main.js with staggered cards & giant typography -->
+                        </div>
+                    </div>
+
+                    <!-- Laser Progress Bar / Scrubber -->
+                    <div class="posters-laser-scrubber-wrap">
+                        <span class="scrubber-label start">01 // START</span>
+                        <div class="posters-laser-track" id="posters-laser-track">
+                            <div class="posters-laser-progress" id="posters-laser-progress">
+                                <span class="laser-head"></span>
+                            </div>
+                        </div>
+                        <span class="scrubber-label end">07 // FINALE</span>
                     </div>
 
                     <!-- Bottom Nav Controls -->
@@ -929,6 +989,16 @@
                 </footer>
             </section>
         </div>
+
+        <!-- Floating Bottom-Right Circular Music Controller (Pure Monochrome Grey) -->
+        <button id="audio-toggle-btn" class="floating-audio-btn is-paused" aria-label="Bật / Tắt nhạc nền" title="Bật / Tắt nhạc nền">
+            <span class="audio-wave" aria-hidden="true">
+                <span class="bar bar-1"></span>
+                <span class="bar bar-2"></span>
+                <span class="bar bar-3"></span>
+                <span class="bar bar-4"></span>
+            </span>
+        </button>
     </main>
 
     <!-- Moments Cinema Lightbox Modal (Direct child of body to guarantee viewport centering) -->
@@ -960,7 +1030,7 @@
             </button>
 
             <div class="moments-player-box" id="moments-player-box">
-                <video id="moments-lightbox-video" playsinline controls preload="none"></video>
+                <video id="moments-lightbox-video" playsinline controls preload="auto"></video>
             </div>
 
             <button class="lightbox-nav-btn next-btn" id="moments-lightbox-next" aria-label="Video kế tiếp">
