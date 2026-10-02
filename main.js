@@ -120,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (pageId === 'home') {
             if (pageHome) pageHome.classList.add('active');
-            homeCompletedTime = 0;
             overscrollAccumulator = 0;
         } else if (pageId === 'artist') {
             if (pageHome) pageHome.classList.add('page-prev');
@@ -379,7 +378,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPage = 'home';
             targetScrollProgress = 0;
             currentScrollProgress = 0;
-            homeCompletedTime = 0;
             overscrollAccumulator = 0;
             if (pageHome) {
                 pageHome.classList.add('active');
@@ -433,7 +431,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentScrollProgress = 0;
     let lastTouchY = 0;
     let overscrollAccumulator = 0;
-    let homeCompletedTime = 0;
 
     // Fast boundary check helpers (Generous thresholds for effortless navigation)
     function isScrolledToBottom(el) {
@@ -461,28 +458,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.deltaY > 0) {
                 if (targetScrollProgress < 1.0) {
                     targetScrollProgress = Math.min(1.0, targetScrollProgress + e.deltaY * 0.0016);
-                    if (targetScrollProgress >= 1.0 && homeCompletedTime === 0) {
-                        homeCompletedTime = performance.now();
-                    }
                     startTypewriterLoop();
                 } else {
-                    // Fully scrolled: give viewers time to see the word SININE
-                    const now = performance.now();
-                    if (homeCompletedTime === 0) homeCompletedTime = now;
-                    if (now - homeCompletedTime >= 350) {
-                        overscrollAccumulator += e.deltaY;
-                        if (overscrollAccumulator > 75) {
-                            overscrollAccumulator = 0;
-                            homeCompletedTime = 0;
-                            switchPage('artist');
-                        }
+                    overscrollAccumulator += e.deltaY;
+                    if (overscrollAccumulator > 32) {
+                        overscrollAccumulator = 0;
+                        switchPage('artist');
                     }
                 }
             } else if (e.deltaY < 0) {
                 targetScrollProgress = Math.max(0, targetScrollProgress + e.deltaY * 0.0016);
-                if (targetScrollProgress < 1.0) {
-                    homeCompletedTime = 0;
-                }
                 startTypewriterLoop();
                 overscrollAccumulator = 0;
             }
@@ -552,27 +537,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (delta > 0) {
                 if (targetScrollProgress < 1.0) {
                     targetScrollProgress = Math.min(1.0, targetScrollProgress + delta * 0.0035);
-                    if (targetScrollProgress >= 1.0 && homeCompletedTime === 0) {
-                        homeCompletedTime = performance.now();
-                    }
                     startTypewriterLoop();
                 } else {
-                    const now = performance.now();
-                    if (homeCompletedTime === 0) homeCompletedTime = now;
-                    if (now - homeCompletedTime >= 350) {
-                        overscrollAccumulator += delta;
-                        if (overscrollAccumulator > 80) {
-                            overscrollAccumulator = 0;
-                            homeCompletedTime = 0;
-                            switchPage('artist');
-                        }
+                    overscrollAccumulator += delta;
+                    if (overscrollAccumulator > 38) {
+                        overscrollAccumulator = 0;
+                        switchPage('artist');
                     }
                 }
             } else if (delta < 0) {
                 targetScrollProgress = Math.max(0, targetScrollProgress + delta * 0.0035);
-                if (targetScrollProgress < 1.0) {
-                    homeCompletedTime = 0;
-                }
                 startTypewriterLoop();
                 overscrollAccumulator = 0;
             }
@@ -686,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (brandWordmark && brandTextSpan) {
             const brandStart = 0.68;
-            const brandEnd = 0.82;
+            const brandEnd = 0.88;
 
             if (progress < brandStart) {
                 if (lastBrandCount !== 0) {
@@ -719,7 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (scrollHint) {
-            if (progress >= 0.86) {
+            if (progress >= 0.88) {
                 scrollHint.classList.add('ready-to-slide');
                 scrollHint.classList.remove('faded');
                 if (hintText) hintText.textContent = 'SCROLL TO SLIDE UP // ARTIST INFO ↓';
