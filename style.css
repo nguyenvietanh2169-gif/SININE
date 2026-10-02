@@ -5555,7 +5555,7 @@ html, body {
 .posters-track-hud {
     width: 100%;
     max-width: 1440px;
-    margin: 0 auto;
+    margin: 6px auto 0 auto;
     padding: 0 clamp(20px, 4vw, 40px);
     display: flex;
     align-items: center;
@@ -5623,7 +5623,7 @@ html, body {
     overflow-y: visible;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    padding: 30px 0 60px 0;
+    padding: 24px 0 46px 0;
     margin-top: 0;
     cursor: grab;
     user-select: none;
@@ -5840,13 +5840,7 @@ html, body {
    LASER PROGRESS SCRUBBER
    ========================================== */
 .posters-laser-scrubber-wrap {
-    width: 100%;
-    max-width: 1440px;
-    margin: 8px auto 0 auto;
-    padding: 0 clamp(20px, 4vw, 40px);
-    display: flex;
-    align-items: center;
-    gap: 18px;
+    display: none !important;
 }
 
 .scrubber-label {
@@ -6536,11 +6530,11 @@ html, body {
 }
 
 /* =============================================================
-   GOOGLE DRIVE MINIMALIST GRAY BUTTON
+   GOOGLE DRIVE ORANGE BUTTON
    ============================================================= */
 .posters-download-action-bar,
 .stage-actions-row {
-    margin-top: 14px;
+    margin-top: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6549,46 +6543,47 @@ html, body {
 .drive-download-pill-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 18px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    gap: 9px;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #ff7a00 0%, #ea580c 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 999px;
-    color: #94a3b8;
+    color: #ffffff !important;
     font-family: 'Space Mono', 'Consolas', monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.78rem;
+    font-weight: 700;
     letter-spacing: 0.12em;
     text-decoration: none;
     text-transform: uppercase;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-    transition: all 0.25s ease;
+    box-shadow: 0 4px 18px rgba(234, 88, 12, 0.45), 0 0 12px rgba(255, 122, 0, 0.3);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .drive-download-pill-btn:hover {
-    background: rgba(255, 255, 255, 0.10);
-    border-color: rgba(255, 255, 255, 0.35);
-    color: #ffffff;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    background: linear-gradient(135deg, #ff8c1a 0%, #f97316 100%);
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #ffffff !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 24px rgba(234, 88, 12, 0.65), 0 0 20px rgba(255, 122, 0, 0.45);
 }
 
 .drive-download-pill-btn svg {
     flex-shrink: 0;
-    opacity: 0.75;
-    transition: opacity 0.25s ease;
+    fill: currentColor;
+    opacity: 1;
+    transition: transform 0.25s ease;
 }
 
 .drive-download-pill-btn:hover svg {
-    opacity: 1;
+    transform: scale(1.12);
 }
 
 @media (max-width: 768px) {
     .drive-download-pill-btn {
-        padding: 7px 16px;
-        font-size: 0.70rem;
+        padding: 8px 18px;
+        font-size: 0.72rem;
         letter-spacing: 0.08em;
     }
 }
