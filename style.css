@@ -1996,7 +1996,8 @@ html, body {
 
 .cylinder-card.is-active {
     opacity: 1;
-    border-color: var(--card-accent, #ffffff);
+    border-color: #9ca3af !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 14px rgba(156, 163, 175, 0.25);
 }
 
 .cylinder-card.is-active .card-dim-mask {
@@ -2163,8 +2164,8 @@ html, body {
 
 .cylinder-dot.is-active {
     width: 28px;
-    background: var(--dot-accent, #ffffff);
-    box-shadow: 0 0 12px var(--dot-glow, rgba(255, 255, 255, 0.6));
+    background: #9ca3af !important;
+    box-shadow: 0 0 10px rgba(156, 163, 175, 0.4) !important;
 }
 
 

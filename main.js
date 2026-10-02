@@ -971,8 +971,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = `cylinder-card ${i === 0 ? 'is-active' : ''}`;
             card.setAttribute('data-index', i);
-            card.style.setProperty('--card-accent', look.accentColor);
-            card.style.setProperty('--card-glow', look.glowColor);
+            card.style.setProperty('--card-accent', '#9ca3af');
+            card.style.setProperty('--card-glow', 'rgba(156, 163, 175, 0.3)');
 
             card.innerHTML = `
                 <div class="card-dim-mask"></div>
@@ -996,8 +996,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const dot = document.createElement('button');
                 dot.className = `cylinder-dot ${i === 0 ? 'is-active' : ''}`;
                 dot.setAttribute('aria-label', `Xem Look ${i + 1}`);
-                dot.style.setProperty('--dot-accent', look.accentColor);
-                dot.style.setProperty('--dot-glow', look.glowColor);
+                dot.style.setProperty('--dot-accent', '#9ca3af');
+                dot.style.setProperty('--dot-glow', 'rgba(156, 163, 175, 0.35)');
                 dot.addEventListener('click', () => rotateToIndex(i));
                 paginationEl.appendChild(dot);
             }
